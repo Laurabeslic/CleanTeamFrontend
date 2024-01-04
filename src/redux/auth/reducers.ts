@@ -47,6 +47,7 @@ const Auth = (state: State = INIT_STATE, action: AuthActionType): any => {
     case AuthActionTypes.API_RESPONSE_SUCCESS:
       switch (action.payload.actionType) {
         case AuthActionTypes.LOGIN_USER: {
+          console.log("reducers.ts case:login user sucess");
           return {
             ...state,
             user: action.payload.data,

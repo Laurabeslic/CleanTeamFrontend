@@ -39,6 +39,7 @@ function* login({
   type,
 }: UserData): SagaIterator {
   try {
+    console.log("saga.ts login()");
     const response = yield call(loginApi, { email, password });
     const user = response.data;
     // NOTE - You can change this according to response format from your api

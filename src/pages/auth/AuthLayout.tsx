@@ -35,14 +35,14 @@ const AuthLayout = ({ bottomLinks, children }: AccountLayoutProps) => {
                         <div className="overlay"></div>
                         <div className="auth-user-testimonial">
                           <p className="fs-24 fw-bold text-white mb-1">
-                            {t("I simply love it!")}
+                            {t("Eine saubere Lösung")}
                           </p>
                           <p className="lead">
                             "
-                            {t("It's a elegent templete. I love it very much!")}
+                            {t("Ein großes, starkes, familiäres Team")}
                             "
                           </p>
-                          <p>- {t("Admin User")}</p>
+                          <p>- {t("CleanTeam Familie")}</p>
                         </div>
                       </div>
                     </Col>

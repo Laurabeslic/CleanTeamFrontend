@@ -113,6 +113,7 @@ class APICore {
    * post given data to url
    */
   create = (url: string, data: any) => {
+    console.log("apicore.ts create()");
     return axios.post(url, data);
   };
 

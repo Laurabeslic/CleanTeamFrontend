@@ -166,7 +166,8 @@ const Topbar = ({
   topbarDark,
 }: TopbarProps) => {
   const dispatch = useDispatch<AppDispatch>();
-
+  const loggedInUser = useSelector((state: RootState) => state.Auth.user);
+  console.log('Username: ',loggedInUser);
   const [isopen, setIsopen] = useState<boolean>(false);
 
   const navbarCssClasses: string = navCssClasses || "";
@@ -248,11 +249,11 @@ const Topbar = ({
               <NotificationDropdown notifications={Notifications} />
             </li>
             <li className="dropdown notification-list topbar-dropdown">
-              <ProfileDropdown
-                profilePic={profilePic}
-                menuItems={ProfileMenus}
-                username={"Nik Patel"}
-              />
+            <ProfileDropdown
+                  profilePic={`https://ui-avatars.com/api/?name=${loggedInUser.user.firstName}+${loggedInUser.user.lastName}&background=random`}
+                  menuItems={ProfileMenus}
+                 username={loggedInUser ? loggedInUser.user.username : "Loading..."}  // Aktualisieren Sie den Benutzernamen hier
+                />
             </li>
             <li className="dropdown notification-list">
               <button

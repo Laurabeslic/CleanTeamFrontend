@@ -102,9 +102,9 @@ const Login = () => {
           </Link>
         </div>
 
-        <h6 className="h5 mb-0 mt-3">{t("Welcome back!")}</h6>
+        <h6 className="h5 mb-0 mt-3">{t("Willkommen zurück!")}</h6>
         <p className="text-muted mt-1 mb-4">
-          {t("Enter your email address and password to access admin panel.")}
+          {t("Geben Sie Ihre E-Mail Adresse und Ihr Passwort ein, um auf das Panel zuzugreifen.")}
         </p>
 
         {error && (
@@ -122,7 +122,7 @@ const Login = () => {
           <FormInput
             type="email"
             name="email"
-            label={t("Email Address")}
+            label={t("E-Mail Adresse")}
             startIcon={<FeatherIcons icon={"mail"} className="icon-dual" />}
             placeholder={t("hello@coderthemes.com")}
             containerClass={"mb-3"}
@@ -130,31 +130,31 @@ const Login = () => {
           <FormInput
             type="password"
             name="password"
-            label={t("Password")}
+            label={t("Passwort")}
             startIcon={<FeatherIcons icon={"lock"} className="icon-dual" />}
             action={
               <Link
                 to="/auth/forget-password"
                 className="float-end text-muted text-unline-dashed ms-1"
               >
-                {t("Forgot your password?")}
+                {t("Passwort vergessen?")}
               </Link>
             }
-            placeholder={t("Enter your Password")}
+            placeholder={t("Geben Sie Ihr Passwort ein")}
             containerClass={"mb-3"}
           ></FormInput>
 
           <FormInput
             type="checkbox"
             name="checkbox"
-            label={t("Remember me")}
+            label={t("Eingeloggt bleiben")}
             containerClass={"mb-3"}
             defaultChecked
           />
 
           <div className="mb-3 text-center d-grid">
             <Button type="submit" disabled={loading}>
-              {t("Log In")}
+              {t("Login")}
             </Button>
           </div>
         </VerticalForm>
