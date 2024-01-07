@@ -70,6 +70,7 @@ const WithMarkers = ({ google }: MapContainerProps) => {
   );
 };
 
+
 const LightStyledMap = ({ google }: MapContainerProps) => {
   const mapStyles = [
     {
