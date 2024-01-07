@@ -4,6 +4,7 @@ import { Navigate, Route, RouteProps } from "react-router-dom";
 // components
 import PrivateRoute from "./PrivateRoute";
 import OrderDetail from "../pages/orders/OrderDetail";
+import CustomerDetail from "../pages/customers/CustomerDetail";
 // import Root from "./Root";
 
 // lazy load all the views
@@ -21,6 +22,9 @@ const Landing = React.lazy(() => import("../pages/landing/"));
 
 //order
 const Orders = React.lazy(() => import("../pages/orders/Orders"));
+
+//customer
+const Customers = React.lazy(() => import("../pages/customers/Customers"));
 
 
 // dashboard
@@ -287,6 +291,18 @@ const extrapagesRoutes: RoutesProps = {
       path: "/orders/:auftragId",
       name: "OrderDetail",
       element: <OrderDetail />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/customers/",
+      name: "Customers",
+      element: <Customers />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/customers/:kundenId",
+      name: "CustomerDetail",
+      element: <CustomerDetail />,
       route: PrivateRoute,
     },
   ],
