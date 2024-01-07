@@ -3,6 +3,7 @@ import { Navigate, Route, RouteProps } from "react-router-dom";
 
 // components
 import PrivateRoute from "./PrivateRoute";
+import OrderDetail from "../pages/orders/OrderDetail";
 // import Root from "./Root";
 
 // lazy load all the views
@@ -17,6 +18,10 @@ const LockScreen = React.lazy(() => import("../pages/auth/LockScreen"));
 
 // landing
 const Landing = React.lazy(() => import("../pages/landing/"));
+
+//order
+const Orders = React.lazy(() => import("../pages/orders/Orders"));
+
 
 // dashboard
 const EcommerceDashboard = React.lazy(
@@ -270,6 +275,18 @@ const extrapagesRoutes: RoutesProps = {
       path: "/pages/pricing",
       name: "Pricing",
       element: <Pricing />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/orders",
+      name: "Orders",
+      element: <Orders />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/orders/:auftragId",
+      name: "OrderDetail",
+      element: <OrderDetail />,
       route: PrivateRoute,
     },
   ],
