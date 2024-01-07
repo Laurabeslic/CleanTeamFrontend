@@ -304,9 +304,11 @@ const Topbar = ({
               </Link>
             </li>
 
+            {loggedInUser.user.role === "Admin" &&
             <li className="dropdown d-none d-xl-block">
               <CreateNew otherOptions={otherOptions} />
             </li>
+            }
           </ul>
         </div>
       </div>

@@ -10,7 +10,7 @@ const Footer = () => {
       <div className="container-fluid">
         <Row>
           <Col sm={6}>
-            {currentYear} &copy; Shreyu theme by <Link to="#">Coderthemes</Link>
+            {currentYear} &copy; made with 💕 by <Link to="#">Laura & Nilsu</Link>
           </Col>
 
           <Col sm={6}>

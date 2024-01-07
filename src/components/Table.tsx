@@ -18,6 +18,7 @@ interface GlobalFilterProps {
   globalFilter: any;
   setGlobalFilter: any;
   searchBoxClass: any;
+  onSearch?: (searchValue: string) => void;
 }
 
 // Define a default UI for filtering
@@ -26,6 +27,8 @@ const GlobalFilter = ({
   globalFilter,
   setGlobalFilter,
   searchBoxClass,
+  onSearch
+
 }: GlobalFilterProps) => {
   const count = preGlobalFilteredRows.length;
   const [value, setValue] = useState<any>(globalFilter);
@@ -43,6 +46,7 @@ const GlobalFilter = ({
           onChange={(e: any) => {
             setValue(e.target.value);
             onChange(e.target.value);
+            onSearch && onSearch(e.target.value); //<- Aufruf hinzufügen
           }}
           placeholder={`${count} records...`}
           className="form-control w-auto ms-1"
@@ -84,6 +88,8 @@ const IndeterminateCheckbox = forwardRef<
 });
 
 interface TableProps {
+  onSearch?: (searchValue: string) => void;
+
   isSearchable?: boolean;
   isSortable?: boolean;
   pagination?: boolean;
@@ -105,6 +111,7 @@ interface TableProps {
   searchBoxClass?: string;
   tableClass?: string;
   theadClass?: string;
+  updateMyData?: (rowIndex: number, columnId: string, value: any) => void;
 }
 
 const Table = (props: TableProps) => {
@@ -214,6 +221,7 @@ const Table = (props: TableProps) => {
     <>
       {isSearchable && (
         <GlobalFilter
+          onSearch={props.onSearch} 
           preGlobalFilteredRows={dataTable.preGlobalFilteredRows}
           globalFilter={dataTable.state.globalFilter}
           setGlobalFilter={dataTable.setGlobalFilter}
@@ -263,7 +271,9 @@ const Table = (props: TableProps) => {
                           },
                         ])}
                       >
-                        {cell.render("Cell")}
+                        {cell.column.Cell && typeof cell.column.Cell === "function"
+                        ? cell.column.Cell ({...cell, updateMyData:props.updateMyData})
+                        : cell.render("Cell")}
                       </td>
                     );
                   })}

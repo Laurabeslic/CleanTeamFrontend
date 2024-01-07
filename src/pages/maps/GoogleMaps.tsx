@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import {
   Map,
@@ -37,10 +37,29 @@ const BasicMap = ({ google }: MapContainerProps) => {
   );
 };
 
-const WithMarkers = ({ google }: MapContainerProps) => {
+export const WithMarkers = ({ google, address }: MapContainerProps & {address?: string}) => {
+  const [location, setLocation] = useState<{lat: number, lng: number} | null>(null);
+
+  useEffect(()=> {
+    if(address && google){
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({'address': address}, (results: any, status: string) => {
+        if(status === 'OK'){
+          setLocation({
+            lat: results[0].geometry.location.lat(),
+            lng: results[0].geometry.location.lng(),
+          });
+        } else{
+          console.error('Geocode was not successful for the following reason: '+ status); 
+        }
+      });
+    }
+  }, [address, google]);
+
+
   return (
     <div className="card-box">
-      <h4 className="header-title mb-3">Markers</h4>
+      <h4 className="header-title mb-3">{address}</h4>
       <div
         className="gmaps"
         style={{ position: "relative", overflow: "hidden" }}
@@ -48,22 +67,14 @@ const WithMarkers = ({ google }: MapContainerProps) => {
         <Map
           google={google}
           zoom={18}
-          initialCenter={{ lat: 21.569874, lng: 71.5893798 }}
+          center={location? {lat: location.lat, lng:location.lng} : {lat: 21.569874, lng: 71.5893798 }}
           style={{ width: "100%", height: "100%", position: "relative" }}
           zoomControlOptions={{
             position: google.maps.ControlPosition.LEFT_TOP,
           }}
         >
-          <Marker
-            name="SOMA"
-            position={{ lat: 21.56956, lng: 71.5892598 }}
-            title="The marker`s title will appear as a tooltip."
-          />
-
-          <Marker
-            name="Dolores park"
-            position={{ lat: 21.56969, lng: 71.5893798 }}
-          />
+          
+        {location && <Marker position={location} />}
         </Map>
       </div>
     </div>

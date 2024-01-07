@@ -142,6 +142,8 @@ class APICore {
    * post given data to url with file
    */
   createWithFile = (url: string, data: any) => {
+    console.log('apiCore.ts createWithFile')
+
     const formData = new FormData();
     for (const k in data) {
       formData.append(k, data[k]);
@@ -212,6 +214,7 @@ class APICore {
 Check if token available in session
 */
 let user = getUserFromCookie();
+console.log('apiCore.ts under user')
 if (user) {
   const { token } = user;
   if (token) {

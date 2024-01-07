@@ -181,6 +181,20 @@ const MENU_ITEMS: MenuItemTypes[] = [
       },
     ],
   },
+  {
+    key:"orders",
+    label: "Aufträge",
+    isTitle: false,
+    icon: "package",
+    url: "/orders",
+  },
+  {
+    key: "customers",
+    label: "Kunden",
+    isTitle:false,
+    icon: "users",
+    url: "/customers",
+  },
   { key: "components", label: "Components", isTitle: true },
   {
     key: "ui-elements",
