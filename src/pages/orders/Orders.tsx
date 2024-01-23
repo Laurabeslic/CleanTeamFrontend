@@ -1,10 +1,16 @@
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Row, Col, Card } from "react-bootstrap";
 import Table from "../../components/Table";
 import StatisticsWidget from "../widgets/StatisticsWidget";
+import CreateOrderForm from "./CreateOrderForm"; // Importiere das Auftragsformular
+import CustomModal from './OrderModal';
+
+
 
 import { Link, useLocation } from 'react-router-dom';
+
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -85,6 +91,7 @@ const columns = [
     const [totalOrders, setTotalOrders] = useState(0);
     const [inProgressOrders, setInProgressOrders] = useState(0);
     const [completedOrders, setCompletedOrders] = useState(0);
+    const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
 
     const [ordersData, setOrdersData] = useState<any[]>([]);
     console.log(ordersData);
@@ -176,6 +183,33 @@ const columns = [
     }, [searchValue]);
     
 
+    const handleCreateOrder = async (newOrderData: any) => {
+        try {
+          // Sende die Daten an den Server, um einen neuen Auftrag zu erstellen
+          const response = await axios.post("http://localhost:3001/Auftrag/", newOrderData);
+          const createdOrder = response.data;
+    
+          // Aktualisiere die Auftragsliste mit dem neuen Auftrag
+          setOrdersData((prevOrders) => [...prevOrders, createdOrder]);
+    
+          // Aktualisiere die Zähler
+          recalculateOrderCounts();
+
+          setIsCreateFormOpen(false);
+        } catch (error) {
+          console.error("Fehler beim Erstellen des Auftrags:", error);
+        }
+      };
+
+      const openCreateForm = () => {
+        setIsCreateFormOpen(true);
+      };
+    
+      const closeCreateForm = () => {
+        setIsCreateFormOpen(false);
+      };
+    
+
     return (
     
         <>
@@ -206,8 +240,12 @@ const columns = [
         <Row>
                 <Col>
                     <Card>
+                    <Col md="auto" style={{ marginLeft: "1000px", marginTop: "15px" }}>
+                    <button className="btn btn-primary" onClick={openCreateForm}>
+                        Auftrag erstellen
+                    </button>
+                     </Col>
                         <Card.Body>
-
 
                             <Table
                                 columns={columns}
@@ -218,10 +256,15 @@ const columns = [
                                 pagination={true}
                                 isSearchable={true}
                                 updateMyData={updateMyData} />
+
                         </Card.Body>
                     </Card>
                 </Col>
             </Row>
+            <CustomModal isOpen={isCreateFormOpen} onRequestClose={closeCreateForm}>
+        {/* Hier füge dein Formular oder den Inhalt des Modals ein */}
+        <CreateOrderForm isOpen={isCreateFormOpen} onCreate={handleCreateOrder} onClose={closeCreateForm} />
+      </CustomModal>
             </>
     );
 };
