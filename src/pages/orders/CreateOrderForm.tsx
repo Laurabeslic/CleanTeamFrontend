@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { FiCalendar } from "react-icons/fi";
 
 interface CreateOrderFormProps {
   isOpen: boolean;
@@ -16,6 +19,8 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
   const [stadt, setStadt] = useState("");
   const [plz, setPLZ] = useState("");
   const [land, setLand] = useState("");
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  
 
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -63,7 +68,7 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
           <form onSubmit={handleSubmit} className="p-4 border rounded bg-light">
           <div className="col-md-6 mb-3">
               <label htmlFor="kundenID" className="form-label">
-                KundenID:
+                Kundennummer:
               </label>
               <input
                 type="text"
@@ -87,33 +92,21 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
               />
             </div>
 
-            <div className="mb-3">
-              <label htmlFor="details" className="form-label">
-                Details:
-              </label>
-              <input
-                type="text"
-                id="details"
-                className="form-control"
-                value={details}
-                onChange={(e) => setDetails(e.target.value)}
-              />
-            </div>
-           
-            <div className="mb-3">
-              <label htmlFor="datum" className="form-label">
+            <div className="row">
+            <div className="col-md-4 mb-3">
+                <label htmlFor="datum" className="form-label">
                 Datum:
-              </label>
-              <input
-                type="text"
+                </label>
+                <DatePicker
                 id="datum"
                 className="form-control"
-                value={datum}
-                onChange={(e) => setDatum(e.target.value)}
-              />
+                selected={selectedDate}
+                onChange={(date: Date) => setSelectedDate(date)}
+                />
+                </div>
             </div>
-            
-            
+
+        
             <div className="row">
             <div className="col-md-4 mb-3">
                 <label htmlFor="strasse" className="form-label">
@@ -153,7 +146,7 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
             </div>
             </div>
 
-            <div className="mb-3">
+            <div className="col-md-6 mb-3">
               <label htmlFor="land" className="form-label">
                 Land:
               </label>
@@ -163,6 +156,19 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
                 className="form-control"
                 value={land}
                 onChange={(e) => setLand(e.target.value)}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="details" className="form-label">
+                Details:
+              </label>
+              <input
+                type="text"
+                id="details"
+                className="form-control"
+                value={details}
+                onChange={(e) => setDetails(e.target.value)}
               />
             </div>
 
