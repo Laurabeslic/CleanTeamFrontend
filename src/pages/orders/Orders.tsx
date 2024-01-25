@@ -183,21 +183,44 @@ const columns = [
         fetchOrders();
     }, [searchValue]);
     
+    const fetchOrders = async () => {
+        try {
+          const response = await axios.get("http://localhost:3001/auftrag/");
+          const formattedData = response.data.map((order: any) => ({
+            id: order.AuftragsID,
+            details: order.Details,
+            kunde: order.KundenID,
+            status: order.Status,
+            datum: new Date(order.Datum).toLocaleDateString(),
+            vertrag: order.VertragID,
+            verantwortlicher: order.UserID,
+          }));
+      
+          setTotalOrders(formattedData.length);
+          setInProgressOrders(
+            formattedData.filter((order: { status: string }) => order.status === "In Bearbeitung").length
+          );
+          setCompletedOrders(
+            formattedData.filter((order: { status: string }) => order.status === "Abgeschlossen").length
+          );
+      
+          setOrdersData(formattedData);
+        } catch (error) {
+          console.error("Es gab einen Fehler beim Abrufen der Aufträge:", error);
+        }
+      };
 
     const handleCreateOrder = async (newOrderData: any) => {
         try {
           // Sende die Daten an den Server, um einen neuen Auftrag zu erstellen
           const response = await axios.post("http://localhost:3001/Auftrag/", newOrderData);
           const createdOrder = response.data;
-          console.log(response);
-    
-          // Aktualisiere die Auftragsliste mit dem neuen Auftrag
-          setOrdersData((prevOrders) => [...prevOrders, createdOrder]);
-    
+          
           // Aktualisiere die Zähler
           recalculateOrderCounts();
 
           setIsCreateFormOpen(false);
+          await fetchOrders();
         } catch (error) {
           console.error("Fehler beim Erstellen des Auftrags:", error);
         }
