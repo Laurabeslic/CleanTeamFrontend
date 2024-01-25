@@ -189,6 +189,7 @@ const columns = [
           // Sende die Daten an den Server, um einen neuen Auftrag zu erstellen
           const response = await axios.post("http://localhost:3001/Auftrag/", newOrderData);
           const createdOrder = response.data;
+          console.log(response);
     
           // Aktualisiere die Auftragsliste mit dem neuen Auftrag
           setOrdersData((prevOrders) => [...prevOrders, createdOrder]);

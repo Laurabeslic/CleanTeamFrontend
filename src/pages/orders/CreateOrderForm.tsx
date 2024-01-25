@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FiCalendar } from "react-icons/fi";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "../../redux/store";
 
 interface CreateOrderFormProps {
   isOpen: boolean;
@@ -22,16 +24,25 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
   const [selectedDate, setSelectedDate] = useState(new Date());
   
 
-
+  const loggedInUser = useSelector((state: RootState) => state.Auth.user);
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+     // Umwandeln des Datums in ISO-8601-Format
+     const isoFormattedDate = selectedDate.toISOString();
+
+     const status = "In Bearbeitung";
+
+    const USER = loggedInUser.user.id;
 
     const newOrderData = {
         Details: details,
         KundenID: kundenID,
-        UserID: userID,
-        Datum: datum,
+        UserID: USER,
+        Datum: isoFormattedDate, // Verwenden Sie das umformatierte Datum,
         VertragID: vertragID,
+        Status: status,
         Adresse: {
           Strasse: strasse,
           Stadt: stadt,
