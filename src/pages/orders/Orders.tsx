@@ -1,16 +1,20 @@
 
 import React, { useState, useEffect } from "react";
+import { Dropdown } from 'react-bootstrap';
+import { FiMoreVertical } from 'react-icons/fi';
 import axios from "axios";
 import { Row, Col, Card } from "react-bootstrap";
 import Table from "../../components/Table";
 import StatisticsWidget from "../widgets/StatisticsWidget";
 import CreateOrderForm from "./CreateOrderForm"; // Importiere das Auftragsformular
+import EditOrderForm from "./EditOrderForm";
 import CustomModal from './OrderModal';
 import DatePicker from "react-datepicker";
 
 
 
 import { Link, useLocation } from 'react-router-dom';
+
 
 
 function useQuery() {
@@ -35,64 +39,102 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
     }
 };
 
-const columns = [
-    {
-      Header: "ID",
-      accessor: "id",
-      sort: true,
-      Cell: ({ value }: { value: string }) => <Link to={`/orders/${value}`}>{value}</Link>
+const handleEditOrder = (order: any, setEditedOrder: Function, setIsEditFormOpen: Function) => {
+  setEditedOrder(order);
+  setIsEditFormOpen(true);
+};
 
-    },
-    {
-      Header: "Details",
-      accessor: "details",
-      sort: true,
-    },
-    {
-      Header: "Kunde",
-      accessor: "kunde",
-      sort: false,
-    },
-    {
-        Header: "Status",
-        accessor: "status",
-        Cell: ({ row, updateMyData }: { row: { index: number, original: { status: string, id: string } }, updateMyData: (rowIndex: number, columnId: string, value: any) => void }) => {
-            console.log(row.original); // <-- Dies hinzufügen
-            return (
-                <StatusDropdown 
-                    value={row.original.status} 
-                    onChange={e => {
-                        updateMyData(row.index, 'status', e.target.value);
-                        updateAuftragStatus(row.original.id, e.target.value);
-                        
-                    }}
-                />
-            );
-        },
-        sort: true,
-    },
-    {
-      Header: "Datum",
-      accessor: "datum",
-      sort: false,
-    },
-    {
-        Header: "Vetrag",
-        accessor: "vertrag",
-        sort: false,
-      },
-      {
-        Header: "Verantwortlicher",
-        accessor: "verantwortlicher",
-        sort: false,
-      },
-  ];const Orders = () => {
+  
+  
+  const Orders = () => {
     const query = useQuery();
     const searchValue = query.get("search") || "";
     const [totalOrders, setTotalOrders] = useState(0);
     const [inProgressOrders, setInProgressOrders] = useState(0);
     const [completedOrders, setCompletedOrders] = useState(0);
     const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
+    const [editedOrder, setEditedOrder] = useState<any>(null);
+    const [isEditFormOpen, setIsEditFormOpen] = useState(false);
+
+
+    const columns = [
+      {
+        Header: "ID",
+        accessor: "id",
+        sort: true,
+        Cell: ({ value }: { value: string }) => <Link to={`/orders/${value}`}>{value}</Link>
+  
+      },
+      {
+        Header: "Details",
+        accessor: "details",
+        sort: true,
+      },
+      {
+        Header: "Kunde",
+        accessor: "kunde",
+        sort: false,
+      },
+      {
+          Header: "Status",
+          accessor: "status",
+          Cell: ({ row, updateMyData }: { row: { index: number, original: { status: string, id: string } }, updateMyData: (rowIndex: number, columnId: string, value: any) => void }) => {
+              console.log(row.original); // <-- Dies hinzufügen
+              return (
+                  <StatusDropdown 
+                      value={row.original.status} 
+                      onChange={e => {
+                          updateMyData(row.index, 'status', e.target.value);
+                          updateAuftragStatus(row.original.id, e.target.value);
+                          
+                      }}
+                  />
+              );
+          },
+          
+          sort: true,
+      },
+      {
+        Header: "Datum",
+        accessor: "datum",
+        sort: false,
+      },
+      {
+          Header: "Vetrag",
+          accessor: "vertrag",
+          sort: false,
+        },
+        {
+          Header: "Verantwortlicher",
+          accessor: "verantwortlicher",
+          sort: false,
+        },
+        {
+          Header: "",
+          accessor: "actions",
+          Cell: ({ row }: { row: { original: { id: string } } }) => (
+            <Dropdown>
+              <Dropdown.Toggle variant="outline-secondary" id="dropdown-basic">
+                <FiMoreVertical />
+              </Dropdown.Toggle>
+      
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => handleEditOrder(row.original)}>Bearbeiten</Dropdown.Item> 
+                <Dropdown.Item>Löschen</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          ),
+        },
+    ];
+
+
+
+
+    const handleEditOrder = (order: any) => {
+      setEditedOrder(order);
+      setIsEditFormOpen(true);
+    };
+
 
     const [ordersData, setOrdersData] = useState<any[]>([]);
     console.log(ordersData);
@@ -226,6 +268,21 @@ const columns = [
         }
       };
 
+      const handleUpdateOrder = async (orderId: string, updatedData: { details: string }) => {
+        try {
+          // Sende die aktualisierten Daten an den Server, um den Auftrag zu aktualisieren
+          await axios.patch(`http://localhost:3001/auftrag/${orderId}`, updatedData);
+      
+          // Aktualisiere die Auftragsdaten und schließe das Bearbeitungsmodal
+          await fetchOrders();
+          setIsEditFormOpen(false);
+        } catch (error) {
+          console.error('Fehler beim Aktualisieren des Auftrags:', error);
+        }
+      };
+      
+      
+
       const openCreateForm = () => {
         setIsCreateFormOpen(true);
       };
@@ -290,7 +347,11 @@ const columns = [
         {/* Hier füge dein Formular oder den Inhalt des Modals ein */}
         <CreateOrderForm isOpen={isCreateFormOpen} onCreate={handleCreateOrder} onClose={closeCreateForm} />
       </CustomModal>
-            </>
+      <CustomModal isOpen={isEditFormOpen} onRequestClose={() => setIsEditFormOpen(false)}>
+      {/* Hier füge dein Formular oder den Inhalt des Modals ein */}
+      <EditOrderForm editedOrder={editedOrder} onUpdate={handleUpdateOrder} onClose={() => setIsEditFormOpen(false)} />
+     </CustomModal>
+           </>
     );
 };
 
