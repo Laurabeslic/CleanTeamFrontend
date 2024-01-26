@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { FiCalendar } from "react-icons/fi";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../redux/store";
+import axios from 'axios';
 
 interface CreateOrderFormProps {
   isOpen: boolean;
@@ -22,12 +23,46 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
   const [plz, setPLZ] = useState("");
   const [land, setLand] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
-  
+  const [showCustomerErrorMessage, setShowCustomerErrorMessage] = useState(false);
+  const [showContractErrorMessage, setShowContractErrorMessage] = useState(false);
 
   const loggedInUser = useSelector((state: RootState) => state.Auth.user);
+
+  //Kundennummer prüfen
+  const checkCustomerExistence = async (kundenID:string) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/Kunde/${kundenID}`);
+      return response.data; // Die API könnte z.B. ein Kundenobjekt zurückgeben
+    } catch (error) {
+      return null; // Kundennummer existiert nicht
+    }
+  };
+
+  // Vertrag prüfen
+  const checkcontractExistence = async (vertrag:string) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/Vertrag/${vertrag}`);
+      return response.data; // Die API könnte z.B. ein Kundenobjekt zurückgeben
+    } catch (error) {
+      return null; // Kundennummer existiert nicht
+    }
+  };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
+
+    const customerExists = await checkCustomerExistence(kundenID);
+    const contractExists = await checkcontractExistence(vertragID);
+
+    if (!customerExists) {
+      // Zeigen Sie die Fehlermeldung an
+      setShowCustomerErrorMessage(true);
+      return; // Beenden Sie die Funktion hier, wenn der Kunde nicht existiert
+    }
+    if(!contractExists){
+      setShowContractErrorMessage(true);
+      return;
+    }
 
      // Umwandeln des Datums in ISO-8601-Format
      const isoFormattedDate = selectedDate.toISOString();
@@ -35,6 +70,7 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
      const status = "In Bearbeitung";
 
     const USER = loggedInUser.user.id;
+
 
     const newOrderData = {
         Details: details,
@@ -88,6 +124,12 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
                 value={kundenID}
                 onChange={(e) => setKundenID(e.target.value)}
               />
+               {/* Fehlermeldung anzeigen, wenn showErrorMessage true ist */}
+                {showCustomerErrorMessage && (
+                  <div className="text-danger">
+                    <p>Die Kundennummer existiert nicht!</p>
+                  </div>
+                )}
             </div>
 
             <div className="col-md-6 mb-3">
@@ -101,6 +143,12 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
                 value={vertragID}
                 onChange={(e) => setVertragID(e.target.value)}
               />
+              {/* Fehlermeldung anzeigen, wenn showErrorMessage true ist */}
+              {showContractErrorMessage && (
+                  <div className="text-danger">
+                    <p>Der Vertrag existiert nicht!</p>
+                  </div>
+                )}
             </div>
 
             <div className="row">
