@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 interface EditOrderFormProps {
   editedOrder: { id: string; details: string }; // Hier solltest du die tatsächlichen Typen verwenden
-  onUpdate: (orderId: string, updatedData: { details: string }) => void;
+  onUpdate: (orderId: string, updatedData: { Details: string }) => void;
   onClose: () => void;
 }
 
@@ -14,7 +14,7 @@ const EditOrderForm: React.FC<EditOrderFormProps> = ({ editedOrder, onUpdate, on
   };
 
   const handleUpdate = () => {
-    onUpdate(editedOrder.id, { details: editedDetails });
+    onUpdate(editedOrder.id, { Details: editedDetails });
     onClose();
   };
 

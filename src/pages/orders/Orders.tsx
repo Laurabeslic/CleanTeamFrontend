@@ -38,12 +38,6 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         console.error("Fehler beim Aktualisieren des Auftragsstatus:", error);
     }
 };
-
-const handleEditOrder = (order: any, setEditedOrder: Function, setIsEditFormOpen: Function) => {
-  setEditedOrder(order);
-  setIsEditFormOpen(true);
-};
-
   
   
   const Orders = () => {
@@ -268,10 +262,12 @@ const handleEditOrder = (order: any, setEditedOrder: Function, setIsEditFormOpen
         }
       };
 
-      const handleUpdateOrder = async (orderId: string, updatedData: { details: string }) => {
+      const handleUpdateOrder = async (orderId: string, updatedData: { Details: string }) => {
         try {
+          console.log('orderId:', orderId);
+          console.log('updatedData:', updatedData);
           // Sende die aktualisierten Daten an den Server, um den Auftrag zu aktualisieren
-          await axios.patch(`http://localhost:3001/auftrag/${orderId}`, updatedData);
+          await axios.put(`http://localhost:3001/Auftrag/${orderId}`, updatedData);
       
           // Aktualisiere die Auftragsdaten und schließe das Bearbeitungsmodal
           await fetchOrders();
@@ -347,6 +343,7 @@ const handleEditOrder = (order: any, setEditedOrder: Function, setIsEditFormOpen
         {/* Hier füge dein Formular oder den Inhalt des Modals ein */}
         <CreateOrderForm isOpen={isCreateFormOpen} onCreate={handleCreateOrder} onClose={closeCreateForm} />
       </CustomModal>
+
       <CustomModal isOpen={isEditFormOpen} onRequestClose={() => setIsEditFormOpen(false)}>
       {/* Hier füge dein Formular oder den Inhalt des Modals ein */}
       <EditOrderForm editedOrder={editedOrder} onUpdate={handleUpdateOrder} onClose={() => setIsEditFormOpen(false)} />
