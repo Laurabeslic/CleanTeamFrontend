@@ -23,7 +23,7 @@ const CustomModal: React.FC<CustomModalProps> = ({ isOpen, onRequestClose, child
           width: '80%', // Passe die Breite nach Bedarf an
           maxWidth: '1000px', // Setze ggf. eine maximale Breite
           margin: 'auto', // Zentriere das Modal horizontal
-          marginTop: '0%', // Passe den oberen Abstand nach Bedarf an
+          marginTop: '3%', // Passe den oberen Abstand nach Bedarf an
         },
       }}
     >

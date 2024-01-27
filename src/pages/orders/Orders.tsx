@@ -262,7 +262,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         }
       };
 
-      const handleUpdateOrder = async (orderId: string, updatedData: { Details: string }) => {
+      const handleUpdateOrder = async (orderId: string, updatedData: { Details: string; Status: string; Adresse: { Strasse: string; PLZ: string; Stadt: string; Land: string } }) => {
         try {
           console.log('orderId:', orderId);
           console.log('updatedData:', updatedData);
@@ -320,7 +320,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
                     <Card>
                     <Col md="auto" style={{ marginLeft: "1000px", marginTop: "15px" }}>
                     <button className="btn btn-primary" onClick={openCreateForm}>
-                        Auftrag erstellen
+                        Neuer Auftrag
                     </button>
                      </Col>
                         <Card.Body>
