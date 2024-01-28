@@ -101,17 +101,19 @@ const EditOrderForm: React.FC<EditOrderFormProps> = ({ editedOrder, onUpdate, on
               <input type="text" id="editedDetails" value={editedDetails} className="form-control" onChange={handleDetailsChange} />
             </div>
 
-            <div className="mb-3">
+            <div className="row">
+            <div className=" col-md-4 mb-3">
               <label>Straße:</label>
               <input type="text" value={editedAddress.Strasse} className="form-control" onChange={(e) => setEditedAddress({ ...editedAddress, Strasse: e.target.value })} />
             </div>
-            <div className="col-md-6 mb-3">
+            <div className="col-md-4 mb-3">
               <label>PLZ:</label>
               <input type="text" value={editedAddress.PLZ} className="form-control" onChange={(e) => setEditedAddress({ ...editedAddress, PLZ: e.target.value })} />
             </div>
-            <div className="col-md-6 mb-3">
+            <div className="col-md-4 mb-3">
               <label>Stadt:</label>
               <input type="text" value={editedAddress.Stadt} className="form-control" onChange={(e) => setEditedAddress({ ...editedAddress, Stadt: e.target.value })} />
+            </div>
             </div>
             <div className="col-md-6 mb-3">
               <label>Land:</label>

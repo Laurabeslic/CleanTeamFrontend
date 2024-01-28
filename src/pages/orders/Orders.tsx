@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Dropdown } from 'react-bootstrap';
 import { FiMoreVertical } from 'react-icons/fi';
+import { FiPlus } from 'react-icons/fi';
 import axios from "axios";
 import { Row, Col, Card } from "react-bootstrap";
 import Table from "../../components/Table";
@@ -9,7 +10,7 @@ import StatisticsWidget from "../widgets/StatisticsWidget";
 import CreateOrderForm from "./CreateOrderForm"; // Importiere das Auftragsformular
 import EditOrderForm from "./EditOrderForm";
 import CustomModal from './OrderModal';
-import DatePicker from "react-datepicker";
+import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 
 
@@ -49,6 +50,8 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
     const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
     const [editedOrder, setEditedOrder] = useState<any>(null);
     const [isEditFormOpen, setIsEditFormOpen] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
+
 
 
     const columns = [
@@ -114,7 +117,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
       
               <Dropdown.Menu>
                 <Dropdown.Item onClick={() => handleEditOrder(row.original)}>Bearbeiten</Dropdown.Item> 
-                <Dropdown.Item>Löschen</Dropdown.Item>
+                <Dropdown.Item onClick={() => handleDeleteOrder(row.original)}>Löschen</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           ),
@@ -128,6 +131,12 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
       setEditedOrder(order);
       setIsEditFormOpen(true);
     };
+
+    const handleDeleteOrder = (order: any) => {
+      setEditedOrder(order); // Setze den zu löschenden Auftrag für die Bestätigung
+      setIsDelete(true);
+    };
+    
 
 
     const [ordersData, setOrdersData] = useState<any[]>([]);
@@ -277,6 +286,23 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         }
       };
       
+      const handleDeleteConfirmed = async () => {
+        try {
+          if (editedOrder) {
+            const response = await axios.delete(`http://localhost:3001/Auftrag/${editedOrder.id}`);
+            console.log('Auftrag gelöscht:', response.data);
+      
+            // Hier kannst du weitere Aktualisierungen vornehmen, falls nötig
+            // Zum Beispiel: Aktualisiere die Anzeige der Aufträge
+            await fetchOrders();
+          }
+        } catch (error) {
+          console.error('Fehler beim Löschen des Auftrags:', error);
+        } finally {
+          setIsDelete(false);
+          setEditedOrder(null);
+        }
+      };
       
 
       const openCreateForm = () => {
@@ -318,9 +344,9 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         <Row>
                 <Col>
                     <Card>
-                    <Col md="auto" style={{ marginLeft: "1000px", marginTop: "15px" }}>
+                    <Col md="auto" style={{ marginLeft: "1060px", marginTop: "15px" }}>
                     <button className="btn btn-primary" onClick={openCreateForm}>
-                        Neuer Auftrag
+                    <FiPlus size={20} />
                     </button>
                      </Col>
                         <Card.Body>
@@ -339,16 +365,23 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
                     </Card>
                 </Col>
             </Row>
-            <CustomModal isOpen={isCreateFormOpen} onRequestClose={closeCreateForm}>
+     <CustomModal isOpen={isCreateFormOpen} onRequestClose={closeCreateForm}>
         {/* Hier füge dein Formular oder den Inhalt des Modals ein */}
         <CreateOrderForm isOpen={isCreateFormOpen} onCreate={handleCreateOrder} onClose={closeCreateForm} />
-      </CustomModal>
+     </CustomModal>
 
       <CustomModal isOpen={isEditFormOpen} onRequestClose={() => setIsEditFormOpen(false)}>
-      {/* Hier füge dein Formular oder den Inhalt des Modals ein */}
-      <EditOrderForm editedOrder={editedOrder} onUpdate={handleUpdateOrder} onClose={() => setIsEditFormOpen(false)} />
-     </CustomModal>
-           </>
+        {/* Hier füge dein Formular oder den Inhalt des Modals ein */}
+        <EditOrderForm editedOrder={editedOrder} onUpdate={handleUpdateOrder} onClose={() => setIsEditFormOpen(false)} />
+      </CustomModal>
+
+      <DeleteConfirmationModal
+          isOpen={isDelete}
+          onRequestClose={() => setIsDelete(false)}
+          onDeleteConfirmed={handleDeleteConfirmed}
+          isDeleteConfirmation={isDelete}
+        />
+       </>
     );
 };
 
