@@ -39,6 +39,8 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         console.error("Fehler beim Aktualisieren des Auftragsstatus:", error);
     }
 };
+
+
   
   
   const Orders = () => {
@@ -51,6 +53,9 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
     const [editedOrder, setEditedOrder] = useState<any>(null);
     const [isEditFormOpen, setIsEditFormOpen] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
+    const [selectedStatus, setSelectedStatus] = useState('');
+    const [selectedDate, setSelectedDate] = useState('');
+
 
 
 
@@ -124,6 +129,13 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         },
     ];
 
+    const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+       setSelectedStatus(e.target.value);
+    };
+
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+       setSelectedDate(e.target.value);
+    };
 
 
 
@@ -157,10 +169,10 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
                 }));
 
                 setTotalOrders(formattedData.length);
-        setInProgressOrders(formattedData.filter((order: { status: string; }) => order.status === "In Bearbeitung").length);
-        setCompletedOrders(formattedData.filter((order: { status: string; }) => order.status === "Abgeschlossen").length);
+                setInProgressOrders(formattedData.filter((order: { status: string; }) => order.status === "In Bearbeitung").length);
+                setCompletedOrders(formattedData.filter((order: { status: string; }) => order.status === "Abgeschlossen").length);
 
-        
+                    
                 setOrdersData(formattedData);
             } catch (error) {
                 console.error("Es gab einen Fehler beim Abrufen der Aufträge:", error);
@@ -215,6 +227,16 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
                     formattedData = formattedData.filter((order: { kunde: string | string[]; }) => order.kunde.includes(searchValue));
                 }
 
+                 // Filterung nach Status
+                if (selectedStatus) {
+                  formattedData = formattedData.filter((order: { status: string }) => order.status === selectedStatus);
+                }
+
+                // Filterung nach Datum (angenommen, das Datum ist ein String)
+                if (selectedDate) {
+                  formattedData = formattedData.filter((order: { datum: string }) => order.datum === new Date(selectedDate).toLocaleDateString());
+                }
+
                 setTotalOrders(formattedData.length);
                 setInProgressOrders(formattedData.filter((order: { status: string; }) => order.status === "In Bearbeitung").length);
                 setCompletedOrders(formattedData.filter((order: { status: string; }) => order.status === "Abgeschlossen").length);
@@ -226,7 +248,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         }
 
         fetchOrders();
-    }, [searchValue]);
+    }, [searchValue, selectedStatus, selectedDate]);
     
     const fetchOrders = async () => {
         try {
@@ -344,13 +366,41 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         <Row>
                 <Col>
                     <Card>
-                    <Col md="auto" style={{ marginLeft: "1060px", marginTop: "15px" }}>
-                    <button className="btn btn-primary" onClick={openCreateForm}>
-                    <FiPlus size={20} />
-                    </button>
-                     </Col>
-                        <Card.Body>
+                    <div className="row" style={{ marginLeft: "690px", marginTop: "15px" }}>
+                      <div className="col-md-5 mb-3">
+                
+                        <select
+                          id="statusFilter"
+                          className="form-select"
+                          value={selectedStatus}
+                          onChange={handleStatusChange}
+                        >
+                          <option value="">Alle</option>
+                          <option value="Abgeschlossen">Abgeschlossen</option>
+                          <option value="In Bearbeitung">In Bearbeitung</option>
+                        </select>
+                      </div>
 
+                      <div className="col-md-4 mb-3">
+      
+                        <input
+                          id="dateFilter"
+                          type="date"
+                          value={selectedDate}
+                          onChange={handleDateChange}
+                          className="form-control"
+                        />
+                      </div>
+
+                      <div className="col-md-2 mb-3">
+                        <button className="btn btn-primary" onClick={openCreateForm}>
+                          <FiPlus size={20} />
+                        </button>
+                      </div>
+                    </div>
+
+                        <Card.Body>
+                    
                             <Table
                                 columns={columns}
                                 data={ordersData}
