@@ -26,8 +26,8 @@ const StatusDropdown = ({ value, onChange }: { value: string; onChange: (e: Reac
 );
 
 const EditOrderForm: React.FC<EditOrderFormProps> = ({ editedOrder, isOpen, onUpdate, onClose }) => {
-  const [editedDetails, setEditedDetails] = useState(editedOrder.details);
-  const [editedStatus, setEditedStatus] = useState(editedOrder.status);
+  const [editedDetails, setEditedDetails] = useState("");
+  const [editedStatus, setEditedStatus] = useState("");
   const [editedAddress, setEditedAddress] = useState({
     Strasse: '',
     PLZ: '',
@@ -38,21 +38,25 @@ const EditOrderForm: React.FC<EditOrderFormProps> = ({ editedOrder, isOpen, onUp
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/Auftrag/${editedOrder.id}`);
+        const response = await axios.get(`http://localhost:3001/Auftrag/${editedOrder?.id}`);
         const { Adresse } = response.data;
+        const { Details } = response.data;
+        const { Status } = response.data;
         setEditedAddress({
           Strasse: Adresse.Strasse,
           PLZ: Adresse.PLZ,
           Stadt: Adresse.Stadt,
           Land: Adresse.Land,
         });
+        setEditedDetails(Details);
+        setEditedStatus(Status);
       } catch (error) {
         console.error('Fehler beim Abrufen des Auftrags:', error);
       }
     };
 
     fetchOrder();
-  }, [editedOrder.id]);
+  }, [editedOrder?.id]);
 
   const handleDetailsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedDetails(e.target.value);
@@ -63,7 +67,7 @@ const EditOrderForm: React.FC<EditOrderFormProps> = ({ editedOrder, isOpen, onUp
   };
 
   const handleUpdate = () => {
-    onUpdate(editedOrder.id, { Details: editedDetails, Status: editedStatus, Adresse: editedAddress });
+    onUpdate(editedOrder?.id, { Details: editedDetails, Status: editedStatus, Adresse: editedAddress });
     onClose();
   };
 
@@ -80,10 +84,10 @@ const EditOrderForm: React.FC<EditOrderFormProps> = ({ editedOrder, isOpen, onUp
 
          <div className="col-md-6 mb-3">
            <label>Auftragsnummer:</label>
-           <input type="text" value={editedOrder.id} readOnly className="form-control" />         </div>
+           <input type="text" value={editedOrder?.id} readOnly className="form-control" />         </div>
          <div className="col-md-6 mb-3">
            <label>Kundennummer:</label>
-           <input type="text" value={editedOrder.kunde} readOnly className="form-control" />
+           <input type="text" value={editedOrder?.kunde} readOnly className="form-control" />
          </div>
          <div className="col-md-6 mb-3">
            <label>Status:</label>
@@ -91,15 +95,15 @@ const EditOrderForm: React.FC<EditOrderFormProps> = ({ editedOrder, isOpen, onUp
          </div>
          <div className="col-md-6 mb-3">
            <label>Datum:</label>
-           <input type="text" value={editedOrder.datum} readOnly className="form-control" />
+           <input type="text" value={editedOrder?.datum} readOnly className="form-control" />
          </div>
          <div className="col-md-6 mb-3">
            <label>Vertrag:</label>
-           <input type="text" value={editedOrder.vertrag} readOnly className="form-control" />
+           <input type="text" value={editedOrder?.vertrag} readOnly className="form-control" />
          </div>
          <div className="col-md-6 mb-3">
            <label>Verantwortlicher:</label>
-           <input type="text" value={editedOrder.verantwortlicher} readOnly className="form-control" />
+           <input type="text" value={editedOrder?.verantwortlicher} readOnly className="form-control" />
          </div>
          <div className="mb-3">
            <label>Details:</label>
