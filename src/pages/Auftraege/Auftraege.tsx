@@ -6,7 +6,7 @@ import { FiPlus } from 'react-icons/fi';
 import axios from "axios";
 import Table from "../../components/Table";
 import StatisticsWidget from "../widgets/StatisticsWidget";
-import CreateOrderForm from "./CreateOrderForm"; // Importiere das Auftragsformular
+import CreateForm from "./CreateAuftragForm"; // Importiere das Auftragsformular
 import EditOrderForm from "./EditOrderForm";
 import { Row, Col, Card, Button, Modal } from "react-bootstrap";
 import DeleteConfirmationModal from './DeleteConfirmationModal';
@@ -416,7 +416,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
             </Row>
     
         {/* Hier füge dein Formular oder den Inhalt des Modals ein */}
-        <CreateOrderForm isOpen={isCreateFormOpen} onCreate={handleCreateOrder} onClose={closeCreateForm} />
+        <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateOrder} onClose={closeCreateForm} />
     
 
       <Modal isOpen={isEditFormOpen} onRequestClose={() => setIsEditFormOpen(false)}>

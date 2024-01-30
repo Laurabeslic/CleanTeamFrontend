@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { FiCalendar } from "react-icons/fi";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "../../redux/store";
+import { useSelector} from "react-redux";
+import { RootState} from "../../redux/store";
 import axios from 'axios';
-import { Row, Col, Card, Button, Modal } from "react-bootstrap";
+import {Button, Modal } from "react-bootstrap";
 
-interface CreateOrderFormProps {
+interface CreateAuftragFormProps {
   isOpen: boolean;
-  onCreate: (newOrderData: any) => void;
+  onCreate: (newAuftragData: any) => void;
   onClose: () => void;
 }
 
-const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onClose }) => {
+const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClose }) => {
   const [details, setDetails] = useState("");
   const [kundenID, setKundenID] = useState("");
   const [userID, setUserID] = useState("");
@@ -55,14 +54,15 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
     const customerExists = await checkCustomerExistence(kundenID);
     const contractExists = await checkcontractExistence(vertragID);
 
-    if (!customerExists) {
+    if (!customerExists || !contractExists) {
       // Zeigen Sie die Fehlermeldung an
-      setShowCustomerErrorMessage(true);
+      if(!customerExists){
+        setShowCustomerErrorMessage(true);
+      }
+      if(!contractExists){
+        setShowContractErrorMessage(true);
+      }
       return; // Beenden Sie die Funktion hier, wenn der Kunde nicht existiert
-    }
-    if(!contractExists){
-      setShowContractErrorMessage(true);
-      return;
     }
 
      // Umwandeln des Datums in ISO-8601-Format
@@ -73,7 +73,7 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
     const USER = loggedInUser.user.id;
 
 
-    const newOrderData = {
+    const newAuftragData = {
         Details: details,
         KundenID: kundenID,
         UserID: USER,
@@ -88,7 +88,7 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
         },
       };
 
-    onCreate(newOrderData);
+    onCreate(newAuftragData);
 
     // Setze die Felder zurück oder schließe das Formular nach Bedarf
     setDetails("");
@@ -102,6 +102,27 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
     setLand("");
     // Weitere Felder zurücksetzen
 
+    onClose();
+  };
+
+  const closeForm = async(e: React.FormEvent) => {
+   
+
+    // Setze die Felder zurück oder schließe das Formular nach Bedarf
+    setDetails("");
+    setKundenID("");
+    setUserID("");
+    setDatum("");
+    setVertragID("");
+    setStrasse("");
+    setStadt("");
+    setPLZ("");
+    setLand("");
+    // Weitere Felder zurücksetzen
+
+    
+    setShowCustomerErrorMessage(false);
+    setShowContractErrorMessage(false);
     onClose();
   };
 
@@ -240,7 +261,7 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
           
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="light" onClick={onClose}>
+          <Button variant="light" onClick={closeForm}>
             Abbrechen
           </Button>
           <Button onClick={handleSubmit} variant="primary"> Auftrag erstellen</Button>
@@ -250,4 +271,4 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
   
 };
 
-export default CreateOrderForm;
+export default CreateForm;

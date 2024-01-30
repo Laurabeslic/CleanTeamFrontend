@@ -3,7 +3,7 @@ import { Navigate, Route, RouteProps } from "react-router-dom";
 
 // components
 import PrivateRoute from "./PrivateRoute";
-import OrderDetail from "../pages/orders/OrderDetail";
+import OrderDetail from "../pages/Auftraege/OrderDetail";
 import CustomerDetail from "../pages/customers/CustomerDetail";
 // import Root from "./Root";
 
@@ -21,7 +21,7 @@ const LockScreen = React.lazy(() => import("../pages/auth/LockScreen"));
 const Landing = React.lazy(() => import("../pages/landing/"));
 
 //order
-const Orders = React.lazy(() => import("../pages/orders/Orders"));
+const Orders = React.lazy(() => import("../pages/Auftraege/Auftraege"));
 
 //customer
 const Customers = React.lazy(() => import("../pages/customers/Customers"));
