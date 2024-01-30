@@ -4,12 +4,11 @@ import { Dropdown } from 'react-bootstrap';
 import { FiMoreVertical } from 'react-icons/fi';
 import { FiPlus } from 'react-icons/fi';
 import axios from "axios";
-import { Row, Col, Card } from "react-bootstrap";
 import Table from "../../components/Table";
 import StatisticsWidget from "../widgets/StatisticsWidget";
 import CreateOrderForm from "./CreateOrderForm"; // Importiere das Auftragsformular
 import EditOrderForm from "./EditOrderForm";
-import CustomModal from './OrderModal';
+import { Row, Col, Card, Button, Modal } from "react-bootstrap";
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 
@@ -415,15 +414,15 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
                     </Card>
                 </Col>
             </Row>
-     <CustomModal isOpen={isCreateFormOpen} onRequestClose={closeCreateForm}>
+    
         {/* Hier füge dein Formular oder den Inhalt des Modals ein */}
         <CreateOrderForm isOpen={isCreateFormOpen} onCreate={handleCreateOrder} onClose={closeCreateForm} />
-     </CustomModal>
+    
 
-      <CustomModal isOpen={isEditFormOpen} onRequestClose={() => setIsEditFormOpen(false)}>
+      <Modal isOpen={isEditFormOpen} onRequestClose={() => setIsEditFormOpen(false)}>
         {/* Hier füge dein Formular oder den Inhalt des Modals ein */}
         <EditOrderForm editedOrder={editedOrder} onUpdate={handleUpdateOrder} onClose={() => setIsEditFormOpen(false)} />
-      </CustomModal>
+      </Modal>
 
       <DeleteConfirmationModal
           isOpen={isDelete}

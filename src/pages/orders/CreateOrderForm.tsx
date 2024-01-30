@@ -5,6 +5,7 @@ import { FiCalendar } from "react-icons/fi";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../redux/store";
 import axios from 'axios';
+import { Row, Col, Card, Button, Modal } from "react-bootstrap";
 
 interface CreateOrderFormProps {
   isOpen: boolean;
@@ -109,15 +110,20 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
   }
 
   return (
-    <div className="container">
-      <div className="row justify-content-center mt-5">
-        <div className="col-md-8">
-          <form onSubmit={handleSubmit} className="p-4 border rounded bg-light">
-          <div className="col-md-6 mb-3">
-              <label htmlFor="kundenID" className="form-label">
-                Kundennummer:
-              </label>
-              <input
+    <Modal
+        show={isOpen}
+        scrollable
+      >
+        <Modal.Header >
+          <Modal.Title as="h5">Neuer Auftrag</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <form className="p-4 border rounded bg-light">
+           <div className="col-md-6 mb-3">
+               <label htmlFor="kundenID" className="form-label">
+                 Kundennummer:
+               </label>
+               <input
                 type="text"
                 id="kundenID"
                 className="form-control"
@@ -230,19 +236,16 @@ const CreateOrderForm: React.FC<CreateOrderFormProps> = ({ isOpen, onCreate, onC
                 onChange={(e) => setDetails(e.target.value)}
               />
             </div>
-
-            <div className="d-grid gap-2 d-md-flex justify-content-md-between">
-              <button type="submit" className="btn btn-primary me-md-2">
-                Auftrag erstellen
-              </button>
-              <button onClick={onClose} className="btn btn-secondary">
-                Abbrechen
-              </button>
-            </div>
           </form>
-        </div>
-      </div>
-    </div>
+          
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="light" onClick={onClose}>
+            Abbrechen
+          </Button>
+          <Button onClick={handleSubmit} variant="primary"> Auftrag erstellen</Button>
+        </Modal.Footer>
+      </Modal>
   );
   
 };
