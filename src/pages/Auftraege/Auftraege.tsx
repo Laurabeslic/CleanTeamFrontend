@@ -7,7 +7,7 @@ import axios from "axios";
 import Table from "../../components/Table";
 import StatisticsWidget from "../widgets/StatisticsWidget";
 import CreateForm from "./CreateAuftragForm"; // Importiere das Auftragsformular
-import EditOrderForm from "./EditOrderForm";
+import EditForm from "./EditAuftragForm";
 import { Row, Col, Card, Button, Modal } from "react-bootstrap";
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
@@ -418,11 +418,8 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         {/* Hier füge dein Formular oder den Inhalt des Modals ein */}
         <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateOrder} onClose={closeCreateForm} />
     
-
-      <Modal isOpen={isEditFormOpen} onRequestClose={() => setIsEditFormOpen(false)}>
-        {/* Hier füge dein Formular oder den Inhalt des Modals ein */}
-        <EditOrderForm editedOrder={editedOrder} onUpdate={handleUpdateOrder} onClose={() => setIsEditFormOpen(false)} />
-      </Modal>
+        <EditForm isOpen={isEditFormOpen} editedOrder={editedOrder} onUpdate={handleUpdateOrder} onClose={() => setIsEditFormOpen(false)} />
+      
 
       <DeleteConfirmationModal
           isOpen={isDelete}
