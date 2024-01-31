@@ -6,6 +6,7 @@ import StatisticsWidget from "../widgets/StatisticsWidget";
 import { Link } from 'react-router-dom';
 import { FiPlus } from 'react-icons/fi';
 import CreateForm from "./CreateKundeForm";
+import CreateVertragForm from "./CreateVertragForm";
 import EditForm from "./EditKundeForm";
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
@@ -15,6 +16,7 @@ const Kunden = () => {
     const [kundenData, setKundenData] = useState<any[]>([]);
     const [editedKunde, setEditedKunde] = useState<any>(null);
     const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
+    const [isCreateVertragFormOpen, setIsCreateVertragFormOpen] = useState(false);
     const [isEditFormOpen, setIsEditFormOpen] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
 
@@ -58,6 +60,8 @@ const Kunden = () => {
                 <Dropdown.Menu>
                   <Dropdown.Item onClick={() => handleEditKunde(row.original)}>Bearbeiten</Dropdown.Item> 
                   <Dropdown.Item onClick={() => handleDeleteKunde(row.original)}>Löschen</Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item onClick={() => handleVertrag(row.original)}>Vertrag erstellen</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             ),
@@ -98,6 +102,18 @@ const Kunden = () => {
           }
       };
 
+      const handleCreateVertrag = async (newVertragData: any) => {
+        try {
+            
+            const response = await axios.post("http://localhost:3001/Vertrag/", newVertragData);
+            setIsCreateVertragFormOpen(false);
+            await fetchKunden();
+          } catch (error) {
+            console.error("Fehler beim Erstellen des Vertrages:", error);
+          }
+        
+      };
+
       const handleUpdateKunde = async (kundenId: string, updatedData: { Name: string; Telefon: string; Email: string;Adresse: { Strasse: string; PLZ: string; Stadt: string; Land: string } }) => {
         try {
             console.log('kundenId:', kundenId);
@@ -135,8 +151,12 @@ const Kunden = () => {
       };
 
       const handleDeleteKunde = (kunde: any) => {
-        setEditedKunde(kunde); // Setze den zu löschenden Auftrag für die Bestätigung
+        setEditedKunde(kunde);
         setIsDelete(true);
+      };
+      const handleVertrag = (kunde: any) => {
+        setEditedKunde(kunde); 
+        setIsCreateVertragFormOpen(true);
       };
 
     const openCreateForm = () => {
@@ -145,6 +165,10 @@ const Kunden = () => {
 
       const closeCreateForm = () => {
         setIsCreateFormOpen(false);
+      };
+
+      const closeCreateVertragForm = () => {
+        setIsCreateVertragFormOpen(false);
       };
 
     return (
@@ -184,6 +208,9 @@ const Kunden = () => {
             </Row>
 
             <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateCustomer} onClose={closeCreateForm} />
+            
+            <CreateVertragForm editedKunde={editedKunde} isOpen={isCreateVertragFormOpen} onCreate={handleCreateVertrag} onClose={closeCreateVertragForm} />
+
             <EditForm isOpen={isEditFormOpen} editedKunde={editedKunde} onUpdate={handleUpdateKunde} onClose={() => setIsEditFormOpen(false)} />
             <DeleteConfirmationModal
                 isOpen={isDelete}

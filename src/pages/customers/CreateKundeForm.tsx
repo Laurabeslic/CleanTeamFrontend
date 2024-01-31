@@ -68,6 +68,7 @@ const closeForm = async(e: React.FormEvent) => {
     setStadt("");
     setPLZ("");
     setLand("");
+    setFieldErrors({});
     
     onClose();
   };
