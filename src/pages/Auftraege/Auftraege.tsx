@@ -281,7 +281,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         try {
           // Sende die Daten an den Server, um einen neuen Auftrag zu erstellen
           const response = await axios.post("http://localhost:3001/Auftrag/", newOrderData);
-          const createdOrder = response.data;
+          //const createdOrder = response.data;
           
           // Aktualisiere die Zähler
           recalculateOrderCounts();

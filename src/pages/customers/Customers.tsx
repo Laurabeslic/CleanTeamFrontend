@@ -4,6 +4,8 @@ import { Row, Col, Card } from "react-bootstrap";
 import Table from "../../components/Table";
 import StatisticsWidget from "../widgets/StatisticsWidget";
 import { Link } from 'react-router-dom';
+import { FiPlus } from 'react-icons/fi';
+import CreateForm from "./CreateKundeForm";
 
 const columns = [
     {
@@ -35,31 +37,52 @@ const columns = [
     }
 ];
 
-const Customers = () => {
-    const [totalCustomers, setTotalCustomers] = useState(0);
-    const [customersData, setCustomersData] = useState<any[]>([]);
+const Kunden = () => {
+    const [totalKunden, setTotalKunden] = useState(0);
+    const [kundenData, setKundenData] = useState<any[]>([]);
+    const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
 
     useEffect(() => {
-        async function fetchCustomers() {
-            try {
-                const response = await axios.get("http://localhost:3001/kunde/");
-                const formattedData = response.data.map((customer: any) => ({
-                    KundenID: customer.KundenID,
-                    Name: customer.Name,
-                    Adresse: customer.Adresse,
-                    Telefon: customer.Telefon,
-                    Email: customer.Email
-                }));
 
-                setTotalCustomers(formattedData.length);
-                setCustomersData(formattedData);
-            } catch (error) {
-                console.error("Es gab einen Fehler beim Abrufen der Kunden:", error);
-            }
-        }
-
-        fetchCustomers();
+        fetchKunden();
     }, []);
+
+    const fetchKunden = async () => {
+        try {
+            const response = await axios.get("http://localhost:3001/kunde/");
+            const formattedData = response.data.map((customer: any) => ({
+                KundenID: customer.KundenID,
+                Name: customer.Name,
+                Adresse: customer.Adresse,
+                Telefon: customer.Telefon,
+                Email: customer.Email
+            }));
+
+            setTotalKunden(formattedData.length);
+            setKundenData(formattedData);
+        } catch (error) {
+            console.error("Es gab einen Fehler beim Abrufen der Kunden:", error);
+        }
+      };
+
+    const handleCreateCustomer = async (newKundeData: any) => {
+        try {
+            
+            const response = await axios.post("http://localhost:3001/Kunde/", newKundeData);
+            setIsCreateFormOpen(false);
+            await fetchKunden();
+          } catch (error) {
+            console.error("Fehler beim Erstellen des Auftrags:", error);
+          }
+      };
+
+    const openCreateForm = () => {
+        setIsCreateFormOpen(true);
+      };
+
+      const closeCreateForm = () => {
+        setIsCreateFormOpen(false);
+      };
 
     return (
         <>
@@ -69,19 +92,26 @@ const Customers = () => {
                     <StatisticsWidget
                         variant="primary"
                         title="Kunden"
-                        stats={totalCustomers.toString()}
+                        stats={totalKunden.toString()}
                         icon="users" />
                 </Col>
             </Row>
             <Row>
                 <Col>
                     <Card>
+                    <div className="row" style={{ marginLeft: "1080px", marginTop: "15px" }}>
+                        <div className="col-md-2 mb-3">
+                        <button className="btn btn-primary" onClick={openCreateForm}>
+                          <FiPlus size={20} />
+                        </button>
+                        </div>
+                    </div>
                         <Card.Body>
                             <Table
                                 columns={columns}
-                                data={customersData}
+                                data={kundenData}
                                 pageSize={5}
-                                sizePerPageList={[{ text: "5", value: 5 }, { text: "10", value: 10 }, { text: "25", value: 25 }, { text: "All", value: customersData.length }]}
+                                sizePerPageList={[{ text: "5", value: 5 }, { text: "10", value: 10 }, { text: "25", value: 25 }, { text: "All", value: kundenData.length }]}
                                 isSortable={true}
                                 pagination={true}
                                 isSearchable={true} />
@@ -89,8 +119,10 @@ const Customers = () => {
                     </Card>
                 </Col>
             </Row>
+
+            <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateCustomer} onClose={closeCreateForm} />
         </>
     );
 };
 
-export default Customers;
+export default Kunden;
