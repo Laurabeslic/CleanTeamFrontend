@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { FiPlus } from 'react-icons/fi';
 import CreateForm from "./CreateKundeForm";
 import EditForm from "./EditKundeForm";
+import DeleteConfirmationModal from './DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
 
 const Kunden = () => {
@@ -56,7 +57,7 @@ const Kunden = () => {
         
                 <Dropdown.Menu>
                   <Dropdown.Item onClick={() => handleEditKunde(row.original)}>Bearbeiten</Dropdown.Item> 
-                  <Dropdown.Item>Löschen</Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleDeleteKunde(row.original)}>Löschen</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             ),
@@ -112,9 +113,30 @@ const Kunden = () => {
           }
       };
 
+      const handleDeleteConfirmed = async () => {
+        try {
+          if (editedKunde) {
+            const response = await axios.delete(`http://localhost:3001/Kunde/${editedKunde.KundenID}`);
+            console.log('Kunde gelöscht:', response.data);
+      
+            await fetchKunden();
+          }
+        } catch (error) {
+          console.error('Fehler beim Löschen des Kunden:', error);
+        } finally {
+          setIsDelete(false);
+          setEditedKunde(null);
+        }
+      };
+
       const handleEditKunde = (kunde: any) => {
         setEditedKunde(kunde);
         setIsEditFormOpen(true);
+      };
+
+      const handleDeleteKunde = (kunde: any) => {
+        setEditedKunde(kunde); // Setze den zu löschenden Auftrag für die Bestätigung
+        setIsDelete(true);
       };
 
     const openCreateForm = () => {
@@ -163,6 +185,12 @@ const Kunden = () => {
 
             <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateCustomer} onClose={closeCreateForm} />
             <EditForm isOpen={isEditFormOpen} editedKunde={editedKunde} onUpdate={handleUpdateKunde} onClose={() => setIsEditFormOpen(false)} />
+            <DeleteConfirmationModal
+                isOpen={isDelete}
+                onRequestClose={() => setIsDelete(false)}
+                onDeleteConfirmed={handleDeleteConfirmed}
+                isDeleteConfirmation={isDelete}
+             />
         </>
     );
 };
