@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from "react";
-import { Dropdown } from 'react-bootstrap';
 import { FiMoreVertical } from 'react-icons/fi';
 import { FiPlus } from 'react-icons/fi';
 import axios from "axios";
@@ -8,7 +7,8 @@ import Table from "../../components/Table";
 import StatisticsWidget from "../widgets/StatisticsWidget";
 import CreateForm from "./CreateAuftragForm"; // Importiere das Auftragsformular
 import EditForm from "./EditAuftragForm";
-import { Row, Col, Card, Button, Modal } from "react-bootstrap";
+import { Row, Col, Card, Dropdown, ButtonGroup, Button} from "react-bootstrap";
+import FeatherIcons from "feather-icons-react";
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 
@@ -128,8 +128,9 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         },
     ];
 
-    const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-       setSelectedStatus(e.target.value);
+    const handleStatusChange = (status : string) => {
+       setSelectedStatus(status);
+       console.log(selectedStatus);
     };
 
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -366,21 +367,22 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
                 <Col>
                     <Card>
                     <div className="row" style={{ marginLeft: "690px", marginTop: "15px" }}>
+                    <Dropdown as={ButtonGroup} className="col-md-4 mb-3">
+                      <Dropdown.Toggle variant="primary" className="cursor-pointer" > {selectedStatus || 'Status'}
+                        <i className="icon">
+                          <span>
+                            <FeatherIcons icon="chevron-down"></FeatherIcons>
+                          </span>
+                        </i>
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => handleStatusChange('')}>Alle</Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleStatusChange('Abgeschlossen')}>Abgeschlossen</Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleStatusChange('In Bearbeitung')}>In Bearbeitung</Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                      
                       <div className="col-md-5 mb-3">
-                
-                        <select
-                          id="statusFilter"
-                          className="form-select"
-                          value={selectedStatus}
-                          onChange={handleStatusChange}
-                        >
-                          <option value="">Alle</option>
-                          <option value="Abgeschlossen">Abgeschlossen</option>
-                          <option value="In Bearbeitung">In Bearbeitung</option>
-                        </select>
-                      </div>
-
-                      <div className="col-md-4 mb-3">
       
                         <input
                           id="dateFilter"
@@ -414,8 +416,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
                     </Card>
                 </Col>
             </Row>
-    
-        {/* Hier füge dein Formular oder den Inhalt des Modals ein */}
+  
         <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateOrder} onClose={closeCreateForm} />
     
         <EditForm isOpen={isEditFormOpen} editedOrder={editedOrder} onUpdate={handleUpdateOrder} onClose={() => setIsEditFormOpen(false)} />

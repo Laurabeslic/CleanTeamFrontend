@@ -15,8 +15,6 @@ interface CreateAuftragFormProps {
 const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClose }) => {
   const [details, setDetails] = useState("");
   const [kundenID, setKundenID] = useState("");
-  const [userID, setUserID] = useState("");
-  const [datum, setDatum] = useState("");
   const [vertragID, setVertragID] = useState("");
   const [strasse, setStrasse] = useState("");
   const [stadt, setStadt] = useState("");
@@ -25,6 +23,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showCustomerErrorMessage, setShowCustomerErrorMessage] = useState(false);
   const [showContractErrorMessage, setShowContractErrorMessage] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<{ [key: string]: boolean }>({});
 
   const loggedInUser = useSelector((state: RootState) => state.Auth.user);
 
@@ -50,6 +49,19 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
   
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
+
+    const requiredFields = ['kundenID', 'vertragID', 'selectedDate', 'strasse', 'plz', 'stadt', 'land', 'details'];
+    const errors: { [key: string]: boolean } = {};
+
+    requiredFields.forEach(field => {
+      errors[field] = !eval(field);
+    });
+
+    setFieldErrors(errors);
+
+    if (Object.values(errors).some(error => error)) {
+      return;
+    }
 
     const customerExists = await checkCustomerExistence(kundenID);
     const contractExists = await checkcontractExistence(vertragID);
@@ -93,8 +105,6 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
     // Setze die Felder zurück oder schließe das Formular nach Bedarf
     setDetails("");
     setKundenID("");
-    setUserID("");
-    setDatum("");
     setVertragID("");
     setStrasse("");
     setStadt("");
@@ -111,8 +121,6 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
     // Setze die Felder zurück oder schließe das Formular nach Bedarf
     setDetails("");
     setKundenID("");
-    setUserID("");
-    setDatum("");
     setVertragID("");
     setStrasse("");
     setStadt("");
@@ -147,10 +155,13 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
                <input
                 type="text"
                 id="kundenID"
-                className="form-control"
+                className={`form-control ${fieldErrors['kundenID'] ? 'is-invalid' : ''}`}
                 value={kundenID}
                 onChange={(e) => setKundenID(e.target.value)}
               />
+               {fieldErrors['kundenID'] && (
+              <div className="invalid-feedback">{fieldErrors['kundenID']}</div>
+              )}
                {/* Fehlermeldung anzeigen, wenn showErrorMessage true ist */}
                 {showCustomerErrorMessage && (
                   <div className="text-danger">
@@ -166,7 +177,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
               <input
                 type="text"
                 id="vertragID"
-                className="form-control"
+                className={`form-control ${fieldErrors['vertragID'] ? 'is-invalid' : ''}`}
                 value={vertragID}
                 onChange={(e) => setVertragID(e.target.value)}
               />
@@ -185,14 +196,13 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
                 </label>
                 <DatePicker
                 id="datum"
-                className="form-control"
+                className={`form-control ${fieldErrors['selectedDate'] ? 'is-invalid' : ''}`}
                 selected={selectedDate}
                 onChange={(date: Date) => setSelectedDate(date)}
                 />
                 </div>
             </div>
 
-        
             <div className="row">
             <div className="col-md-4 mb-3">
                 <label htmlFor="strasse" className="form-label">
@@ -201,7 +211,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
                 <input
                 type="text"
                 id="strasse"
-                className="form-control"
+                className={`form-control ${fieldErrors['strasse'] ? 'is-invalid' : ''}`}
                 value={strasse}
                 onChange={(e) => setStrasse(e.target.value)}
                 />
@@ -213,7 +223,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
                 <input
                 type="text"
                 id="plz"
-                className="form-control"
+                className={`form-control ${fieldErrors['plz'] ? 'is-invalid' : ''}`}
                 value={plz}
                 onChange={(e) => setPLZ(e.target.value)}
                 />
@@ -225,7 +235,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
                 <input
                 type="text"
                 id="stadt"
-                className="form-control"
+                className={`form-control ${fieldErrors['stadt'] ? 'is-invalid' : ''}`}
                 value={stadt}
                 onChange={(e) => setStadt(e.target.value)}
                 />
@@ -239,7 +249,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
               <input
                 type="text"
                 id="land"
-                className="form-control"
+                className={`form-control ${fieldErrors['land'] ? 'is-invalid' : ''}`}
                 value={land}
                 onChange={(e) => setLand(e.target.value)}
               />
@@ -252,7 +262,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
               <input
                 type="text"
                 id="details"
-                className="form-control"
+                className={`form-control ${fieldErrors['details'] ? 'is-invalid' : ''}`}
                 value={details}
                 onChange={(e) => setDetails(e.target.value)}
               />
