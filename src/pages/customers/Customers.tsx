@@ -1,46 +1,66 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Row, Col, Card } from "react-bootstrap";
+import { Row, Col, Card, Dropdown, ButtonGroup } from "react-bootstrap";
 import Table from "../../components/Table";
 import StatisticsWidget from "../widgets/StatisticsWidget";
 import { Link } from 'react-router-dom';
 import { FiPlus } from 'react-icons/fi';
 import CreateForm from "./CreateKundeForm";
-
-const columns = [
-    {
-        Header: "KundenID",
-        accessor: "KundenID",
-        sort: true,
-        Cell: ({ value }: { value: string }) => <Link to={`/customers/${value}`}>{value}</Link>
-    },
-    {
-        Header: "Name",
-        accessor: "Name",
-        sort: true,
-    },
-    {
-        Header: "Adresse",
-        accessor: "Adresse",
-        Cell: ({ value }: { value: any }) => `${value.Strasse}, ${value.PLZ} ${value.Stadt}, ${value.Land}`,
-        sort: false,
-    },
-    {
-        Header: "Telefon",
-        accessor: "Telefon",
-        sort: false,
-    },
-    {
-        Header: "Email",
-        accessor: "Email",
-        sort: false,
-    }
-];
+import { FiMoreVertical } from 'react-icons/fi';
 
 const Kunden = () => {
     const [totalKunden, setTotalKunden] = useState(0);
     const [kundenData, setKundenData] = useState<any[]>([]);
+    const [editedKunde, setEditedKunde] = useState<any>(null);
     const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
+    const [isEditFormOpen, setIsEditFormOpen] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
+
+    const columns = [
+        {
+            Header: "KundenID",
+            accessor: "KundenID",
+            sort: true,
+            Cell: ({ value }: { value: string }) => <Link to={`/customers/${value}`}>{value}</Link>
+        },
+        {
+            Header: "Name",
+            accessor: "Name",
+            sort: true,
+        },
+        {
+            Header: "Adresse",
+            accessor: "Adresse",
+            Cell: ({ value }: { value: any }) => `${value.Strasse}, ${value.PLZ} ${value.Stadt}, ${value.Land}`,
+            sort: false,
+        },
+        {
+            Header: "Telefon",
+            accessor: "Telefon",
+            sort: false,
+        },
+        {
+            Header: "Email",
+            accessor: "Email",
+            sort: false,
+        },
+        {
+            Header: "",
+            accessor: "actions",
+            Cell: ({ row }: { row: { original: { id: string } } }) => (
+              <Dropdown>
+                <Dropdown.Toggle variant="outline-secondary" id="dropdown-basic">
+                  <FiMoreVertical />
+                </Dropdown.Toggle>
+        
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleEditKunde(row.original)}>Bearbeiten</Dropdown.Item> 
+                  <Dropdown.Item>Löschen</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            ),
+          },
+    ];
 
     useEffect(() => {
 
@@ -76,6 +96,11 @@ const Kunden = () => {
           }
       };
 
+      const handleEditKunde = (kunde: any) => {
+        setEditedKunde(kunde);
+        setIsEditFormOpen(true);
+      };
+
     const openCreateForm = () => {
         setIsCreateFormOpen(true);
       };
@@ -99,7 +124,7 @@ const Kunden = () => {
             <Row>
                 <Col>
                     <Card>
-                    <div className="row" style={{ marginLeft: "1080px", marginTop: "15px" }}>
+                    <div className="row" style={{ marginLeft: "1050px", marginTop: "15px" }}>
                         <div className="col-md-2 mb-3">
                         <button className="btn btn-primary" onClick={openCreateForm}>
                           <FiPlus size={20} />

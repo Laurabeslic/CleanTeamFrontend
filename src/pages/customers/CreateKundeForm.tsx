@@ -16,9 +16,23 @@ const [plz, setPLZ] = useState("");
 const [land, setLand] = useState("");
 const [telefon, setTelefon] = useState("");
 const [email, setEmail] = useState("");
+const [fieldErrors, setFieldErrors] = useState<{ [key: string]: boolean }>({});
 
 const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
+
+    const requiredFields = ['name', 'telefon', 'email', 'strasse', 'plz', 'stadt', 'land'];
+    const errors: { [key: string]: boolean } = {};
+
+    requiredFields.forEach(field => {
+      errors[field] = !eval(field);
+    });
+
+    setFieldErrors(errors);
+
+    if (Object.values(errors).some(error => error)) {
+      return;
+    }
 
     const newKundeData = {
        Name: name,
@@ -73,39 +87,39 @@ return (
         <Modal.Body>
         <form className="p-4 border rounded bg-light">
            <div className="col-md-6 mb-3">
-               <label htmlFor="Name" className="form-label">
+               <label htmlFor="name" className="form-label">
                  Name:
                </label>
                <input
                 type="text"
-                id="Name"
-                className="form-control"
+                id="name"
+                className={`form-control ${fieldErrors['name'] ? 'is-invalid' : ''}`}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
 
             <div className="col-md-6 mb-3">
-              <label htmlFor="Telefon" className="form-label">
+              <label htmlFor="telefon" className="form-label">
                 Telefonnummer:
               </label>
               <input
                 type="text"
-                id="Telefon"
-                className="form-control"
+                id="telefon"
+                className={`form-control ${fieldErrors['telefon'] ? 'is-invalid' : ''}`}
                 value={telefon}
                 onChange={(e) => setTelefon(e.target.value)}
               />
             </div>
 
             <div className="col-md-6 mb-3">
-              <label htmlFor="Email" className="form-label">
+              <label htmlFor="email" className="form-label">
                 E-Mail:
               </label>
               <input
                 type="text"
-                id="Email"
-                className="form-control"
+                id="email"
+                className={`form-control ${fieldErrors['email'] ? 'is-invalid' : ''}`}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -119,7 +133,7 @@ return (
                 <input
                 type="text"
                 id="strasse"
-                className="form-control"
+                className={`form-control ${fieldErrors['strasse'] ? 'is-invalid' : ''}`}
                 value={strasse}
                 onChange={(e) => setStrasse(e.target.value)}
                 />
@@ -131,7 +145,7 @@ return (
                 <input
                 type="text"
                 id="plz"
-                className="form-control"
+                className={`form-control ${fieldErrors['plz'] ? 'is-invalid' : ''}`}
                 value={plz}
                 onChange={(e) => setPLZ(e.target.value)}
                 />
@@ -143,7 +157,7 @@ return (
                 <input
                 type="text"
                 id="stadt"
-                className="form-control"
+                className={`form-control ${fieldErrors['stadt'] ? 'is-invalid' : ''}`}
                 value={stadt}
                 onChange={(e) => setStadt(e.target.value)}
                 />
@@ -157,7 +171,7 @@ return (
               <input
                 type="text"
                 id="land"
-                className="form-control"
+                className={`form-control ${fieldErrors['land'] ? 'is-invalid' : ''}`}
                 value={land}
                 onChange={(e) => setLand(e.target.value)}
               />

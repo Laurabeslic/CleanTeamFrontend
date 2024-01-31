@@ -7,7 +7,7 @@ import Table from "../../components/Table";
 import StatisticsWidget from "../widgets/StatisticsWidget";
 import CreateForm from "./CreateAuftragForm"; // Importiere das Auftragsformular
 import EditForm from "./EditAuftragForm";
-import { Row, Col, Card, Dropdown, ButtonGroup, Button} from "react-bootstrap";
+import { Row, Col, Card, Dropdown, ButtonGroup} from "react-bootstrap";
 import FeatherIcons from "feather-icons-react";
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
@@ -210,71 +210,44 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
     };
 
     useEffect(() => {
-        async function fetchOrders() {
-            try {
-                const response = await axios.get("http://localhost:3001/auftrag/");
-                let formattedData = response.data.map((order: any) => ({
-                    id: order.AuftragsID,
-                    details: order.Details,
-                    kunde: order.KundenID,
-                    status: order.Status,
-                    datum: new Date(order.Datum).toLocaleDateString(),
-                    vertrag: order.VertragID,
-                    verantwortlicher: order.UserID
-                }));
-
-                if (searchValue) {
-                    formattedData = formattedData.filter((order: { kunde: string | string[]; }) => order.kunde.includes(searchValue));
-                }
-
-                 // Filterung nach Status
-                if (selectedStatus) {
-                  formattedData = formattedData.filter((order: { status: string }) => order.status === selectedStatus);
-                }
-
-                // Filterung nach Datum (angenommen, das Datum ist ein String)
-                if (selectedDate) {
-                  formattedData = formattedData.filter((order: { datum: string }) => order.datum === new Date(selectedDate).toLocaleDateString());
-                }
-
-                setTotalOrders(formattedData.length);
-                setInProgressOrders(formattedData.filter((order: { status: string; }) => order.status === "In Bearbeitung").length);
-                setCompletedOrders(formattedData.filter((order: { status: string; }) => order.status === "Abgeschlossen").length);
-
-                setOrdersData(formattedData);
-            } catch (error) {
-                console.error("Es gab einen Fehler beim Abrufen der Aufträge:", error);
-            }
-        }
-
         fetchOrders();
     }, [searchValue, selectedStatus, selectedDate]);
     
     const fetchOrders = async () => {
-        try {
-          const response = await axios.get("http://localhost:3001/auftrag/");
-          const formattedData = response.data.map((order: any) => ({
+      try {
+        const response = await axios.get("http://localhost:3001/auftrag/");
+        let formattedData = response.data.map((order: any) => ({
             id: order.AuftragsID,
             details: order.Details,
             kunde: order.KundenID,
             status: order.Status,
             datum: new Date(order.Datum).toLocaleDateString(),
             vertrag: order.VertragID,
-            verantwortlicher: order.UserID,
-          }));
-      
-          setTotalOrders(formattedData.length);
-          setInProgressOrders(
-            formattedData.filter((order: { status: string }) => order.status === "In Bearbeitung").length
-          );
-          setCompletedOrders(
-            formattedData.filter((order: { status: string }) => order.status === "Abgeschlossen").length
-          );
-      
-          setOrdersData(formattedData);
-        } catch (error) {
-          console.error("Es gab einen Fehler beim Abrufen der Aufträge:", error);
+            verantwortlicher: order.UserID
+        }));
+
+        if (searchValue) {
+            formattedData = formattedData.filter((order: { kunde: string | string[]; }) => order.kunde.includes(searchValue));
         }
+
+         // Filterung nach Status
+        if (selectedStatus) {
+          formattedData = formattedData.filter((order: { status: string }) => order.status === selectedStatus);
+        }
+
+        // Filterung nach Datum (angenommen, das Datum ist ein String)
+        if (selectedDate) {
+          formattedData = formattedData.filter((order: { datum: string }) => order.datum === new Date(selectedDate).toLocaleDateString());
+        }
+
+        setTotalOrders(formattedData.length);
+        setInProgressOrders(formattedData.filter((order: { status: string; }) => order.status === "In Bearbeitung").length);
+        setCompletedOrders(formattedData.filter((order: { status: string; }) => order.status === "Abgeschlossen").length);
+
+        setOrdersData(formattedData);
+    } catch (error) {
+        console.error("Es gab einen Fehler beim Abrufen der Aufträge:", error);
+    }
       };
 
     const handleCreateOrder = async (newOrderData: any) => {
