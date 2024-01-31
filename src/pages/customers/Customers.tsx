@@ -6,6 +6,7 @@ import StatisticsWidget from "../widgets/StatisticsWidget";
 import { Link } from 'react-router-dom';
 import { FiPlus } from 'react-icons/fi';
 import CreateForm from "./CreateKundeForm";
+import EditForm from "./EditKundeForm";
 import { FiMoreVertical } from 'react-icons/fi';
 
 const Kunden = () => {
@@ -92,7 +93,22 @@ const Kunden = () => {
             setIsCreateFormOpen(false);
             await fetchKunden();
           } catch (error) {
-            console.error("Fehler beim Erstellen des Auftrags:", error);
+            console.error("Fehler beim Erstellen des Kunden:", error);
+          }
+      };
+
+      const handleUpdateKunde = async (kundenId: string, updatedData: { Name: string; Telefon: string; Email: string;Adresse: { Strasse: string; PLZ: string; Stadt: string; Land: string } }) => {
+        try {
+            console.log('kundenId:', kundenId);
+            console.log('updatedData:', updatedData);
+            
+            await axios.put(`http://localhost:3001/Kunde/${kundenId}`, updatedData);
+        
+          
+            await fetchKunden();
+            setIsEditFormOpen(false);
+          } catch (error) {
+            console.error('Fehler beim Aktualisieren des Kunden:', error);
           }
       };
 
@@ -146,6 +162,7 @@ const Kunden = () => {
             </Row>
 
             <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateCustomer} onClose={closeCreateForm} />
+            <EditForm isOpen={isEditFormOpen} editedKunde={editedKunde} onUpdate={handleUpdateKunde} onClose={() => setIsEditFormOpen(false)} />
         </>
     );
 };
