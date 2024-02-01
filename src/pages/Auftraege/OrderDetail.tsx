@@ -27,6 +27,20 @@ interface OrderDetailType {
     };
 }
 
+interface CustomerDetailType{
+    
+        KundenID: string,
+        Name: string,
+        Telefon: string,
+        Email: string,
+        Adresse: {
+          Strasse: string,
+          Stadt: string,
+          PLZ: string,
+          Land: string,
+        };
+}
+
 
 const StatusDropdown = ({ value, onChange }: { value: string, onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void }) => (
     <select className="form-select" value={value} onChange={onChange}>
@@ -49,6 +63,7 @@ function OrderDetail({ match, google }: any) {
     const { auftragId } = useParams();
     const [order, setOrder] = useState<OrderDetailType | null>(null);
     const [loading, setLoading] = useState(true);
+    const [Kunde, setKunde] = useState<CustomerDetailType | null>(null);
 
     console.log('AuftragsID: ' + auftragId)
 
@@ -66,6 +81,22 @@ function OrderDetail({ match, google }: any) {
 
         fetchOrderDetail();
     }, [auftragId]);
+
+    useEffect(() => {
+        async function fetchKunde() {
+            try {
+                const response = await axios.get(`http://localhost:3001/kunde/${order?.KundenID}`);
+                setKunde(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching customer:", error);
+                setLoading(false);
+            }
+        }
+
+        fetchKunde();
+    }, [order]);
+
 
     if (loading) return <div>Loading...</div>;
     if (!order) return <div>Order not found.</div>;
@@ -104,7 +135,7 @@ function OrderDetail({ match, google }: any) {
                                 <Col md={6} xl={4}>
                                     <Statistics
                                         icon="users"
-                                        stats={order.KundenID}
+                                        stats={Kunde ? Kunde.Name : "Kunde nicht gefunden"}
                                         description="Kunde"
                                     />
                                 </Col>

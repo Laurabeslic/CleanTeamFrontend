@@ -36,6 +36,8 @@ function CustomerDetail({ match, google }: any) {
     const [customer, setCustomer] = useState<CustomerDetailType | null>(null);
     const [loading, setLoading] = useState(true);
     const [contracts, setContracts] = useState<VertragType[]>([]);
+    const [anzahlAuftraege, setAnzahlAuftraege] = useState<{ [vertragID: string]: number }>({});
+
 
 
     console.log('KundenID: ' + kundenId);
@@ -68,8 +70,40 @@ function CustomerDetail({ match, google }: any) {
         fetchContracts();
     }, [kundenId]);
 
+    useEffect(() => {
+        async function fetchAnzOrder(vertragid: string) {
+            try {
+                const response = await axios.get("http://localhost:3001/auftrag/");
+                const auftraege = response.data;
+
+                const filteredAuftraege = auftraege.filter((order: any) => order.VertragID === vertragid);
+
+                const anzahlAuftraege = filteredAuftraege.length;
+
+                setAnzahlAuftraege((prevAnzahlAuftraege) => ({
+                    ...prevAnzahlAuftraege,
+                    [vertragid]: anzahlAuftraege,
+                }));
+            } catch (error) {
+                console.error("Es gab einen Fehler beim Abrufen der Aufträge:", error);
+                setAnzahlAuftraege((prevAnzahlAuftraege) => ({
+                    ...prevAnzahlAuftraege,
+                    [vertragid]: 0,
+                }));
+            }
+        }
+
+        contracts.forEach((contract) => {
+            fetchAnzOrder(contract.VertragID);
+        });
+    }, [contracts]);
+
     if (loading) return <div>Loading...</div>;
     if (!customer) return <div>Customer not found.</div>;
+
+    
+      
+  
 
     return (
         <>
@@ -124,8 +158,8 @@ function CustomerDetail({ match, google }: any) {
                                         <strong>Gültigkeitsdatum:</strong> {new Date(contract.Gueltigkeitsdatum).toLocaleDateString()}<br />
                                         <strong>Anzahl der Aufträge:</strong> 
                                         <Link to={`/orders?search=${customer.KundenID}`}>
-                                {contract.Auftraege.length}
-                            </Link>
+                                        {anzahlAuftraege[contract.VertragID]}
+                                       </Link>
                                         
                                         <br /><br />
                                     </div>

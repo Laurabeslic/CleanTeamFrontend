@@ -31,7 +31,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
   const checkCustomerExistence = async (kundenID:string) => {
     try {
       const response = await axios.get(`http://localhost:3001/Kunde/${kundenID}`);
-      return response.data; // Die API könnte z.B. ein Kundenobjekt zurückgeben
+      return response.data; 
     } catch (error) {
       return null; // Kundennummer existiert nicht
     }
@@ -41,11 +41,30 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
   const checkcontractExistence = async (vertrag:string) => {
     try {
       const response = await axios.get(`http://localhost:3001/Vertrag/${vertrag}`);
-      return response.data; // Die API könnte z.B. ein Kundenobjekt zurückgeben
+      return response.data; 
     } catch (error) {
-      return null; // Kundennummer existiert nicht
+      return null; // Vertrag existiert nicht
     }
   };
+
+  //Richtiger Vertrag?
+  const checkContractForCustomer = async (kundenID: string, vertragID: string) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/vertrag/${vertragID}`);
+      const contract = response.data;
+  
+      // Überprüfen, ob der Vertrag zu der angegebenen Kundennummer gehört
+      if (contract.KundenID === kundenID) {
+        return true; // Der Vertrag gehört zum Kunden
+      } else {
+        return false; // Der Vertrag gehört nicht zum Kunden
+      }
+    } catch (error) {
+      console.error("Error checking contract for customer:", error);
+      return false; // Es gab einen Fehler beim Überprüfen des Vertrags
+    }
+  };
+  
   
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
@@ -59,22 +78,33 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
 
     setFieldErrors(errors);
 
+    // Überprüfen, ob die PLZ eine Zahl ist
+    const isPLZValid = /^\d+$/.test(plz);
+    
+    if (!isPLZValid) {
+      // Zeige eine Fehlermeldung an, wenn die PLZ keine Zahl ist
+      setFieldErrors({ ...fieldErrors, plz: true });
+      return;
+    }
+
     if (Object.values(errors).some(error => error)) {
       return;
     }
 
     const customerExists = await checkCustomerExistence(kundenID);
     const contractExists = await checkcontractExistence(vertragID);
+    // Überprüfen, ob der Vertrag zu der angegebenen Kundennummer gehört
+    const isContractForCustomer = await checkContractForCustomer(kundenID, vertragID);
+    
+    if (!customerExists || !contractExists || !isContractForCustomer) {
 
-    if (!customerExists || !contractExists) {
-      // Zeigen Sie die Fehlermeldung an
       if(!customerExists){
         setShowCustomerErrorMessage(true);
       }
-      if(!contractExists){
+      if(!contractExists || ! isContractForCustomer){
         setShowContractErrorMessage(true);
       }
-      return; // Beenden Sie die Funktion hier, wenn der Kunde nicht existiert
+      return; 
     }
 
      // Umwandeln des Datums in ISO-8601-Format
@@ -110,7 +140,9 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
     setStadt("");
     setPLZ("");
     setLand("");
-    // Weitere Felder zurücksetzen
+    setShowContractErrorMessage(false);
+    setShowCustomerErrorMessage(false);
+
 
     onClose();
   };
@@ -155,7 +187,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
                <input
                 type="text"
                 id="kundenID"
-                className={`form-control ${fieldErrors['kundenID'] ? 'is-invalid' : ''}`}
+                className={`form-control ${fieldErrors['kundenID'] ? 'is-invalid' : ''} ${showCustomerErrorMessage ? 'is-invalid' : ''}`}
                 value={kundenID}
                 onChange={(e) => setKundenID(e.target.value)}
               />
@@ -177,7 +209,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
               <input
                 type="text"
                 id="vertragID"
-                className={`form-control ${fieldErrors['vertragID'] ? 'is-invalid' : ''}`}
+                className={`form-control ${fieldErrors['vertragID'] ? 'is-invalid' : ''} ${showContractErrorMessage ? 'is-invalid' : ''}`}
                 value={vertragID}
                 onChange={(e) => setVertragID(e.target.value)}
               />
