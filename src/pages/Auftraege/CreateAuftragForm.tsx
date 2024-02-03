@@ -170,6 +170,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
   }
   const ArtDropdown = ({ value, onChange }: { value: string; onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void }) => (
     <select className="form-select" value={value} onChange={onChange}>
+      <option value=""></option>
       <option value="Hausreinigung">Hausreinigung</option>
       <option value="Sommerdienst">Sommerdienst</option>
       <option value="Grünflächenbetreuung">Grünflächenbetreuung</option>
