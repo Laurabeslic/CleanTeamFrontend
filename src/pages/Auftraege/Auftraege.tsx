@@ -67,6 +67,11 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
   
       },
       {
+        Header: "Auftragsart",
+        accessor: "auftragsart",
+        sort: true
+      },
+      {
         Header: "Details",
         accessor: "details",
         sort: true,
@@ -218,6 +223,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         const response = await axios.get("http://localhost:3001/auftrag/");
         let formattedData = response.data.map((order: any) => ({
             id: order.AuftragsID,
+            auftragsart: order.Auftragsart,
             details: order.Details,
             kunde: order.KundenID,
             status: order.Status,

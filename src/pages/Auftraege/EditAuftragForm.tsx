@@ -6,6 +6,7 @@ import {Button, Modal } from "react-bootstrap";
 interface EditOrderFormProps {
   editedOrder: {
     id: string;
+    auftragsart: string;
     details: string;
     kunde: string;
     status: string;
@@ -88,6 +89,10 @@ const EditOrderForm: React.FC<EditOrderFormProps> = ({ editedOrder, isOpen, onUp
          <div className="col-md-6 mb-3">
            <label>Kundennummer:</label>
            <input type="text" value={editedOrder?.kunde} readOnly className="form-control" />
+         </div>
+         <div className="col-md-6 mb-3">
+           <label>Auftragsart:</label>
+           <input type="text" value={editedOrder?.auftragsart} readOnly className="form-control" />
          </div>
          <div className="col-md-6 mb-3">
            <label>Status:</label>

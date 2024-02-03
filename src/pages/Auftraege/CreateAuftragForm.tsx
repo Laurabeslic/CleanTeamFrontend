@@ -13,6 +13,7 @@ interface CreateAuftragFormProps {
 }
 
 const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClose }) => {
+  const [auftragsart, setAuftragsart] = useState("");
   const [details, setDetails] = useState("");
   const [kundenID, setKundenID] = useState("");
   const [vertragID, setVertragID] = useState("");
@@ -69,7 +70,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
 
-    const requiredFields = ['kundenID', 'vertragID', 'selectedDate', 'strasse', 'plz', 'stadt', 'land', 'details'];
+    const requiredFields = ['kundenID', 'vertragID', 'selectedDate', 'strasse', 'plz', 'stadt', 'land', 'details', 'auftragsart'];
     const errors: { [key: string]: boolean } = {};
 
     requiredFields.forEach(field => {
@@ -117,6 +118,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
 
     const newAuftragData = {
         Details: details,
+        Auftragsart: auftragsart,
         KundenID: kundenID,
         UserID: USER,
         Datum: isoFormattedDate, // Verwenden Sie das umformatierte Datum,
@@ -140,6 +142,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
     setStadt("");
     setPLZ("");
     setLand("");
+    setAuftragsart("");
     setShowContractErrorMessage(false);
     setShowCustomerErrorMessage(false);
 
@@ -148,9 +151,6 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
   };
 
   const closeForm = async(e: React.FormEvent) => {
-   
-
-    // Setze die Felder zurück oder schließe das Formular nach Bedarf
     setDetails("");
     setKundenID("");
     setVertragID("");
@@ -158,9 +158,8 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
     setStadt("");
     setPLZ("");
     setLand("");
-    // Weitere Felder zurücksetzen
+    setAuftragsart("");
 
-    
     setShowCustomerErrorMessage(false);
     setShowContractErrorMessage(false);
     onClose();
@@ -169,6 +168,17 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
   if (!isOpen) {
     return null;
   }
+  const ArtDropdown = ({ value, onChange }: { value: string; onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void }) => (
+    <select className="form-select" value={value} onChange={onChange}>
+      <option value="Hausreinigung">Hausreinigung</option>
+      <option value="Sommerdienst">Sommerdienst</option>
+      <option value="Grünflächenbetreuung">Grünflächenbetreuung</option>
+      <option value="Schädlingsbekämpfung">Schädlingsbekämpfung</option>
+      <option value="Treppenhausreinigung">Treppenhausreinigung</option>
+      <option value="Büroreinigung">Büroreinigung</option>
+      <option value="Poolbetreuung">Poolbetreuung</option>
+    </select>
+  );
 
   return (
     <Modal
@@ -200,6 +210,13 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
                     <p>Die Kundennummer existiert nicht!</p>
                   </div>
                 )}
+            </div>
+
+            <div className="col-md-6 mb-3">
+              <label htmlFor="auftragsart" className="form-label">
+                Auftragsart:
+              </label>
+              <ArtDropdown value={auftragsart} onChange={(e) => setAuftragsart(e.target.value)} />
             </div>
 
             <div className="col-md-6 mb-3">
