@@ -35,6 +35,11 @@ const AnalyticsDashboard = React.lazy(
   () => import("../pages/dashboard/Analytics/")
 );
 
+const CleanTeamDashboard = React.lazy(
+  () => import("../pages/dashboard/CleanTeamDashboard/")
+);
+
+
 // apps
 const CalendarApp = React.lazy(() => import("../pages/apps/Calendar/"));
 const Projects = React.lazy(() => import("../pages/apps/Projects/"));
@@ -129,6 +134,12 @@ const dashboardRoutes: RoutesProps = {
       path: "/dashboard/analytics",
       name: "Analytics",
       element: <AnalyticsDashboard />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/dashboard/CleanTeamDashboard",
+      name: "Dashboard",
+      element: <CleanTeamDashboard />,
       route: PrivateRoute,
     },
   ],

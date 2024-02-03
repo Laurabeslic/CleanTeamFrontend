@@ -35,6 +35,13 @@ const MENU_ITEMS: MenuItemTypes[] = [
       },
     ],
   },
+  {
+    key: "ds-custom",
+    label: "Dashboard CLEANTEAM",
+    isTitle:false,
+    icon: "home",
+    url: "/dashboard/CleanTeamDashboard"
+  },
   { key: "apps", label: "Apps", isTitle: true },
   {
     key: "apps-calendar",
