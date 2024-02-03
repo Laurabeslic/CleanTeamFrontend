@@ -10,6 +10,7 @@ import ChatList from "../../../components/ChatList";
 
 import Statistics from "../Ecommerce/Statistics";
 import OverView from "./OverView";
+import ArtenPlot from "./ArtenPlot";
 import RevenueChart from "../Ecommerce/RevenueChart";
 import TargetChart from "../Ecommerce/TargetChart";
 import SalesChart from "../Ecommerce/SalesChart";
@@ -20,10 +21,9 @@ import Orders from "../Ecommerce/Orders";
 // dummy data
 import { orderDetails, topPerformers, tasks, chatMessages } from "../Ecommerce/data";
 
-import axios from "axios";
 
 const EcommerceDashboard = () => {
-  const [totalKunden, setTotalKunden] = useState(0);
+
   // const [dateRange, setDateRange] = useState<any>([
   //   new Date(),
   //   new Date().setDate(new Date().getDate() + 7),
@@ -40,22 +40,7 @@ const EcommerceDashboard = () => {
   // };
 
 
-const fetchKunden = async () => {
-    try {
-        const response = await axios.get("http://localhost:3001/kunde/");
-        const formattedData = response.data.map((customer: any) => ({
-            KundenID: customer.KundenID,
-            Name: customer.Name,
-            Adresse: customer.Adresse,
-            Telefon: customer.Telefon,
-            Email: customer.Email
-        }));
 
-        setTotalKunden(formattedData.length);
-    } catch (error) {
-        console.error("Es gab einen Fehler beim Abrufen der Kunden:", error);
-    }
-  };
   return (
     <>
       <Row>
@@ -141,7 +126,7 @@ const fetchKunden = async () => {
 
       <Row>
         <Col xl={5}>
-          <SalesChart />
+          <ArtenPlot apiUrl="http://localhost:3001/auftrag" />
         </Col>
         <Col xl={7}>
           <Orders orderDetails={orderDetails} />
