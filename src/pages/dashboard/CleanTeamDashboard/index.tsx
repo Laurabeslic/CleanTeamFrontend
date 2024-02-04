@@ -12,6 +12,7 @@ import Statistics from "../Ecommerce/Statistics";
 import OverView from "./OverView";
 import ArtenPlot from "./ArtenPlot";
 import AuftraegeChart from "./AuftraegeProMonatChart";
+import RecentAuftraege from "./RecentAufträge";
 import RevenueChart from "../Ecommerce/RevenueChart";
 import TargetChart from "../Ecommerce/TargetChart";
 import SalesChart from "../Ecommerce/SalesChart";
@@ -130,7 +131,7 @@ const EcommerceDashboard = () => {
           <ArtenPlot apiUrl="http://localhost:3001/auftrag" />
         </Col>
         <Col xl={7}>
-          <Orders orderDetails={orderDetails} />
+          <RecentAuftraege/>
         </Col>
       </Row>
 
