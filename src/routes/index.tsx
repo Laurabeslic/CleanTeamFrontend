@@ -16,6 +16,7 @@ const Confirm = React.lazy(() => import("../pages/auth/Confirm"));
 const ForgetPassword = React.lazy(() => import("../pages/auth/ForgetPassword"));
 const Register = React.lazy(() => import("../pages/auth/Register"));
 const LockScreen = React.lazy(() => import("../pages/auth/LockScreen"));
+const Kontodetails = React.lazy(() => import("../pages/auth/KontoDetailsPage"));
 
 // landing
 const Landing = React.lazy(() => import("../pages/landing/"));
@@ -316,6 +317,12 @@ const extrapagesRoutes: RoutesProps = {
       element: <CustomerDetail />,
       route: PrivateRoute,
     },
+    {
+      path: "/myaccount",
+      name: "AccountDetails",
+      element: <Kontodetails />,
+      route: PrivateRoute,
+    },
   ],
 };
 
@@ -486,7 +493,7 @@ const authRoutes: RoutesProps[] = [
     name: "Logout",
     element: <Logout />,
     route: Route,
-  },
+  }
 ];
 
 // public routes
