@@ -1,16 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Button, Form } from "react-bootstrap";
-import { useSelector } from "react-redux"; 
-import { RootState } from "../../redux/store"; 
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import axios from "axios";
 
 const PersonalDetails = () => {
   const loggedInUser = useSelector((state: RootState) => state.Auth.user);
   const [editMode, setEditMode] = useState(false);
   const [editedUser, setEditedUser] = useState(loggedInUser.user);
+  const [employeeData, setEmployeeData] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchEmployeeData = async () => {
+      try {
+        const response = await axios.get("http://localhost:3001/mitarbeiter");
+        const filteredData = response.data.filter(
+          (mitarbeiter: any) => mitarbeiter.UserID === loggedInUser.user.id
+        );
+        if (filteredData.length > 0) {
+          const employee = filteredData[0];
+          setEmployeeData({
+            MitarbeiterID: employee.MitarbeiterID,
+            Name: employee.Name,
+            Adresse: employee.Adresse,
+            Telefon: employee.Telefon,
+            Position: employee.Position,
+            Faehigkeiten: employee.Faehigkeiten,
+            UserId: employee.UserID
+          });
+        } else {
+          // Falls kein Mitarbeiter mit der zugeordneten UserID gefunden wird, setzen Sie die Benutzerdaten
+          setEmployeeData(null);
+        }
+      } catch (error) {
+        console.error("Error fetching employee data:", error);
+      }
+    };
+    fetchEmployeeData();
+  }, [loggedInUser]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // const { name, value } = event.target;
-    // setEditedUser({ ...editedUser, [name]: value });
+    const { name, value } = event.target;
+    setEditedUser({ ...editedUser, [name]: value });
   };
 
   const handleEditClick = () => {
@@ -38,41 +69,46 @@ const PersonalDetails = () => {
         <div className="d-flex justify-content-between align-items-center mb-3 mt-4 pt-2 border-top">
           <h4 className="mb-0 fs-15">Informationen</h4>
           {!editMode && (
-            <Button variant="outline-primary" size="sm" onClick={handleEditClick}>Bearbeiten</Button>
+            <Button variant="outline-primary" size="sm" onClick={handleEditClick}>
+              Bearbeiten
+            </Button>
           )}
         </div>
-          {editMode ? (
-            <Form>
-              <Form.Group className="mb-3">
-                <Form.Label>Vorname</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="firstName"
-                  value={editedUser.firstName}
-                  onChange={handleInputChange}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Nachname</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="lastName"
-                  value={editedUser.lastName}
-                  onChange={handleInputChange}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="email"
-                  name="email"
-                  value={editedUser.email}
-                  onChange={handleInputChange}
-                />
-              </Form.Group>
-              <Button variant="primary" onClick={handleSaveClick}>Speichern</Button>
-            </Form>
-          ) : (
+        {editMode ? (
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Vorname</Form.Label>
+              <Form.Control
+                type="text"
+                name="firstName"
+                value={editedUser.firstName}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Nachname</Form.Label>
+              <Form.Control
+                type="text"
+                name="lastName"
+                value={editedUser.lastName}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                name="email"
+                value={editedUser.email}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+            <Button variant="primary" onClick={handleSaveClick}>
+              Speichern
+            </Button>
+          </Form>
+        ) : (
+          <>
             <div className="table-responsive">
               <table className="table table-borderless mb-0 text-muted">
                 <tbody>
@@ -96,11 +132,42 @@ const PersonalDetails = () => {
                     <th scope="row">Email</th>
                     <td>{loggedInUser.user.email}</td>
                   </tr>
+                  {employeeData && (
+                    <>
+                    <tr>
+                        <th scope="row">Position</th>
+                        <td>{employeeData.Position}</td>
+                      </tr>
+                      
+                      <tr>
+                        <th scope="row">Telefon</th>
+                        <td>{employeeData.Telefon}</td>
+                      </tr>
+                    
+                      <tr>
+                        <th scope="row">Adresse</th>
+                        <td>
+                          {employeeData.Adresse.Strasse}, {employeeData.Adresse.PLZ}{" "}
+                          {employeeData.Adresse.Stadt}, {employeeData.Adresse.Land}
+                        </td>
+                      </tr>
+                      <tr className="mt-3 pt-2 border-top">
+                        <th scope="row">Fähigkeiten</th>
+                        <td>
+                          {employeeData.Faehigkeiten.map((skill: string, index: number) => (
+                            <span key={index} className="badge badge-soft-primary me-1">
+                              {skill}
+                            </span>
+                          ))}
+                        </td>
+                      </tr>
+                    </>
+                  )}
                 </tbody>
               </table>
             </div>
-          )}
-
+          </>
+        )}
       </Card.Body>
     </Card>
   );
