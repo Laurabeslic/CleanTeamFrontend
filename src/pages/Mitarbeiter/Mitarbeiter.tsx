@@ -9,7 +9,7 @@ import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 import CreateForm from "./CreateMitarbeiterForm";
 // import CreateVertragForm from "./CreateVertragForm";
-// import EditForm from "./EditKundeForm";
+import EditForm from "./EditMitarbeiterForm";
 import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
 
@@ -18,7 +18,7 @@ const Employees = () => {
 
     const [totalEmployees, setTotalEmployees] = useState(0);
     const [employeesData, setEmployeesData] = useState<any[]>([]);
-    const [editedEmployee, setEditedEmployee] = useState<any>(null);
+    const [editedMitarbeiter, setEditedMitarbeiter] = useState<any>(null);
     const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
     const [isEditFormOpen, setIsEditFormOpen] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
@@ -119,25 +119,25 @@ const Employees = () => {
       };
 
 
-    //   const handleUpdateKunde = async (kundenId: string, updatedData: { Name: string; Telefon: string; Email: string;Adresse: { Strasse: string; PLZ: string; Stadt: string; Land: string } }) => {
-    //     try {
-    //         console.log('kundenId:', kundenId);
-    //         console.log('updatedData:', updatedData);
+      const handleUpdateMitarbeiter = async (MitarbeiterId: string, updatedData: { Name: string; Telefon: string; Position: string;Adresse: { Strasse: string; PLZ: string; Stadt: string; Land: string } }) => {
+        try {
+            console.log('mitarbeiterId:', MitarbeiterId);
+            console.log('updatedData:', updatedData);
             
-    //         await axios.put(`http://localhost:3001/Kunde/${kundenId}`, updatedData);
+            await axios.put(`http://localhost:3001/Mitarbeiter/${MitarbeiterId}`, updatedData);
         
           
-    //         await fetchKunden();
-    //         setIsEditFormOpen(false);
-    //       } catch (error) {
-    //         console.error('Fehler beim Aktualisieren des Kunden:', error);
-    //       }
-    //   };
+            await fetchEmployees();
+            setIsEditFormOpen(false);
+          } catch (error) {
+            console.error('Fehler beim Aktualisieren des Mitarbeiters:', error);
+          }
+      };
 
       const handleDeleteConfirmed = async () => {
         try {
-          if (editedEmployee) {
-            const response = await axios.delete(`http://localhost:3001/Mitarbeiter/${editedEmployee.MitarbeiterID}`);
+          if (editedMitarbeiter) {
+            const response = await axios.delete(`http://localhost:3001/Mitarbeiter/${editedMitarbeiter.MitarbeiterID}`);
             console.log('Mitarbeiter gelöscht:', response.data);
       
             await fetchEmployees();
@@ -146,17 +146,17 @@ const Employees = () => {
           console.error('Fehler beim Löschen des Mitarbeiters:', error);
         } finally {
           setIsDelete(false);
-          setEditedEmployee(null);
+          setEditedMitarbeiter(null);
         }
       };
 
       const handleEditEmployee = (employee: any) => {
-        setEditedEmployee(employee);
+        setEditedMitarbeiter(employee);
         setIsEditFormOpen(true);
       };
 
       const handleDeleteEmployee = (employee: any) => {
-        setEditedEmployee(employee);
+        setEditedMitarbeiter(employee);
         setIsDelete(true);
       };
     
@@ -207,10 +207,8 @@ const Employees = () => {
             </Row>
 
             <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateMitarbeiter} onClose={closeCreateForm} />
-            
-            {/* <CreateVertragForm editedKunde={editedKunde} isOpen={isCreateVertragFormOpen} onCreate={handleCreateVertrag} onClose={closeCreateVertragForm} />
 
-            <EditForm isOpen={isEditFormOpen} editedKunde={editedKunde} onUpdate={handleUpdateKunde} onClose={() => setIsEditFormOpen(false)} /> */}
+            <EditForm isOpen={isEditFormOpen} editedMitarbeiter={editedMitarbeiter} onUpdate={handleUpdateMitarbeiter} onClose={() => setIsEditFormOpen(false)} />
             <DeleteConfirmationModal
                 isOpen={isDelete}
                 onRequestClose={() => setIsDelete(false)}
