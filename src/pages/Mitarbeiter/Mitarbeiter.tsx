@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { FiPlus } from 'react-icons/fi';
 import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
-// import CreateForm from "./CreateKundeForm";
+import CreateForm from "./CreateMitarbeiterForm";
 // import CreateVertragForm from "./CreateVertragForm";
 // import EditForm from "./EditKundeForm";
 import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
@@ -107,16 +107,16 @@ const Employees = () => {
         }
       };
 
-    // const handleCreateCustomer = async (newKundeData: any) => {
-    //     try {
+    const handleCreateMitarbeiter = async (newMitarbeiterData: any) => {
+        try {
             
-    //         const response = await axios.post("http://localhost:3001/Kunde/", newKundeData);
-    //         setIsCreateFormOpen(false);
-    //         await fetchKunden();
-    //       } catch (error) {
-    //         console.error("Fehler beim Erstellen des Kunden:", error);
-    //       }
-    //   };
+            const response = await axios.post("http://localhost:3001/Mitarbeiter/", newMitarbeiterData);
+            setIsCreateFormOpen(false);
+            await fetchEmployees();
+          } catch (error) {
+            console.error("Fehler beim Erstellen des Mitarbeiters:", error);
+          }
+      };
 
 
     //   const handleUpdateKunde = async (kundenId: string, updatedData: { Name: string; Telefon: string; Email: string;Adresse: { Strasse: string; PLZ: string; Stadt: string; Land: string } }) => {
@@ -206,9 +206,9 @@ const Employees = () => {
                 </Col>
             </Row>
 
-            {/* <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateCustomer} onClose={closeCreateForm} />
+            <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateMitarbeiter} onClose={closeCreateForm} />
             
-            <CreateVertragForm editedKunde={editedKunde} isOpen={isCreateVertragFormOpen} onCreate={handleCreateVertrag} onClose={closeCreateVertragForm} />
+            {/* <CreateVertragForm editedKunde={editedKunde} isOpen={isCreateVertragFormOpen} onCreate={handleCreateVertrag} onClose={closeCreateVertragForm} />
 
             <EditForm isOpen={isEditFormOpen} editedKunde={editedKunde} onUpdate={handleUpdateKunde} onClose={() => setIsEditFormOpen(false)} /> */}
             <DeleteConfirmationModal
