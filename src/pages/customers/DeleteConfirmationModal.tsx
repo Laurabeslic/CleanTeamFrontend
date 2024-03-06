@@ -7,22 +7,23 @@ interface DeleteConfirmationModalProps {
   onRequestClose: () => void;
   onDeleteConfirmed: () => void;
   isDeleteConfirmation?: boolean; 
+  art: string;
 }
 
-const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({ isOpen, onRequestClose, onDeleteConfirmed, isDeleteConfirmation }) => {
+const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({ isOpen, onRequestClose, onDeleteConfirmed, isDeleteConfirmation, art }) => {
     return (
       <Modal
           show={isOpen}
           centered
         >
           <Modal.Header>
-            <Modal.Title as="h5">Kunde löschen</Modal.Title>
+            <Modal.Title as="h5">{art} löschen</Modal.Title>
           </Modal.Header>
           <Modal.Body className="text-center">
           <i className="text-warning display-3">
           <FaTrash />
           </i>
-            <h4 className="text-danger mt-4">Möchten Sie den Kunden wirklich löschen?</h4>
+            <h4 className="text-danger mt-4">Möchten Sie den {art === 'Kunde' ? 'Kunden' : art} wirklich löschen?</h4>
           </Modal.Body>
           <Modal.Footer>
         

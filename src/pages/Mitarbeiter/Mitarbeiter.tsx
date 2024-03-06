@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 // import CreateForm from "./CreateKundeForm";
 // import CreateVertragForm from "./CreateVertragForm";
 // import EditForm from "./EditKundeForm";
-//import DeleteConfirmationModal from './DeleteConfirmationModal';
+import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
 
 const Employees = () => {
@@ -63,7 +63,8 @@ const Employees = () => {
             Header: "",
             accessor: "actions",
             Cell: ({ row }: { row: { original: { id: string } } }) => (
-             isAdmin && ( <Dropdown>
+             isAdmin && ( 
+             <Dropdown>
                 <Dropdown.Toggle variant="outline-secondary" id="dropdown-basic">
                   <FiMoreVertical />
                 </Dropdown.Toggle>
@@ -71,7 +72,6 @@ const Employees = () => {
                 <Dropdown.Menu>
                   <Dropdown.Item onClick={() => handleEditEmployee(row.original)}>Bearbeiten</Dropdown.Item> 
                   <Dropdown.Item onClick={() => handleDeleteEmployee(row.original)}>Löschen</Dropdown.Item>
-                  <Dropdown.Divider />
                 </Dropdown.Menu>
               </Dropdown>)
             ),
@@ -134,21 +134,21 @@ const Employees = () => {
     //       }
     //   };
 
-    //   const handleDeleteConfirmed = async () => {
-    //     try {
-    //       if (editedEmployee) {
-    //         const response = await axios.delete(`http://localhost:3001/Kunde/${editedEmployee.KundenID}`);
-    //         console.log('Kunde gelöscht:', response.data);
+      const handleDeleteConfirmed = async () => {
+        try {
+          if (editedEmployee) {
+            const response = await axios.delete(`http://localhost:3001/Mitarbeiter/${editedEmployee.MitarbeiterID}`);
+            console.log('Mitarbeiter gelöscht:', response.data);
       
-    //         await fetchKunden();
-    //       }
-    //     } catch (error) {
-    //       console.error('Fehler beim Löschen des Kunden:', error);
-    //     } finally {
-    //       setIsDelete(false);
-    //       setEditedEmployee(null);
-    //     }
-    //   };
+            await fetchEmployees();
+          }
+        } catch (error) {
+          console.error('Fehler beim Löschen des Mitarbeiters:', error);
+        } finally {
+          setIsDelete(false);
+          setEditedEmployee(null);
+        }
+      };
 
       const handleEditEmployee = (employee: any) => {
         setEditedEmployee(employee);
@@ -210,13 +210,14 @@ const Employees = () => {
             
             <CreateVertragForm editedKunde={editedKunde} isOpen={isCreateVertragFormOpen} onCreate={handleCreateVertrag} onClose={closeCreateVertragForm} />
 
-            <EditForm isOpen={isEditFormOpen} editedKunde={editedKunde} onUpdate={handleUpdateKunde} onClose={() => setIsEditFormOpen(false)} />
+            <EditForm isOpen={isEditFormOpen} editedKunde={editedKunde} onUpdate={handleUpdateKunde} onClose={() => setIsEditFormOpen(false)} /> */}
             <DeleteConfirmationModal
                 isOpen={isDelete}
                 onRequestClose={() => setIsDelete(false)}
                 onDeleteConfirmed={handleDeleteConfirmed}
                 isDeleteConfirmation={isDelete}
-             /> */}
+                art = "Mitarbeiter"
+             />
         </>
     );
 };

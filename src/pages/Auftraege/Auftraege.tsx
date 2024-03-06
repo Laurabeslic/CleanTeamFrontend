@@ -9,7 +9,7 @@ import CreateForm from "./CreateAuftragForm"; // Importiere das Auftragsformular
 import EditForm from "./EditAuftragForm";
 import { Row, Col, Card, Dropdown, ButtonGroup} from "react-bootstrap";
 import FeatherIcons from "feather-icons-react";
-import DeleteConfirmationModal from './DeleteConfirmationModal';
+import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
 
 
 
@@ -406,6 +406,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
           onRequestClose={() => setIsDelete(false)}
           onDeleteConfirmed={handleDeleteConfirmed}
           isDeleteConfirmation={isDelete}
+          art = "Auftrag"
         />
        </>
     );

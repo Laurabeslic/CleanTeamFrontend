@@ -217,6 +217,7 @@ const Kunden = () => {
                 onRequestClose={() => setIsDelete(false)}
                 onDeleteConfirmed={handleDeleteConfirmed}
                 isDeleteConfirmation={isDelete}
+                art="Kunde"
              />
         </>
     );
