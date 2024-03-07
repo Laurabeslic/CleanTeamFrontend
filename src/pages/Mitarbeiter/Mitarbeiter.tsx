@@ -60,6 +60,11 @@ const Employees = () => {
             sort: false,
         },
         {
+          Header: "UserID",
+          accessor: "UserID",
+          sort: false,
+      },
+        {
             Header: "",
             accessor: "actions",
             Cell: ({ row }: { row: { original: { id: string } } }) => (
@@ -94,7 +99,8 @@ const Employees = () => {
                     Position: employee.Position,
                     Faehigkeiten: employee.Faehigkeiten,
                     Schichtplan: employee.Schichtplan,
-                    Adresse: employee.Adresse ? employee.Adresse : {}
+                    Adresse: employee.Adresse ? employee.Adresse : {},
+                    UserID: employee.UserID
                 };
                 return formattedEmployee;
             });

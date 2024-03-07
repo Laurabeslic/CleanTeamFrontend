@@ -5,6 +5,7 @@ import { Navigate, Route, RouteProps } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import OrderDetail from "../pages/Auftraege/OrderDetail";
 import CustomerDetail from "../pages/customers/CustomerDetail";
+import MitarbeiterDetail from "../pages/Mitarbeiter/MitarbeiterDetail";
 // import Root from "./Root";
 
 // lazy load all the views
@@ -330,6 +331,12 @@ const extrapagesRoutes: RoutesProps = {
       path: "/employees/",
       name: "Employees",
       element: <Employees />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/employees/:mitarbeiterId",
+      name: "MitarbeiterDetail",
+      element: <MitarbeiterDetail />,
       route: PrivateRoute,
     },
   ],
