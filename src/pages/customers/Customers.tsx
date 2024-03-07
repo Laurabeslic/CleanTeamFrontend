@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Row, Col, Card, Dropdown, ButtonGroup } from "react-bootstrap";
+import { Row, Col, Card, Dropdown} from "react-bootstrap";
 import Table from "../../components/Table";
 import StatisticsWidget from "../widgets/StatisticsWidget";
 import { Link } from 'react-router-dom';
