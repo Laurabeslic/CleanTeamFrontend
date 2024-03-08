@@ -7,7 +7,7 @@ import Table from "../../components/Table";
 import StatisticsWidget from "../widgets/StatisticsWidget";
 import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
-// import CreateForm from "./CreateAuftragForm"; // Importiere das Auftragsformular
+import CreateForm from "./CreateFirmenwagenForm"; 
 // import EditForm from "./EditAuftragForm";
 import { Row, Col, Card, Dropdown, ButtonGroup} from "react-bootstrap";
 import FeatherIcons from "feather-icons-react";
@@ -199,21 +199,17 @@ function useQuery() {
         }
     };
 
-    // const handleCreateOrder = async (newOrderData: any) => {
-    //     try {
-    //       // Sende die Daten an den Server, um einen neuen Auftrag zu erstellen
-    //       const response = await axios.post("http://localhost:3001/Auftrag/", newOrderData);
-    //       //const createdOrder = response.data;
-          
-    //       // Aktualisiere die Zähler
-    //       recalculateOrderCounts();
-
-    //       setIsCreateFormOpen(false);
-    //       await fetchOrders();
-    //     } catch (error) {
-    //       console.error("Fehler beim Erstellen des Auftrags:", error);
-    //     }
-    //   };
+    const handleCreateFirmenwagen = async (newFirmenwagenData: any) => {
+        try {
+         
+          const response = await axios.post("http://localhost:3001/Firmenwagen/", newFirmenwagenData);
+        
+          setIsCreateFormOpen(false);
+          await fetchWaegen();
+        } catch (error) {
+          console.error("Fehler beim Erstellen des Wagens:", error);
+        }
+      };
 
     //   const handleUpdateOrder = async (orderId: string, updatedData: { Details: string; Status: string; Adresse: { Strasse: string; PLZ: string; Stadt: string; Land: string } }) => {
     //     try {
@@ -302,9 +298,9 @@ function useQuery() {
                 </Col>
             </Row>
   
-        {/* <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateOrder} onClose={closeCreateForm} />
+        <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateFirmenwagen} onClose={closeCreateForm} />
     
-        <EditForm isOpen={isEditFormOpen} editedOrder={editedOrder} onUpdate={handleUpdateOrder} onClose={() => setIsEditFormOpen(false)} />
+        {/* <EditForm isOpen={isEditFormOpen} editedOrder={editedOrder} onUpdate={handleUpdateOrder} onClose={() => setIsEditFormOpen(false)} />
       
 
       <DeleteConfirmationModal
