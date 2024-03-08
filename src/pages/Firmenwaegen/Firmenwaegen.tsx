@@ -8,7 +8,7 @@ import StatisticsWidget from "../widgets/StatisticsWidget";
 import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 import CreateForm from "./CreateFirmenwagenForm"; 
-// import EditForm from "./EditAuftragForm";
+import EditForm from "./EditFirmenwagenForm";
 import { Row, Col, Card, Dropdown, ButtonGroup} from "react-bootstrap";
 import FeatherIcons from "feather-icons-react";
 import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
@@ -17,6 +17,11 @@ import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
 
 import { Link, useLocation } from 'react-router-dom';
 
+interface AusleihhistorieEntry {
+  Ausleiher: string;
+  Ausleihdatum: string;
+  Rückgabedatum: string | null;
+}
 
 
 function useQuery() {
@@ -110,7 +115,7 @@ function useQuery() {
               </Dropdown.Toggle>
       
               <Dropdown.Menu>
-                <Dropdown.Item >Bearbeiten</Dropdown.Item> 
+                <Dropdown.Item onClick={() => handleEditWagen(row.original)}>Bearbeiten</Dropdown.Item> 
                 <Dropdown.Item onClick={() => handleDeleteWagen(row.original)}>Löschen</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>)
@@ -211,29 +216,30 @@ function useQuery() {
         }
       };
 
-    //   const handleUpdateOrder = async (orderId: string, updatedData: { Details: string; Status: string; Adresse: { Strasse: string; PLZ: string; Stadt: string; Land: string } }) => {
-    //     try {
-    //       console.log('orderId:', orderId);
-    //       console.log('updatedData:', updatedData);
-    //       // Sende die aktualisierten Daten an den Server, um den Auftrag zu aktualisieren
-    //       await axios.put(`http://localhost:3001/Auftrag/${orderId}`, updatedData);
+      const handleUpdateWagen = async (FirmenwagenID:string, updatedWagen: {
+        LetzteWartung: string;
+        Kilometerstand: number;
+        Ausleihhistorie: AusleihhistorieEntry[];
+      }) => {
+        try {
+          console.log('FirmendwagenId:', FirmenwagenID);
+          console.log('updatedData:', updatedWagen);
+          // Sende die aktualisierten Daten an den Server, um den Auftrag zu aktualisieren
+          await axios.put(`http://localhost:3001/Firmenwagen/${FirmenwagenID}`, updatedWagen);
       
-    //       // Aktualisiere die Auftragsdaten und schließe das Bearbeitungsmodal
-    //       await fetchOrders();
-    //       setIsEditFormOpen(false);
-    //     } catch (error) {
-    //       console.error('Fehler beim Aktualisieren des Auftrags:', error);
-    //     }
-    //   };
+          // Aktualisiere die Auftragsdaten und schließe das Bearbeitungsmodal
+          await fetchWaegen();
+          setIsEditFormOpen(false);
+        } catch (error) {
+          console.error('Fehler beim Aktualisieren des Wagens:', error);
+        }
+      };
       
       const handleDeleteConfirmed = async () => {
         try {
           if (editedWagen) {
             const response = await axios.delete(`http://localhost:3001/Firmenwagen/${editedWagen.id}`);
             console.log('Wagen gelöscht:', response.data);
-      
-            // Hier kannst du weitere Aktualisierungen vornehmen, falls nötig
-            // Zum Beispiel: Aktualisiere die Anzeige der Aufträge
             await fetchWaegen();
           }
         } catch (error) {
@@ -300,8 +306,8 @@ function useQuery() {
   
         <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateFirmenwagen} onClose={closeCreateForm} />
     
-        {/* <EditForm isOpen={isEditFormOpen} editedOrder={editedOrder} onUpdate={handleUpdateOrder} onClose={() => setIsEditFormOpen(false)} />
-       */}
+        <EditForm isOpen={isEditFormOpen} editedWagen={editedWagen} onUpdate={handleUpdateWagen} onClose={() => setIsEditFormOpen(false)} />
+      
 
       <DeleteConfirmationModal
           isOpen={isDelete}

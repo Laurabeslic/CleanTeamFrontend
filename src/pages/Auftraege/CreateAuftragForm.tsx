@@ -110,7 +110,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
 
      // Umwandeln des Datums in ISO-8601-Format
      const isoFormattedDate = selectedDate.toISOString();
-
+    console.log(isoFormattedDate);
      const status = "In Bearbeitung";
 
     const USER = loggedInUser.user.id;
