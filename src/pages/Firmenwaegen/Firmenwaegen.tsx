@@ -30,7 +30,7 @@ function useQuery() {
     const searchValue = query.get("search") || "";
     const [totalWagen, setTotalWagen] = useState(0);
     const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
-    const [editedOrder, setEditedOrder] = useState<any>(null);
+    const [editedWagen, setEditedWagen] = useState<any>(null);
     const [isEditFormOpen, setIsEditFormOpen] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const [wagenData, setWagenData] = useState<any[]>([]);
@@ -111,7 +111,7 @@ function useQuery() {
       
               <Dropdown.Menu>
                 <Dropdown.Item >Bearbeiten</Dropdown.Item> 
-                <Dropdown.Item >Löschen</Dropdown.Item>
+                <Dropdown.Item onClick={() => handleDeleteWagen(row.original)}>Löschen</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>)
           ),
@@ -123,13 +123,13 @@ function useQuery() {
       return currentRental ? `Ausgeliehen von ${currentRental.Ausleiher}` : "Frei";
     };
 
-    const handleEditOrder = (order: any) => {
-      setEditedOrder(order);
+    const handleEditWagen = (wagen: any) => {
+      setEditedWagen(wagen);
       setIsEditFormOpen(true);
     };
 
-    const handleDeleteOrder = (order: any) => {
-      setEditedOrder(order); // Setze den zu löschenden Auftrag für die Bestätigung
+    const handleDeleteWagen = (wagen: any) => {
+      setEditedWagen(wagen); // Setze den zu löschenden Auftrag für die Bestätigung
       setIsDelete(true);
     };
     
@@ -226,23 +226,23 @@ function useQuery() {
     //     }
     //   };
       
-    //   const handleDeleteConfirmed = async () => {
-    //     try {
-    //       if (editedOrder) {
-    //         const response = await axios.delete(`http://localhost:3001/Auftrag/${editedOrder.id}`);
-    //         console.log('Auftrag gelöscht:', response.data);
+      const handleDeleteConfirmed = async () => {
+        try {
+          if (editedWagen) {
+            const response = await axios.delete(`http://localhost:3001/Firmenwagen/${editedWagen.id}`);
+            console.log('Wagen gelöscht:', response.data);
       
-    //         // Hier kannst du weitere Aktualisierungen vornehmen, falls nötig
-    //         // Zum Beispiel: Aktualisiere die Anzeige der Aufträge
-    //         await fetchOrders();
-    //       }
-    //     } catch (error) {
-    //       console.error('Fehler beim Löschen des Auftrags:', error);
-    //     } finally {
-    //       setIsDelete(false);
-    //       setEditedOrder(null);
-    //     }
-    //   };
+            // Hier kannst du weitere Aktualisierungen vornehmen, falls nötig
+            // Zum Beispiel: Aktualisiere die Anzeige der Aufträge
+            await fetchWaegen();
+          }
+        } catch (error) {
+          console.error('Fehler beim Löschen des Wagens:', error);
+        } finally {
+          setIsDelete(false);
+          setEditedWagen(null);
+        }
+      };
       
 
       const openCreateForm = () => {
@@ -301,15 +301,15 @@ function useQuery() {
         <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateFirmenwagen} onClose={closeCreateForm} />
     
         {/* <EditForm isOpen={isEditFormOpen} editedOrder={editedOrder} onUpdate={handleUpdateOrder} onClose={() => setIsEditFormOpen(false)} />
-      
+       */}
 
       <DeleteConfirmationModal
           isOpen={isDelete}
           onRequestClose={() => setIsDelete(false)}
           onDeleteConfirmed={handleDeleteConfirmed}
           isDeleteConfirmation={isDelete}
-          art = "Auftrag"
-        /> */}
+          art = "Wagen"
+        />
        </>
     );
 };
