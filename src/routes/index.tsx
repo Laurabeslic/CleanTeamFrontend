@@ -31,6 +31,8 @@ const Customers = React.lazy(() => import("../pages/customers/Customers"));
 //employees
 const Employees = React.lazy(() => import("../pages/Mitarbeiter/Mitarbeiter"));
 
+const Cars = React.lazy(() => import("../pages/Firmenwaegen/Firmenwaegen"));
+
 
 // dashboard
 const EcommerceDashboard = React.lazy(
@@ -337,6 +339,12 @@ const extrapagesRoutes: RoutesProps = {
       path: "/employees/:mitarbeiterId",
       name: "MitarbeiterDetail",
       element: <MitarbeiterDetail />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/cars/",
+      name: "Cars",
+      element: <Cars />,
       route: PrivateRoute,
     },
   ],

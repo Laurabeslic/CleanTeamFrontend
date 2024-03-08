@@ -28,22 +28,22 @@ interface UserData {
 }
 
 /* bottom links */
-const BottomLink = () => {
-  const { t } = useTranslation();
+// const BottomLink = () => {
+//   const { t } = useTranslation();
 
-  return (
-    <Row className="mt-3">
-      <Col xs={12} className="text-center">
-        <p className="text-muted">
-          {t("Don't have an account?")}{" "}
-          <Link to={"/auth/register"} className="text-primary fw-bold ms-1">
-            {t("Sign Up")}
-          </Link>
-        </p>
-      </Col>
-    </Row>
-  );
-};
+//   return (
+//     <Row className="mt-3">
+//       <Col xs={12} className="text-center">
+//         <p className="text-muted">
+//           {t("Don't have an account?")}{" "}
+//           <Link to={"/auth/register"} className="text-primary fw-bold ms-1">
+//             {t("Sign Up")}
+//           </Link>
+//         </p>
+//       </Col>
+//     </Row>
+//   );
+// };
 
 const Login = () => {
   const { t } = useTranslation();
@@ -87,7 +87,7 @@ const Login = () => {
     <>
       {userLoggedIn || user ? <Navigate to={redirectUrl}></Navigate> : null}
 
-      <AuthLayout bottomLinks={<BottomLink />}>
+      <AuthLayout>
         <div className="auth-logo mx-auto">
           <Link to="/" className="logo logo-dark text-center">
             <span className="logo-lg">
@@ -116,7 +116,7 @@ const Login = () => {
         <VerticalForm<UserData>
           onSubmit={onSubmit}
           resolver={schemaResolver}
-          defaultValues={{ email: "shreyu@coderthemes.com", password: "test" }}
+          
           formClass="authentication-form"
         >
           <FormInput
@@ -124,7 +124,7 @@ const Login = () => {
             name="email"
             label={t("E-Mail Adresse")}
             startIcon={<FeatherIcons icon={"mail"} className="icon-dual" />}
-            placeholder={t("hello@coderthemes.com")}
+            placeholder={t("Geben Sie Ihre E-Mail ein")}
             containerClass={"mb-3"}
           />
           <FormInput
@@ -132,25 +132,25 @@ const Login = () => {
             name="password"
             label={t("Passwort")}
             startIcon={<FeatherIcons icon={"lock"} className="icon-dual" />}
-            action={
-              <Link
-                to="/auth/forget-password"
-                className="float-end text-muted text-unline-dashed ms-1"
-              >
-                {t("Passwort vergessen?")}
-              </Link>
-            }
+            // action={
+            //   <Link
+            //     to="/auth/forget-password"
+            //     className="float-end text-muted text-unline-dashed ms-1"
+            //   >
+            //     {t("Passwort vergessen?")}
+            //   </Link>
+            // }
             placeholder={t("Geben Sie Ihr Passwort ein")}
             containerClass={"mb-3"}
           ></FormInput>
 
-          <FormInput
+          {/* <FormInput
             type="checkbox"
             name="checkbox"
             label={t("Eingeloggt bleiben")}
             containerClass={"mb-3"}
             defaultChecked
-          />
+          /> */}
 
           <div className="mb-3 text-center d-grid">
             <Button type="submit" disabled={loading}>
@@ -159,7 +159,7 @@ const Login = () => {
           </div>
         </VerticalForm>
 
-        <div className="py-3 text-center">
+        {/* <div className="py-3 text-center">
           <span className="fs-16 fw-bold">{t("OR")}</span>
         </div>
         <Row>
@@ -173,7 +173,7 @@ const Login = () => {
               {t("With Facebook")}
             </Link>
           </Col>
-        </Row>
+        </Row> */}
       </AuthLayout>
     </>
   );
