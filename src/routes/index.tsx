@@ -5,6 +5,7 @@ import { Navigate, Route, RouteProps } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import OrderDetail from "../pages/Auftraege/OrderDetail";
 import CustomerDetail from "../pages/customers/CustomerDetail";
+import MitarbeiterDetail from "../pages/Mitarbeiter/MitarbeiterDetail";
 // import Root from "./Root";
 
 // lazy load all the views
@@ -16,6 +17,7 @@ const Confirm = React.lazy(() => import("../pages/auth/Confirm"));
 const ForgetPassword = React.lazy(() => import("../pages/auth/ForgetPassword"));
 const Register = React.lazy(() => import("../pages/auth/Register"));
 const LockScreen = React.lazy(() => import("../pages/auth/LockScreen"));
+const Kontodetails = React.lazy(() => import("../pages/auth/KontoDetailsPage"));
 
 // landing
 const Landing = React.lazy(() => import("../pages/landing/"));
@@ -25,6 +27,9 @@ const Orders = React.lazy(() => import("../pages/Auftraege/Auftraege"));
 
 //customer
 const Customers = React.lazy(() => import("../pages/customers/Customers"));
+
+//employees
+const Employees = React.lazy(() => import("../pages/Mitarbeiter/Mitarbeiter"));
 
 
 // dashboard
@@ -316,6 +321,24 @@ const extrapagesRoutes: RoutesProps = {
       element: <CustomerDetail />,
       route: PrivateRoute,
     },
+    {
+      path: "/myaccount",
+      name: "AccountDetails",
+      element: <Kontodetails />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/employees/",
+      name: "Employees",
+      element: <Employees />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/employees/:mitarbeiterId",
+      name: "MitarbeiterDetail",
+      element: <MitarbeiterDetail />,
+      route: PrivateRoute,
+    },
   ],
 };
 
@@ -486,7 +509,7 @@ const authRoutes: RoutesProps[] = [
     name: "Logout",
     element: <Logout />,
     route: Route,
-  },
+  }
 ];
 
 // public routes

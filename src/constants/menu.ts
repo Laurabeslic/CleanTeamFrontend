@@ -202,6 +202,13 @@ const MENU_ITEMS: MenuItemTypes[] = [
     icon: "users",
     url: "/customers",
   },
+  {
+    key: "employees",
+    label: "Mitarbeiter",
+    isTitle:false,
+    icon: "users",
+    url: "/employees",
+  },
   { key: "components", label: "Components", isTitle: true },
   {
     key: "ui-elements",

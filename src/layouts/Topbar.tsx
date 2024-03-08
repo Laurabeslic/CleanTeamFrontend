@@ -86,17 +86,17 @@ const Notifications: NotificationItem[] = [
 // get the profilemenu
 const ProfileMenus = [
   {
-    label: "My Account",
+    label: "Mein Konto",
     icon: "user",
-    redirectTo: "/",
+    redirectTo: "/myaccount",
   },
   {
-    label: "Lock Screen",
+    label: "Bildschirm sperren",
     icon: "lock",
     redirectTo: "/auth/lock-screen",
   },
   {
-    label: "Logout",
+    label: "Ausloggen",
     icon: "log-out",
     redirectTo: "/auth/logout",
   },

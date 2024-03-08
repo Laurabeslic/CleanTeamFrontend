@@ -121,7 +121,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
         Auftragsart: auftragsart,
         KundenID: kundenID,
         UserID: USER,
-        Datum: isoFormattedDate, // Verwenden Sie das umformatierte Datum,
+        Datum: isoFormattedDate, // Verwenden Sie das umformatierte Datum
         VertragID: vertragID,
         Status: status,
         Adresse: {
@@ -134,7 +134,6 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
 
     onCreate(newAuftragData);
 
-    // Setze die Felder zurück oder schließe das Formular nach Bedarf
     setDetails("");
     setKundenID("");
     setVertragID("");
