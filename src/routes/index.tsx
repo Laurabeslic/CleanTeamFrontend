@@ -6,6 +6,7 @@ import PrivateRoute from "./PrivateRoute";
 import OrderDetail from "../pages/Auftraege/OrderDetail";
 import CustomerDetail from "../pages/customers/CustomerDetail";
 import MitarbeiterDetail from "../pages/Mitarbeiter/MitarbeiterDetail";
+import FirmenwagenDetail from "../pages/Firmenwaegen/FirmenwagenDetail";
 // import Root from "./Root";
 
 // lazy load all the views
@@ -345,6 +346,12 @@ const extrapagesRoutes: RoutesProps = {
       path: "/cars/",
       name: "Cars",
       element: <Cars />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/cars/:firmenwagenId",
+      name: "FirmenwagenDetail",
+      element: <FirmenwagenDetail />,
       route: PrivateRoute,
     },
   ],
