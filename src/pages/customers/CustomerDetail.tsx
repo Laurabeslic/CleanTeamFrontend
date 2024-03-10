@@ -134,11 +134,13 @@ function CustomerDetail({ match, google }: any) {
                                     />
                                 </Col>
                                 <Col sm={6} xl={5}>
-                                    <Statistics
-                                        icon="mail"
-                                        stats={customer.Email}
-                                        description="Email"
-                                    />
+                                    <a href={`mailto:${customer.Email}`}>
+                                        <Statistics
+                                            icon="mail"
+                                            stats={customer.Email}
+                                            description="Email"
+                                        />
+                                    </a>
                                 </Col>
                             </Row>
                         </Card.Body>

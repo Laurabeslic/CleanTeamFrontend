@@ -76,21 +76,21 @@ function FirmenwagenDetail({ match, google }: any) {
                                     <Statistics
                                         icon="truck"
                                         stats={firmenwagen.Kennzeichen}
-                                        description="kennzeichen"
+                                        description="Kennzeichen"
                                     />
                                 </Col>
                                 <Col sm={6} xl={3}>
                                     <Statistics
                                         icon="square"
                                         stats={firmenwagen.Marke}
-                                        description="marke"
+                                        description="Marke"
                                     />
                                 </Col>
                                 <Col sm={6} xl={5}>
                                     <Statistics
                                         icon="menu" 
                                         stats={firmenwagen.Modell}
-                                        description="modell"
+                                        description="Modell"
                                     />
                                 </Col>
                             </Row>
