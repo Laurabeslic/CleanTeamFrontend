@@ -9,6 +9,7 @@ import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 import CreateForm from "./CreateFirmenwagenForm"; 
 import EditForm from "./EditFirmenwagenForm";
+import AusleiheForm from "./NeueAusleiheForm";
 import { Row, Col, Card, Dropdown, ButtonGroup} from "react-bootstrap";
 import FeatherIcons from "feather-icons-react";
 import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
@@ -37,6 +38,7 @@ function useQuery() {
     const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
     const [editedWagen, setEditedWagen] = useState<any>(null);
     const [isEditFormOpen, setIsEditFormOpen] = useState(false);
+    const [isAusleiheFormOpen, setIsAusleiheFormOpen] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const [wagenData, setWagenData] = useState<any[]>([]);
     const [mitarbeiterData, setMitarbeiterData] = useState<any[]>([]);
@@ -107,19 +109,27 @@ function useQuery() {
         {
           Header: "",
           accessor: "actions",
-          Cell: ({ row }: { row: { original: { id: string } } }) => (
-           isAdmin && ( 
-           <Dropdown>
-              <Dropdown.Toggle variant="outline-secondary" id="dropdown-basic">
-                <FiMoreVertical />
-              </Dropdown.Toggle>
-      
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={() => handleEditWagen(row.original)}>Bearbeiten</Dropdown.Item> 
-                <Dropdown.Item onClick={() => handleDeleteWagen(row.original)}>Löschen</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>)
-          ),
+          Cell: ({ row }: { row: { original: { ausleihhistorie: any[] } } }) => {
+            const ausleihhistorie = row.original.ausleihhistorie;
+            const ausgeliehenAn = ausleihhistorie.find((history: any) => history.Rückgabedatum === null);
+            const isVehicleAvailable = !ausgeliehenAn;
+            return (
+              isAdmin && (
+                <Dropdown>
+                  <Dropdown.Toggle variant="outline-secondary" id="dropdown-basic">
+                    <FiMoreVertical />
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={() => handleEditWagen(row.original)}>Bearbeiten</Dropdown.Item> 
+                    <Dropdown.Item onClick={() => handleDeleteWagen(row.original)}>Löschen</Dropdown.Item>
+                    {isVehicleAvailable && <Dropdown.Divider />}
+                    {isVehicleAvailable && <Dropdown.Item onClick={() => handleAusleihe(row.original)}>Neue Ausleihe</Dropdown.Item>}
+          
+                  </Dropdown.Menu>
+                </Dropdown>
+              )
+            );
+          },
         },
     ];
 
@@ -134,8 +144,13 @@ function useQuery() {
     };
 
     const handleDeleteWagen = (wagen: any) => {
-      setEditedWagen(wagen); // Setze den zu löschenden Auftrag für die Bestätigung
+      setEditedWagen(wagen); 
       setIsDelete(true);
+    };
+
+    const handleAusleihe = (wagen: any) => {
+      setEditedWagen(wagen); 
+      setIsAusleiheFormOpen(true);
     };
     
     console.log(wagenData);
@@ -249,6 +264,18 @@ function useQuery() {
           setEditedWagen(null);
         }
       };
+      const handleCreateAusleihe = async (FirmenwagenID:string, updatedAusleihhistorie: AusleihhistorieEntry[]) => {
+        try {
+          const response = await axios.get(`http://localhost:3001/firmenwagen/${FirmenwagenID}`);
+          const updatedWagen = { ...response.data, Ausleihhistorie: updatedAusleihhistorie };
+          await axios.put(`http://localhost:3001/firmenwagen/${FirmenwagenID}`, updatedWagen);
+          setIsAusleiheFormOpen(false);
+          await fetchWaegen();
+        } catch (error) {
+          console.error("Fehler beim Erstellen der Ausleihe:", error);
+        }
+      };
+      
       
 
       const openCreateForm = () => {
@@ -258,7 +285,10 @@ function useQuery() {
       const closeCreateForm = () => {
         setIsCreateFormOpen(false);
       };
-    
+      const closeCreateAusleiheForm = () => {
+        setIsAusleiheFormOpen(false);
+      };
+
 
     return (
     
@@ -316,6 +346,8 @@ function useQuery() {
           isDeleteConfirmation={isDelete}
           art = "Wagen"
         />
+
+      <AusleiheForm editedWagen={editedWagen} isOpen={isAusleiheFormOpen} onUpdate={handleCreateAusleihe} onClose={closeCreateAusleiheForm} />
        </>
     );
 };
