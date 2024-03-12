@@ -345,39 +345,34 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         <Row>
                 <Col>
                     <Card>
-                    <div className="row" style={{ marginLeft: "690px", marginTop: "15px" }}>
-                    <Dropdown as={ButtonGroup} className="col-md-4 mb-3">
-                      <Dropdown.Toggle variant="primary" className="cursor-pointer" > {selectedStatus || 'Status'}
-                        <i className="icon">
-                          <span>
-                            <FeatherIcons icon="chevron-down"></FeatherIcons>
-                          </span>
-                        </i>
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => handleStatusChange('')}>Alle</Dropdown.Item>
-                        <Dropdown.Item onClick={() => handleStatusChange('Abgeschlossen')}>Abgeschlossen</Dropdown.Item>
-                        <Dropdown.Item onClick={() => handleStatusChange('In Bearbeitung')}>In Bearbeitung</Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                      
-                      <div className="col-md-5 mb-3" style={{ marginLeft: "16px"}}>
-      
-                        <input
-                          id="dateFilter"
-                          type="date"
-                          value={selectedDate}
-                          onChange={handleDateChange}
-                          className="form-control"
-                        />
-                      </div>
+                    <div className="d-flex justify-content-end align-items-center mb-3 mt-2 mx-4">
+                          <Dropdown as={ButtonGroup} className="me-2">
+                            <Dropdown.Toggle variant="primary" className="cursor-pointer">
+                              {selectedStatus || 'Status'}
+                              <i className="icon ms-2">
+                                <FeatherIcons icon="chevron-down" />
+                              </i>
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                              <Dropdown.Item onClick={() => handleStatusChange('')}>Alle</Dropdown.Item>
+                              <Dropdown.Item onClick={() => handleStatusChange('Abgeschlossen')}>Abgeschlossen</Dropdown.Item>
+                              <Dropdown.Item onClick={() => handleStatusChange('In Bearbeitung')}>In Bearbeitung</Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
 
-                      <div className="col-md-2 mb-3">
-                        <button className="btn btn-primary" onClick={openCreateForm}>
-                          <FiPlus size={20} />
-                        </button>
-                      </div>
-                    </div>
+                          <input
+                            id="dateFilter"
+                            type="date"
+                            value={selectedDate}
+                            onChange={handleDateChange}
+                            className="form-control me-2"
+                            style={{ maxWidth: "200px" }} // Beschränke die Breite des Datumsfelds, um Überlappungen zu vermeiden
+                          />
+
+                          <button className="btn btn-primary" onClick={openCreateForm}>
+                            <FiPlus size={20} />
+                          </button>
+                        </div>
 
                         <Card.Body>
                     

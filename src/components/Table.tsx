@@ -48,7 +48,7 @@ const GlobalFilter = ({
             onChange(e.target.value);
             onSearch && onSearch(e.target.value); //<- Aufruf hinzufügen
           }}
-          placeholder={`${count} records...`}
+          placeholder={`${count} Einträge...`}
           className="form-control w-auto ms-1"
         />
       </span>

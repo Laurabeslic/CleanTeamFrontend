@@ -186,12 +186,12 @@ const Kunden = () => {
             <Row>
                 <Col>
                     <Card>
-                    <div className="row" style={{ marginLeft: "1100px", marginTop: "15px" }}>
-                        <div className="col-md-2 mb-3">
+                    <div className="d-flex justify-content-end mb-3 mt-2" style={{marginRight: "50px"}}>
+                       
                         <button className="btn btn-primary" onClick={openCreateForm}>
                           <FiPlus size={20} />
                         </button>
-                        </div>
+                        
                     </div>
                         <Card.Body>
                             <Table
