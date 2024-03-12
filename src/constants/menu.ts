@@ -399,35 +399,42 @@ const MENU_ITEMS: MenuItemTypes[] = [
 ];
 
 const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
+  // {
+  //   key: "dashboards",
+  //   icon: "home",
+  //   label: "Dashboards",
+  //   isTitle: true,
+  //   children: [
+  //     {
+  //       key: "ds-ecommerce",
+  //       label: "Ecommerce",
+  //       url: "/dashboard/ecommerce",
+  //       parentKey: "dashboards",
+  //     },
+  //     {
+  //       key: "ds-analytics",
+  //       label: "Analytics",
+  //       url: "/dashboard/analytics",
+  //       parentKey: "dashboards",
+  //     },
+  //   ],
+  // },
   {
-    key: "dashboards",
+    key: "ds-custom",
+    label: "Dashboard",
+    isTitle:false,
     icon: "home",
-    label: "Dashboards",
-    isTitle: true,
-    children: [
-      {
-        key: "ds-ecommerce",
-        label: "Ecommerce",
-        url: "/dashboard/ecommerce",
-        parentKey: "dashboards",
-      },
-      {
-        key: "ds-analytics",
-        label: "Analytics",
-        url: "/dashboard/analytics",
-        parentKey: "dashboards",
-      },
-    ],
+    url: "/dashboard/CleanTeamDashboard"
   },
   {
     key: "apps",
     icon: "layers",
-    label: "Apps",
+    label: "Verwaltung",
     isTitle: true,
     children: [
       {
         key: "apps-calendar",
-        label: "Calendar",
+        label: "Kalendar",
         isTitle: false,
         url: "/apps/calendar",
         parentKey: "apps",
@@ -440,78 +447,106 @@ const HORIZONTAL_MENU_ITEMS: MenuItemTypes[] = [
         parentKey: "apps",
       },
       {
-        key: "apps-email",
-        label: "Email",
+        key:"orders",
+        label: "Aufträge",
         isTitle: false,
-        parentKey: "apps",
-        children: [
-          {
-            key: "email-inbox",
-            label: "Inbox",
-            url: "/apps/email/inbox",
-            parentKey: "apps-email",
-          },
-          {
-            key: "email-read-email",
-            label: "Read Email",
-            url: "/apps/email/details",
-            parentKey: "apps-email",
-          },
-          {
-            key: "email-compose-email",
-            label: "Compose Email",
-            url: "/apps/email/compose",
-            parentKey: "apps-email",
-          },
-        ],
+        icon: "package",
+        url: "/orders",
       },
       {
-        key: "apps-projects",
-        label: "Projects",
-        isTitle: false,
-        parentKey: "apps",
-        children: [
-          {
-            key: "project-list",
-            label: "List",
-            url: "/apps/projects/list",
-            parentKey: "apps-projects",
-          },
-          {
-            key: "project-details",
-            label: "Details",
-            url: "/apps/projects/details",
-            parentKey: "apps-projects",
-          },
-        ],
+        key: "customers",
+        label: "Kunden",
+        isTitle:false,
+        icon: "users",
+        url: "/customers",
       },
       {
-        key: "apps-tasks",
-        label: "Tasks",
-        isTitle: false,
-        parentKey: "apps",
-        children: [
-          {
-            key: "task-list",
-            label: "List",
-            url: "/apps/tasks/list",
-            parentKey: "apps-tasks",
-          },
-          {
-            key: "task-kanban",
-            label: "Kanban Board",
-            url: "/apps/tasks/kanban",
-            parentKey: "apps-tasks",
-          },
-        ],
+        key: "employees",
+        label: "Mitarbeiter",
+        isTitle:false,
+        icon: "users",
+        url: "/employees",
       },
       {
-        key: "apps-file-manager",
-        label: "File Manager",
-        isTitle: false,
-        url: "/apps/file-manager",
-        parentKey: "apps",
+        key: "firmenwaegen",
+        label: "Firmenwägen",
+        isTitle:false,
+        icon: "truck",
+        url: "/cars",
       },
+      // {
+      //   key: "apps-email",
+      //   label: "Email",
+      //   isTitle: false,
+      //   parentKey: "apps",
+      //   children: [
+      //     {
+      //       key: "email-inbox",
+      //       label: "Inbox",
+      //       url: "/apps/email/inbox",
+      //       parentKey: "apps-email",
+      //     },
+      //     {
+      //       key: "email-read-email",
+      //       label: "Read Email",
+      //       url: "/apps/email/details",
+      //       parentKey: "apps-email",
+      //     },
+      //     {
+      //       key: "email-compose-email",
+      //       label: "Compose Email",
+      //       url: "/apps/email/compose",
+      //       parentKey: "apps-email",
+      //     },
+      //   ],
+      // },
+      // {
+      //   key: "apps-projects",
+      //   label: "Projects",
+      //   isTitle: false,
+      //   parentKey: "apps",
+      //   children: [
+      //     {
+      //       key: "project-list",
+      //       label: "List",
+      //       url: "/apps/projects/list",
+      //       parentKey: "apps-projects",
+      //     },
+      //     {
+      //       key: "project-details",
+      //       label: "Details",
+      //       url: "/apps/projects/details",
+      //       parentKey: "apps-projects",
+      //     },
+      //   ],
+      // },
+      // {
+      //   key: "apps-tasks",
+      //   label: "Tasks",
+      //   isTitle: false,
+      //   parentKey: "apps",
+      //   children: [
+      //     {
+      //       key: "task-list",
+      //       label: "List",
+      //       url: "/apps/tasks/list",
+      //       parentKey: "apps-tasks",
+      //     },
+      //     {
+      //       key: "task-kanban",
+      //       label: "Kanban Board",
+      //       url: "/apps/tasks/kanban",
+      //       parentKey: "apps-tasks",
+      //     },
+      //   ],
+      // },
+      // {
+      //   key: "apps-file-manager",
+      //   label: "File Manager",
+      //   isTitle: false,
+      //   url: "/apps/file-manager",
+      //   parentKey: "apps",
+      // },
     ],
   },
   // {

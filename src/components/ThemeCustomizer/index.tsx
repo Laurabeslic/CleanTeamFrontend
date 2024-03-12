@@ -231,7 +231,7 @@ const ThemeCustomizer = () => {
    * Reset everything
    */
   const reset = () => {
-    changeLayoutType(layoutConstants.LayoutTypes.LAYOUT_TWO_COLUMN);
+    changeLayoutType(layoutConstants.LayoutTypes.LAYOUT_VERTICAL);
     changeWidthMode(layoutConstants.LayoutWidth.LAYOUT_WIDTH_FLUID);
     changeMenuPosition(layoutConstants.MenuPositions.MENU_POSITION_FIXED);
     changeLeftSidebarTheme(
@@ -251,8 +251,7 @@ const ThemeCustomizer = () => {
       </h6>
       <div className="p-3">
         <div className="alert alert-warning" role="alert">
-          <strong>Customize </strong> the overall color scheme, sidebar menu,
-          etc.
+          <strong>Customize </strong>
         </div>
 
         {/* Layouts */}
@@ -270,13 +269,13 @@ const ThemeCustomizer = () => {
         />
 
         {/* Menu Posiotions */}
-        {disableMenuPositions && (
+        {/* {disableMenuPositions && (
           <MenuPositions
             menuPosition={menuPosition}
             changeMenuPosition={changeMenuPosition}
             layoutConstants={layoutConstants.MenuPositions}
           />
-        )}
+        )} */}
 
         {/* Left Sidebar */}
         {disableSidebarTheme && (
@@ -297,12 +296,12 @@ const ThemeCustomizer = () => {
         )}
 
         {/* User Info */}
-        {disableSidebarUser && (
+        {/* {disableSidebarUser && (
           <SidebarUserInfo
             toggleLeftSidebarUserInfo={toggleLeftSidebarUserInfo}
             showSidebarUserInfo={showSidebarUserInfo}
           />
-        )}
+        )} */}
 
         {/* Topbar */}
         <TopbarTheme

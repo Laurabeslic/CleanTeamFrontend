@@ -45,7 +45,7 @@ const LayoutTypes = ({
         </Form.Check.Label>
       </Form.Check>
 
-      <Form.Check className="form-check form-switch mb-1">
+      {/* <Form.Check className="form-check form-switch mb-1">
         <Form.Check.Input
           type="radio"
           onChange={(e) => changeLayoutType(e.target.value)}
@@ -57,9 +57,9 @@ const LayoutTypes = ({
         <Form.Check.Label htmlFor="detached-layout">
           Detached Layout
         </Form.Check.Label>
-      </Form.Check>
+      </Form.Check> */}
 
-      <Form.Check className="form-check form-switch mb-1">
+      {/* <Form.Check className="form-check form-switch mb-1">
         <Form.Check.Input
           type="radio"
           onChange={(e) => changeLayoutType(e.target.value)}
@@ -71,7 +71,7 @@ const LayoutTypes = ({
         <Form.Check.Label htmlFor="two-column-layout">
           Two Column Layout
         </Form.Check.Label>
-      </Form.Check>
+      </Form.Check> */}
     </>
   );
 };

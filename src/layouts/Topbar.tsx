@@ -18,8 +18,8 @@ import { LayoutTypes, SideBarTypes } from "../constants/layout";
 import MaximizeScreen from "../components/MaximizeScreen";
 import AppsDropdown from "../components/AppsDropdown/";
 import SearchDropdown from "../components/SearchDropdown";
-import LanguageDropdown from "../components/LanguageDropdown";
-import NotificationDropdown from "../components/NotificationDropdown";
+//import LanguageDropdown from "../components/LanguageDropdown";
+//import NotificationDropdown from "../components/NotificationDropdown";
 import ProfileDropdown from "../components/ProfileDropdown";
 import CreateNew from "../components/CreateNew";
 
@@ -242,12 +242,12 @@ const Topbar = ({
             <li className="dropdown d-none d-lg-inline-block topbar-dropdown">
               <AppsDropdown />
             </li>
-            <li className="dropdown d-none d-lg-inline-block topbar-dropdown">
+            {/* <li className="dropdown d-none d-lg-inline-block topbar-dropdown">
               <LanguageDropdown />
             </li>
             <li className="dropdown notification-list topbar-dropdown">
               <NotificationDropdown notifications={Notifications} />
-            </li>
+            </li> */}
             <li className="dropdown notification-list topbar-dropdown">
             <ProfileDropdown
                   profilePic={`https://ui-avatars.com/api/?name=${loggedInUser.user.firstName}+${loggedInUser.user.lastName}&background=random`}
