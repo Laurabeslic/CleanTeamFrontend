@@ -54,9 +54,9 @@ const BottomLink = () => {
     <Row className="mt-3">
       <Col xs={12} className="text-center">
         <p className="text-muted">
-          {t("Back to")}{" "}
+          {t("Zurück zu")}{" "}
           <Link to={"/auth/login"} className="text-primary fw-bold ms-1">
-            {t("Sign In")}
+            {t("Anmeldung")}
           </Link>
         </p>
       </Col>
@@ -96,10 +96,10 @@ const Logout = () => {
             </div>
           </div>
 
-          <h4 className="h4 mb-0 mt-2">{t("See you again !")}</h4>
+          <h4 className="h4 mb-0 mt-2">{t("Auf Wiedersehen !")}</h4>
 
           <p className="text-muted mt-1 mb-2">
-            {t("You are now successfully sign out.")}
+            {t("Sie haben sich erfolgreich abgemeldet.")}
           </p>
         </div>
       </AuthLayout>
