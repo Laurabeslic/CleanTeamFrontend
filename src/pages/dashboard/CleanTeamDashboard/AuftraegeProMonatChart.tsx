@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Dropdown } from "react-bootstrap";
-import Chart from "react-apexcharts";
+import Chart from "react-apexcharts"; 
 import { ApexOptions } from "apexcharts";
 
-interface AuftragsChartProps {
+interface ChartProps {
   apiUrl: string;
 }
 
-const AuftragsChart: React.FC<AuftragsChartProps> = ({ apiUrl }) => {
+const AuftraegeProMonatChart: React.FC<ChartProps> = ({ apiUrl }) => {
   const [auftraege, setAuftraege] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -29,12 +29,12 @@ const AuftragsChart: React.FC<AuftragsChartProps> = ({ apiUrl }) => {
 
   if (loading) return <div>Loading...</div>;
 
-  const months = Array.from(Array(12).keys()); // Erstelle ein Array von 0 bis 11 (für die Monate Januar bis Dezember)
+  const months = Array.from(Array(12).keys()); // Array von 0 bis 11 (für die Monate Januar bis Dezember)
   const labels = months.map((month) => new Date(0, month).toLocaleString("en-us", { month: "short" }));
 
   const data = months.map((month) => auftraege.filter((auftrag) => new Date(auftrag.Datum).getMonth() === month).length);
 
-  const apexDonutChartOpts: ApexOptions = {
+  const apexChartOpts: ApexOptions = {
     chart: {
       height: 329,
       type: "area",
@@ -103,8 +103,8 @@ const AuftragsChart: React.FC<AuftragsChartProps> = ({ apiUrl }) => {
         <h5 className="card-title mb-0 header-title">Aufträge pro Monat</h5>
 
         <Chart
-          options={apexDonutChartOpts}
-          series={apexDonutChartOpts.series}
+          options={apexChartOpts}
+          series={apexChartOpts.series}
           type="area"
           className="apex-charts mt-3"
           height={329}
@@ -115,4 +115,4 @@ const AuftragsChart: React.FC<AuftragsChartProps> = ({ apiUrl }) => {
   );
 };
 
-export default AuftragsChart;
+export default AuftraegeProMonatChart;

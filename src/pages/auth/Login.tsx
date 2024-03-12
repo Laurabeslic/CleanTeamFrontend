@@ -67,8 +67,8 @@ const Login = () => {
     */
   const schemaResolver = yupResolver(
     yup.object().shape({
-      email: yup.string().required(t("Please enter Email")),
-      password: yup.string().required(t("Please enter Password")),
+      email: yup.string().required(t("Bitte E-Mail eingeben!")),
+      password: yup.string().required(t("Bitte Passwort eingeben!")),
       checkbox: yup.bool().oneOf([true]),
     })
   );
@@ -107,12 +107,11 @@ const Login = () => {
           {t("Geben Sie Ihre E-Mail Adresse und Ihr Passwort ein, um auf das Panel zuzugreifen.")}
         </p>
 
-        {error && (
-          <Alert variant="danger" className="my-2">
-            {error}
-          </Alert>
-        )}
-
+        <div className="form-container" style={{ minHeight: "50px" }}>
+        <Alert variant="danger" className={error ? "my-2" : "mb-4 my-2 d-none"}>
+        {error}
+      </Alert>
+  </div>
         <VerticalForm<UserData>
           onSubmit={onSubmit}
           resolver={schemaResolver}
@@ -152,28 +151,28 @@ const Login = () => {
             defaultChecked
           /> */}
 
-          <div className="mb-3 text-center d-grid">
+          <div className="mb-5 text-center d-grid">
             <Button type="submit" disabled={loading}>
               {t("Login")}
             </Button>
           </div>
         </VerticalForm>
 
-        {/* <div className="py-3 text-center">
-          <span className="fs-16 fw-bold">{t("OR")}</span>
+        <div className="py-3 text-center">
+          {/* <span className="fs-16 fw-bold">{t("OR")}</span> */}
         </div>
         <Row>
           <Col xs={12} className="text-center">
-            <Link to="#" className="btn btn-white mb-2 mb-sm-0 me-1">
+            {/* <Link to="#" className="btn btn-white mb-2 mb-sm-0 me-1">
               <i className="uil uil-google icon-google me-2"></i>
               {t("With Google")}
-            </Link>
-            <Link to="#" className="btn btn-white mb-2 mb-sm-0">
+            </Link> 
+             <Link to="#" className="btn btn-white mb-2 mb-sm-0">
               <i className="uil uil-facebook me-2 icon-fb"></i>
               {t("With Facebook")}
-            </Link>
+            </Link> */}
           </Col>
-        </Row> */}
+        </Row>
       </AuthLayout>
     </>
   );
