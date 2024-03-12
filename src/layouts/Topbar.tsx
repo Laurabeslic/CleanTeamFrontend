@@ -14,7 +14,7 @@ import { RootState, AppDispatch } from "../redux/store";
 import { LayoutTypes, SideBarTypes } from "../constants/layout";
 
 // components
-import TopbarSearch from "../components/TopbarSearch";
+//import TopbarSearch from "../components/TopbarSearch";
 import MaximizeScreen from "../components/MaximizeScreen";
 import AppsDropdown from "../components/AppsDropdown/";
 import SearchDropdown from "../components/SearchDropdown";
@@ -229,9 +229,9 @@ const Topbar = ({
           )}
 
           <ul className="list-unstyled topnav-menu float-end mb-0">
-            <li className="d-none d-lg-block">
+            {/* <li className="d-none d-lg-block">
               <TopbarSearch items={SearchResults} />
-            </li>
+            </li> */}
 
             <li className="dropdown d-inline-block d-lg-none">
               <SearchDropdown />

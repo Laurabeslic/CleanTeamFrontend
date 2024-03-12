@@ -14,38 +14,46 @@ import dribbbleIcon from "./icons/dribbble.png";
 import dropboxIcon from "./icons/dropbox.png";
 import githubIcon from "./icons/github.png";
 import gSuiteIcon from "./icons/g-suite.png";
+import outlookIcon from "./icons/outlook-logo.png";
 
 // get the apps
 const Apps = [
-  {
-    name: "Slack",
-    icon: slackIcon,
-    redirectTo: "/",
-  },
-  {
-    name: "GitHub",
-    icon: githubIcon,
-    redirectTo: "/",
-  },
-  {
-    name: "Dribbble",
-    icon: dribbbleIcon,
-    redirectTo: "/",
-  },
-  {
-    name: "Bitbucket",
-    icon: bitbucketIcon,
-    redirectTo: "/",
-  },
+  // {
+  //   name: "Slack",
+  //   icon: slackIcon,
+  //   redirectTo: "/",
+  // },
+  // {
+  //   name: "GitHub",
+  //   icon: githubIcon,
+  //   redirectTo: "/",
+  // },
+  // {
+  //   name: "Dribbble",
+  //   icon: dribbbleIcon,
+  //   redirectTo: "/",
+  // },
+  // {
+  //   name: "Bitbucket",
+  //   icon: bitbucketIcon,
+  //   redirectTo: "/",
+  // },
   {
     name: "Dropbox",
     icon: dropboxIcon,
-    redirectTo: "/",
+    redirectTo: "https://www.dropbox.com/", // Redirect Dropbox to the actual Dropbox URL
+    newTab: true, // Open in a new tab
   },
+  // {
+  //   name: "G Suite",
+  //   icon: gSuiteIcon,
+  //   redirectTo: "/",
+  // },
   {
-    name: "G Suite",
-    icon: gSuiteIcon,
-    redirectTo: "/",
+    name: "Outlook", // Add Outlook
+    icon: outlookIcon,
+    redirectTo: "https://outlook.com", // Set Outlook redirect link
+    newTab: true, // Open in a new tab
   },
 ];
 
@@ -76,14 +84,22 @@ const AppsDropdown = () => {
         <FeatherIcon icon="grid" />
       </Dropdown.Toggle>
 
-      <Dropdown.Menu className="dropdown-lg dropdown-menu-end p-0">
+      <Dropdown.Menu style={{ minWidth: "200px" }} className="dropdown-menu-end p-0 dropdown-menu-m">
         <div className="p-1">
           {(appsChunks || []).map((chunk, idx) => (
             <div className="row g-0" key={idx}>
               {(chunk || []).map((item, i) => (
                 <div className="col" key={i}>
-                  <Link className="dropdown-icon-item" to={item.redirectTo}>
-                    <img src={item.icon} alt="" />
+                  <Link
+                    className="dropdown-icon-item"
+                    to={item.redirectTo}
+                    target={item.newTab ? "_blank" : "_self"} // Open in a new tab if specified
+                  >
+                    {item.name === "Outlook" ? (
+                      <img src={item.icon} alt="" style={{ width: "40px", height: "auto" }} />
+                    ) : (
+                      <img src={item.icon} alt="" />
+                    )}
                     <span>{item.name}</span>
                   </Link>
                 </div>
