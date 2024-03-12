@@ -306,7 +306,7 @@ function useQuery() {
         <Row>
                 <Col>
                     <Card>
-                    <div className="row" style={{ marginLeft: "1050px", marginTop: "15px" }}>
+                    <div className="row" style={{ marginLeft: "1100px", marginTop: "15px" }}>
 
                       <div className="col-md-8 mb-3">
                       {isAdmin && (

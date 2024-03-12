@@ -361,7 +361,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
                       </Dropdown.Menu>
                     </Dropdown>
                       
-                      <div className="col-md-5 mb-3">
+                      <div className="col-md-5 mb-3" style={{ marginLeft: "16px"}}>
       
                         <input
                           id="dateFilter"
