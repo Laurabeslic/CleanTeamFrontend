@@ -34,6 +34,8 @@ const Employees = React.lazy(() => import("../pages/Mitarbeiter/Mitarbeiter"));
 
 const Cars = React.lazy(() => import("../pages/Firmenwaegen/Firmenwaegen"));
 
+const Keys = React.lazy(() => import("../pages/Schluessel/Schluessel"));
+
 
 // dashboard
 const EcommerceDashboard = React.lazy(
@@ -352,6 +354,12 @@ const extrapagesRoutes: RoutesProps = {
       path: "/cars/:firmenwagenId",
       name: "FirmenwagenDetail",
       element: <FirmenwagenDetail />,
+      route: PrivateRoute,
+    },
+    {
+      path: "/schluessel/",
+      name: "Keys",
+      element: <Keys />,
       route: PrivateRoute,
     },
   ],

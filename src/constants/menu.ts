@@ -216,6 +216,13 @@ const MENU_ITEMS: MenuItemTypes[] = [
     icon: "truck",
     url: "/cars",
   },
+  {
+    key: "schluessel",
+    label: "Schlüssel",
+    isTitle:false,
+    icon: "lock",
+    url: "/schluessel",
+  },
   // { key: "components", label: "Components", isTitle: true },
   // {
   //   key: "ui-elements",
