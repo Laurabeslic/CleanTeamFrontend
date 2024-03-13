@@ -120,6 +120,9 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
           Header: "Schlüssel",
           accessor: "schluessel",
           sort: false,
+          Cell: ({ value, row }: { value: number, row: { original: { id: string } } }) => (
+            <Link to={`/schluessel?search=${row.original.id}`}>{value}</Link>
+        )
         },
         {
           Header: "",

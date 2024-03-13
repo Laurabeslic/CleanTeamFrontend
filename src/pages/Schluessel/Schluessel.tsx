@@ -3,7 +3,7 @@ import axios from "axios";
 import { Row, Col, Card, Dropdown} from "react-bootstrap";
 import Table from "../../components/Table";
 import StatisticsWidget from "../widgets/StatisticsWidget";
-import { Link } from 'react-router-dom';
+import { Link , useLocation } from 'react-router-dom';
 import { FiPlus } from 'react-icons/fi';
 import CreateForm from "./CreateSchluesselForm";
 //import CreateVertragForm from "./CreateVertragForm";
@@ -11,7 +11,14 @@ import CreateForm from "./CreateSchluesselForm";
 import DeleteConfirmationModal from '../customers/DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
 
+
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
+
 const Schluessel = () => {
+    const query = useQuery();
+    const searchValue = query.get("search") || "";
     const [totalSchluessel, setTotalSchluessel] = useState(0);
     const [schluesselData, setSchluesselData] = useState<any[]>([]);
     const [editedSchluessel, setEditedSchluessel] = useState<any>(null);
@@ -79,12 +86,12 @@ const Schluessel = () => {
     useEffect(() => {
 
         fetchSchluessel();
-    }, []);
+    }, [searchValue]);
 
     const fetchSchluessel = async () => {
         try {
             const response = await axios.get("http://localhost:3001/auftrag/schluessel");
-            const formattedData = response.data.map((key: any) => ({
+            let formattedData = response.data.map((key: any) => ({
                 Schlüsselcode: key.Schlüsselcode,
                 Schlüsseltyp: key.Schlüsseltyp,
                 Zustand: key.Zustand,
@@ -92,6 +99,10 @@ const Schluessel = () => {
                 Auftrag: key.AuftragsID,
                 Übergabedatum: new Date(key.Übergabedatum).toLocaleDateString()
             }));
+
+            if (searchValue) {
+                formattedData = formattedData.filter((schluessel: { Auftrag: string | string[]; }) => schluessel.Auftrag.includes(searchValue));
+            }
 
             setTotalSchluessel(formattedData.length);
             setSchluesselData(formattedData);

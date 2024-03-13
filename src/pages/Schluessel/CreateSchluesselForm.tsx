@@ -157,6 +157,7 @@ const CreateForm: React.FC<CreateSchluesselFormProps> = ({ isOpen, onCreate, onC
                 </label>
                 <DatePicker
                 id="datum"
+                dateFormat="dd.MM.yyyy"
                 className={`form-control ${fieldErrors['selectedDate'] ? 'is-invalid' : ''}`}
                 selected={selectedDate}
                 onChange={(date: Date) => setSelectedDate(date)}
