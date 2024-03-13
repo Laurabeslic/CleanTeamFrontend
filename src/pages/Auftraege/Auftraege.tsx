@@ -80,6 +80,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         Header: "Kunde",
         accessor: "kunde",
         sort: false,
+        Cell: ({ value }: { value: string }) => <Link to={`/customers/${value}`}>{value}</Link>
       },
       {
           Header: "Status",
@@ -117,7 +118,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         },
         {
           Header: "Schlüssel",
-          accessor: "schlüssel",
+          accessor: "schluessel",
           sort: false,
         },
         {
@@ -165,30 +166,6 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
     console.log(ordersData);
 
     useEffect(() => {
-        async function fetchOrders() {
-            try {
-                const response = await axios.get("http://localhost:3001/auftrag/");
-                const formattedData = response.data.map((order: any) => ({
-                    id: order.AuftragsID,
-                    details: order.Details,
-                    kunde: order.KundenID,
-                    status: order.Status,
-                    datum: new Date(order.Datum).toLocaleDateString(),
-                    vertrag: order.VertragID,
-                    verantwortlicher: order.UserID,
-                    schluessel: order.Schlüssel
-                }));
-
-                setTotalOrders(formattedData.length);
-                setInProgressOrders(formattedData.filter((order: { status: string; }) => order.status === "In Bearbeitung").length);
-                setCompletedOrders(formattedData.filter((order: { status: string; }) => order.status === "Abgeschlossen").length);
-
-                    
-                setOrdersData(formattedData);
-            } catch (error) {
-                console.error("Es gab einen Fehler beim Abrufen der Aufträge:", error);
-            }
-        }
 
         fetchOrders();
     }, []);
@@ -235,7 +212,8 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
             status: order.Status,
             datum: new Date(order.Datum).toLocaleDateString(),
             vertrag: order.VertragID,
-            verantwortlicher: order.UserID
+            verantwortlicher: order.UserID,
+            schluessel: order.Schlüssel.length
         }));
 
         if (searchValue) {

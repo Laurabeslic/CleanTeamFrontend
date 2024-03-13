@@ -248,6 +248,7 @@ const CreateForm: React.FC<CreateAuftragFormProps> = ({ isOpen, onCreate, onClos
                 className={`form-control ${fieldErrors['selectedDate'] ? 'is-invalid' : ''}`}
                 selected={selectedDate}
                 onChange={(date: Date) => setSelectedDate(date)}
+                dateFormat="dd.MM.yyyy"
                 />
                 </div>
             </div>

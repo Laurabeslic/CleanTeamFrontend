@@ -6,6 +6,7 @@ import { Badge, Button, ButtonGroup, Card, Col, Dropdown, Row } from 'react-boot
 import { WithMarkers } from '../maps/GoogleMaps';
 import { GoogleApiWrapper } from 'google-maps-react';
 import Statistics from "../apps/Projects/Detail/Statistics";
+import { Link } from 'react-router-dom';
 
 
 
@@ -133,11 +134,13 @@ function OrderDetail({ match, google }: any) {
 
                             <Row className="py-1">
                                 <Col md={6} xl={4}>
+                                <Link to={`/customers/${Kunde ? Kunde.KundenID : ''}`}>
                                     <Statistics
                                         icon="users"
                                         stats={Kunde ? Kunde.Name : "Kunde nicht gefunden"}
                                         description="Kunde"
                                     />
+                                </Link>
                                 </Col>
                                 <Col sm={6} xl={4}>
                                     <Statistics
