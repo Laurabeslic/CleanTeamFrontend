@@ -6,7 +6,6 @@ import StatisticsWidget from "../widgets/StatisticsWidget";
 import { Link , useLocation } from 'react-router-dom';
 import { FiPlus } from 'react-icons/fi';
 import CreateForm from "./CreateSchluesselForm";
-//import CreateVertragForm from "./CreateVertragForm";
 import EditForm from "./EditSchluesselForm";
 import DeleteConfirmationModal from '../customers/DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
@@ -73,11 +72,8 @@ const Schluessel = () => {
                 <Dropdown.Menu>
                   <Dropdown.Item onClick={() => handleEditSchluessel(row.original)}>Bearbeiten</Dropdown.Item> 
                  
-                  <Dropdown.Item >Löschen</Dropdown.Item>
-                  {/* onClick={() => handleDeleteKunde(row.original)} */}
-                  <Dropdown.Divider />
-                  <Dropdown.Item>Vertrag erstellen</Dropdown.Item>
-                  {/* onClick={() => handleVertrag(row.original)} */}
+                  <Dropdown.Item onClick={() => handleDeleteSchluessel(row.original)}>Löschen</Dropdown.Item>
+                 
                 </Dropdown.Menu>
               </Dropdown>
             ),
@@ -140,35 +136,33 @@ const Schluessel = () => {
           }
       };
 
-    //   const handleDeleteConfirmed = async () => {
-    //     try {
-    //       if (editedSchluessel) {
-    //         const response = await axios.delete(`http://localhost:3001/auftrag/${editedKunde.KundenID}`);
-    //         console.log('Kunde gelöscht:', response.data);
-      
-    //         await fetchKunden();
-    //       }
-    //     } catch (error) {
-    //       console.error('Fehler beim Löschen des Kunden:', error);
-    //     } finally {
-    //       setIsDelete(false);
-    //       setEditedKunde(null);
-    //     }
-    //   };
+      const handleDeleteConfirmed = async () => {
+        try {
+          if (editedSchluessel) {
+            const dataToSend = { auftragsID: editedSchluessel.Auftrag, schlüsselcode: editedSchluessel.Schlüsselcode };
+            console.log(dataToSend);
+            const response = await axios.post(`http://localhost:3001/auftrag/schluessel/delete`, dataToSend);
+            console.log('Schlüssel gelöscht:', response.data);
+            await fetchSchluessel();
+          }
+        } catch (error) {
+          console.error('Fehler beim Löschen des Schlüssels:', error);
+        } finally {
+          setIsDelete(false);
+          setEditedSchluessel(null);
+        }
+      };
 
       const handleEditSchluessel = (schluessel: any) => {
         setEditedSchluessel(schluessel);
         setIsEditFormOpen(true);
       };
 
-    //   const handleDeleteKunde = (kunde: any) => {
-    //     setEditedKunde(kunde);
-    //     setIsDelete(true);
-    //   };
-    //   const handleVertrag = (kunde: any) => {
-    //     setEditedKunde(kunde); 
-    //     setIsCreateVertragFormOpen(true);
-    //   };
+      const handleDeleteSchluessel = (schluessel: any) => {
+        setEditedSchluessel(schluessel);
+        setIsDelete(true);
+      };
+     
 
     const openCreateForm = () => {
         setIsCreateFormOpen(true);
@@ -227,13 +221,13 @@ const Schluessel = () => {
         
 
             <EditForm isOpen={isEditFormOpen} editedSchluessel={editedSchluessel} onUpdate={handleUpdateSchluessel} onClose={() => setIsEditFormOpen(false)}/>
-            {/* <DeleteConfirmationModal
+            <DeleteConfirmationModal
                 isOpen={isDelete}
                 onRequestClose={() => setIsDelete(false)}
                 onDeleteConfirmed={handleDeleteConfirmed}
                 isDeleteConfirmation={isDelete}
                 art="Schlüssel"
-             /> */}
+             />
         </>
     );
 };

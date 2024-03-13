@@ -49,8 +49,10 @@ const EditOrderForm: React.FC<EditSchluesselFormProps> = ({ editedSchluessel, is
   };
   const fetchSchluesselArray = async () => {
     try {
+      if(editedSchluessel?.Schlüsselcode !== undefined){
       const response = await axios.get(`http://localhost:3001/auftrag/${editedSchluessel?.Auftrag}`);
       setEditedSchluesselArray(response?.data.Schlüssel);
+      }
     } catch (error) {
       console.error("Fehler beim Abrufen des Schlüsselarrays:", error);
     }
