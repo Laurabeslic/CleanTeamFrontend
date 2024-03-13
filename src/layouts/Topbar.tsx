@@ -125,31 +125,31 @@ const SearchResults = [
 ];
 
 const otherOptions = [
+  // {
+  //   id: 1,
+  //   label: "New Projects",
+  //   icon: "uil uil-bag",
+  // },
   {
     id: 1,
-    label: "New Projects",
-    icon: "uil uil-bag",
-  },
-  {
-    id: 2,
-    label: "Create Users",
+    label: "Neuer Benutzer",
     icon: "uil uil-user-plus",
   },
-  {
-    id: 3,
-    label: "Revenue Report",
-    icon: "uil uil-chart-pie",
-  },
-  {
-    id: 4,
-    label: "Settings",
-    icon: "uil uil-cog",
-  },
-  {
-    id: 4,
-    label: "Help & Support",
-    icon: "uil uil-question-circle",
-  },
+  // {
+  //   id: 3,
+  //   label: "Revenue Report",
+  //   icon: "uil uil-chart-pie",
+  // },
+  // {
+  //   id: 4,
+  //   label: "Settings",
+  //   icon: "uil uil-cog",
+  // },
+  // {
+  //   id: 4,
+  //   label: "Help & Support",
+  //   icon: "uil uil-question-circle",
+  // },
 ];
 
 interface TopbarProps {
