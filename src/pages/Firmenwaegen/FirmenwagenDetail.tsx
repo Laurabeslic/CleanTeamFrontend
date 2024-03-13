@@ -110,6 +110,7 @@ function FirmenwagenDetail({ match, google }: any) {
                 <Col lg={6}>
                 <Card>
                         <Card.Body>
+                             <h4 className="mb-3">Weitere Informationen</h4>
                             <div className="details-section">
                               
                                 <p><strong>Baujahr:</strong> {firmenwagen.Baujahr}</p>

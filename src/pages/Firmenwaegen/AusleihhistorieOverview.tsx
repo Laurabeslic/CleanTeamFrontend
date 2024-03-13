@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Button, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 interface AusleihhistorieEntry {
   Ausleiher: string;
@@ -50,7 +51,9 @@ const AusleihhistorieTable: React.FC<FirmenwagenDetailProps> = ({ ausleihhistori
             <tbody>
               {filteredAusleihhistorie.map((entry, index) => (
                 <tr key={index}>
-                  <td>{entry.Ausleiher}</td>
+                 <td>
+                    <Link to={`/employees/${entry.Ausleiher}`}>{entry.Ausleiher}</Link>
+                  </td>
                   <td>{new Date(entry.Ausleihdatum).toLocaleDateString()}</td>
                   <td>
                     {entry.Rückgabedatum

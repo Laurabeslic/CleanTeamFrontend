@@ -236,6 +236,7 @@ const CreateForm: React.FC<CreateFirmenwagenFormProps> = ({ isOpen, onCreate, on
                 className="form-control"
                 selected={letzteWartung}
                 onChange={(date: Date) => setLetzteWartung(date)}
+                dateFormat="dd.MM.yyyy"
                 />
                 </div>
           </form>
