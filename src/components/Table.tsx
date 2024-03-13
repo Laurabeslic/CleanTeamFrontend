@@ -39,7 +39,7 @@ const GlobalFilter = ({
   return (
     <div className={classNames(searchBoxClass)}>
       <span className="d-flex align-items-center">
-        Search :{" "}
+        Suche :{" "}
         <input
           type="search"
           value={value || ""}

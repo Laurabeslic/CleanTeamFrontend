@@ -5,10 +5,10 @@ import Table from "../../components/Table";
 import StatisticsWidget from "../widgets/StatisticsWidget";
 import { Link } from 'react-router-dom';
 import { FiPlus } from 'react-icons/fi';
-//import CreateForm from "./CreateKundeForm";
+import CreateForm from "./CreateSchluesselForm";
 //import CreateVertragForm from "./CreateVertragForm";
 //import EditForm from "./EditKundeForm";
-//import DeleteConfirmationModal from './DeleteConfirmationModal';
+import DeleteConfirmationModal from '../customers/DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
 
 const Schluessel = () => {
@@ -100,28 +100,16 @@ const Schluessel = () => {
         }
       };
 
-    // const handleCreateCustomer = async (newKundeData: any) => {
-    //     try {
-            
-    //         const response = await axios.post("http://localhost:3001/Kunde/", newKundeData);
-    //         setIsCreateFormOpen(false);
-    //         await fetchKunden();
-    //       } catch (error) {
-    //         console.error("Fehler beim Erstellen des Kunden:", error);
-    //       }
-    //   };
-
-    //   const handleCreateVertrag = async (newVertragData: any) => {
-    //     try {
-            
-    //         const response = await axios.post("http://localhost:3001/Vertrag/", newVertragData);
-    //         setIsCreateVertragFormOpen(false);
-    //         await fetchKunden();
-    //       } catch (error) {
-    //         console.error("Fehler beim Erstellen des Vertrages:", error);
-    //       }
-        
-    //   };
+    const handleCreateSchluessel = async (newSchluesselData: any) => {
+        try {
+            console.log(newSchluesselData);
+           const response = await axios.post(`http://localhost:3001/auftrag/${newSchluesselData.AuftragsID}/schluessel`, newSchluesselData);
+            setIsCreateFormOpen(false);
+            await fetchSchluessel();
+          } catch (error) {
+            console.error("Fehler beim Erstellen des Schlüssels:", error);
+          }
+      };
 
     //   const handleUpdateKunde = async (kundenId: string, updatedData: { Name: string; Telefon: string; Email: string;Adresse: { Strasse: string; PLZ: string; Stadt: string; Land: string } }) => {
     //     try {
@@ -140,8 +128,8 @@ const Schluessel = () => {
 
     //   const handleDeleteConfirmed = async () => {
     //     try {
-    //       if (editedKunde) {
-    //         const response = await axios.delete(`http://localhost:3001/Kunde/${editedKunde.KundenID}`);
+    //       if (editedSchluessel) {
+    //         const response = await axios.delete(`http://localhost:3001/auftrag/${editedKunde.KundenID}`);
     //         console.log('Kunde gelöscht:', response.data);
       
     //         await fetchKunden();
@@ -216,17 +204,16 @@ const Schluessel = () => {
                 </Col>
             </Row>
 
-            {/* <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateCustomer} onClose={closeCreateForm} />
-            
-            <CreateVertragForm editedKunde={editedKunde} isOpen={isCreateVertragFormOpen} onCreate={handleCreateVertrag} onClose={closeCreateVertragForm} />
+            <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateSchluessel} onClose={closeCreateForm} />
+        
 
-            <EditForm isOpen={isEditFormOpen} editedKunde={editedKunde} onUpdate={handleUpdateKunde} onClose={() => setIsEditFormOpen(false)} />
-            <DeleteConfirmationModal
+            {/* <EditForm isOpen={isEditFormOpen} editedKunde={editedKunde} onUpdate={handleUpdateKunde} onClose={() => setIsEditFormOpen(false)} /> */}
+            {/* <DeleteConfirmationModal
                 isOpen={isDelete}
                 onRequestClose={() => setIsDelete(false)}
                 onDeleteConfirmed={handleDeleteConfirmed}
                 isDeleteConfirmation={isDelete}
-                art="Kunde"
+                art="Schlüssel"
              /> */}
         </>
     );

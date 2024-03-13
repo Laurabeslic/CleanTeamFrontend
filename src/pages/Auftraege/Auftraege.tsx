@@ -116,6 +116,11 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
           sort: false,
         },
         {
+          Header: "Schlüssel",
+          accessor: "schlüssel",
+          sort: false,
+        },
+        {
           Header: "",
           accessor: "actions",
           Cell: ({ row }: { row: { original: { id: string } } }) => (
@@ -170,7 +175,8 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
                     status: order.Status,
                     datum: new Date(order.Datum).toLocaleDateString(),
                     vertrag: order.VertragID,
-                    verantwortlicher: order.UserID
+                    verantwortlicher: order.UserID,
+                    schluessel: order.Schlüssel
                 }));
 
                 setTotalOrders(formattedData.length);
