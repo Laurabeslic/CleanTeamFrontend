@@ -26,6 +26,7 @@ const Schluessel = () => {
     const [isCreateVertragFormOpen, setIsCreateVertragFormOpen] = useState(false);
     const [isEditFormOpen, setIsEditFormOpen] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
+    const [selectedDate, setSelectedDate] = useState('');
 
     const columns = [
         {
@@ -86,7 +87,7 @@ const Schluessel = () => {
     useEffect(() => {
 
         fetchSchluessel();
-    }, [searchValue]);
+    }, [searchValue, selectedDate]);
 
     const fetchSchluessel = async () => {
         try {
@@ -103,7 +104,9 @@ const Schluessel = () => {
             if (searchValue) {
                 formattedData = formattedData.filter((schluessel: { Auftrag: string | string[]; }) => schluessel.Auftrag.includes(searchValue));
             }
-
+            if (selectedDate) {
+                formattedData = formattedData.filter((schluessel: { Übergabedatum: string }) => schluessel.Übergabedatum === new Date(selectedDate).toLocaleDateString());
+              }
             setTotalSchluessel(formattedData.length);
             setSchluesselData(formattedData);
         } catch (error) {
@@ -192,7 +195,15 @@ const Schluessel = () => {
                 <Col>
                     <Card>
                     <div className="d-flex justify-content-end mb-3 mt-2" style={{marginRight: "50px"}}>
-                       
+                    <input
+                            id="dateFilter"
+                            type="date"
+                            value={selectedDate}
+                            onChange={(e) => setSelectedDate(e.target.value)}
+                            className="form-control me-2"
+                            style={{ maxWidth: "200px" }} // Beschränke die Breite des Datumsfelds, um Überlappungen zu vermeiden
+                          />
+
                         <button className="btn btn-primary" onClick={openCreateForm}>
                           <FiPlus size={20} />
                         </button>
