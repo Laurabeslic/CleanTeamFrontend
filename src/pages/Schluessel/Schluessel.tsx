@@ -7,7 +7,7 @@ import { Link , useLocation } from 'react-router-dom';
 import { FiPlus } from 'react-icons/fi';
 import CreateForm from "./CreateSchluesselForm";
 //import CreateVertragForm from "./CreateVertragForm";
-//import EditForm from "./EditKundeForm";
+import EditForm from "./EditSchluesselForm";
 import DeleteConfirmationModal from '../customers/DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
 
@@ -70,8 +70,8 @@ const Schluessel = () => {
                 </Dropdown.Toggle>
         
                 <Dropdown.Menu>
-                  <Dropdown.Item >Bearbeiten</Dropdown.Item> 
-                  {/* onClick={() => handleEditKunde(row.original)} */}
+                  <Dropdown.Item onClick={() => handleEditSchluessel(row.original)}>Bearbeiten</Dropdown.Item> 
+                 
                   <Dropdown.Item >Löschen</Dropdown.Item>
                   {/* onClick={() => handleDeleteKunde(row.original)} */}
                   <Dropdown.Divider />
@@ -122,20 +122,20 @@ const Schluessel = () => {
           }
       };
 
-    //   const handleUpdateKunde = async (kundenId: string, updatedData: { Name: string; Telefon: string; Email: string;Adresse: { Strasse: string; PLZ: string; Stadt: string; Land: string } }) => {
-    //     try {
-    //         console.log('kundenId:', kundenId);
-    //         console.log('updatedData:', updatedData);
+      const handleUpdateSchluessel = async (orderId: string, newSchluesselData: any) => {
+        try {
+            console.log('orderId:', orderId);
+            console.log('updatedSchlüssel:', newSchluesselData);
+            const dataToSend = { Schlüssel: newSchluesselData };
             
-    //         await axios.put(`http://localhost:3001/Kunde/${kundenId}`, updatedData);
-        
+            await axios.put(`http://localhost:3001/auftrag/${orderId}`, dataToSend);
           
-    //         await fetchKunden();
-    //         setIsEditFormOpen(false);
-    //       } catch (error) {
-    //         console.error('Fehler beim Aktualisieren des Kunden:', error);
-    //       }
-    //   };
+            await fetchSchluessel();
+            setIsEditFormOpen(false);
+          } catch (error) {
+            console.error('Fehler beim Aktualisieren des Schlüssels:', error);
+          }
+      };
 
     //   const handleDeleteConfirmed = async () => {
     //     try {
@@ -153,10 +153,10 @@ const Schluessel = () => {
     //     }
     //   };
 
-    //   const handleEditKunde = (kunde: any) => {
-    //     setEditedKunde(kunde);
-    //     setIsEditFormOpen(true);
-    //   };
+      const handleEditSchluessel = (schluessel: any) => {
+        setEditedSchluessel(schluessel);
+        setIsEditFormOpen(true);
+      };
 
     //   const handleDeleteKunde = (kunde: any) => {
     //     setEditedKunde(kunde);
@@ -175,9 +175,6 @@ const Schluessel = () => {
         setIsCreateFormOpen(false);
       };
 
-      const closeCreateVertragForm = () => {
-        setIsCreateVertragFormOpen(false);
-      };
 
     return (
         <>
@@ -218,7 +215,7 @@ const Schluessel = () => {
             <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateSchluessel} onClose={closeCreateForm} />
         
 
-            {/* <EditForm isOpen={isEditFormOpen} editedKunde={editedKunde} onUpdate={handleUpdateKunde} onClose={() => setIsEditFormOpen(false)} /> */}
+            <EditForm isOpen={isEditFormOpen} editedSchluessel={editedSchluessel} onUpdate={handleUpdateSchluessel} onClose={() => setIsEditFormOpen(false)}/>
             {/* <DeleteConfirmationModal
                 isOpen={isDelete}
                 onRequestClose={() => setIsDelete(false)}
