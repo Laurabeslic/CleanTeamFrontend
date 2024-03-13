@@ -13,6 +13,7 @@ import AusleiheForm from "./NeueAusleiheForm";
 import { Row, Col, Card, Dropdown, ButtonGroup} from "react-bootstrap";
 import FeatherIcons from "feather-icons-react";
 import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
+import SuccessMessage from "../Auftraege/SuccessMessage";
 
 
 
@@ -43,6 +44,7 @@ function useQuery() {
     const [wagenData, setWagenData] = useState<any[]>([]);
     const [mitarbeiterData, setMitarbeiterData] = useState<any[]>([]);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     useEffect(() => {
     
@@ -225,6 +227,7 @@ function useQuery() {
           const response = await axios.post("http://localhost:3001/Firmenwagen/", newFirmenwagenData);
         
           setIsCreateFormOpen(false);
+          setShowSuccessMessage(true)
           await fetchWaegen();
         } catch (error) {
           console.error("Fehler beim Erstellen des Wagens:", error);
@@ -333,6 +336,12 @@ function useQuery() {
                     </Card>
                 </Col>
             </Row>
+
+            <SuccessMessage // Anzeige der Erfolgsmeldungskomponente
+          show={showSuccessMessage}
+          onHide={() => setShowSuccessMessage(false)}
+          art= "Firmenwagen"
+        />
   
         <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateFirmenwagen} onClose={closeCreateForm} />
     

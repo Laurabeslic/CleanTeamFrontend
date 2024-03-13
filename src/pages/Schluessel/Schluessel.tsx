@@ -9,6 +9,7 @@ import CreateForm from "./CreateSchluesselForm";
 import EditForm from "./EditSchluesselForm";
 import DeleteConfirmationModal from '../customers/DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
+import SuccessMessage from "../Auftraege/SuccessMessage";
 
 
 function useQuery() {
@@ -26,6 +27,7 @@ const Schluessel = () => {
     const [isEditFormOpen, setIsEditFormOpen] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const [selectedDate, setSelectedDate] = useState('');
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     const columns = [
         {
@@ -115,6 +117,7 @@ const Schluessel = () => {
             console.log(newSchluesselData);
            const response = await axios.post(`http://localhost:3001/auftrag/${newSchluesselData.AuftragsID}/schluessel`, newSchluesselData);
             setIsCreateFormOpen(false);
+            setShowSuccessMessage(true)
             await fetchSchluessel();
           } catch (error) {
             console.error("Fehler beim Erstellen des Schlüssels:", error);
@@ -188,7 +191,7 @@ const Schluessel = () => {
             <Row>
                 <Col>
                     <Card>
-                    <div className="d-flex justify-content-end mb-3 mt-2" style={{marginRight: "50px"}}>
+                    <div className="d-flex justify-content-end mb-3 mt-2" style={{marginRight: "60px"}}>
                     <input
                             id="dateFilter"
                             type="date"
@@ -216,7 +219,11 @@ const Schluessel = () => {
                     </Card>
                 </Col>
             </Row>
-
+            <SuccessMessage // Anzeige der Erfolgsmeldungskomponente
+          show={showSuccessMessage}
+          onHide={() => setShowSuccessMessage(false)}
+          art= "Schlüssel"
+        />
             <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateSchluessel} onClose={closeCreateForm} />
         
 

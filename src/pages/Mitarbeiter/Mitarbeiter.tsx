@@ -12,6 +12,7 @@ import CreateForm from "./CreateMitarbeiterForm";
 import EditForm from "./EditMitarbeiterForm";
 import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
+import SuccessMessage from "../Auftraege/SuccessMessage";
 
 const Employees = () => {
     const loggedInUser = useSelector((state: RootState) => state.Auth.user);
@@ -23,6 +24,7 @@ const Employees = () => {
     const [isEditFormOpen, setIsEditFormOpen] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     useEffect(() => {
     
@@ -118,6 +120,7 @@ const Employees = () => {
             
             const response = await axios.post("http://localhost:3001/Mitarbeiter/", newMitarbeiterData);
             setIsCreateFormOpen(false);
+            setShowSuccessMessage(true)
             await fetchEmployees();
           } catch (error) {
             console.error("Fehler beim Erstellen des Mitarbeiters:", error);
@@ -211,7 +214,11 @@ const Employees = () => {
                     </Card>
                 </Col>
             </Row>
-
+            <SuccessMessage // Anzeige der Erfolgsmeldungskomponente
+          show={showSuccessMessage}
+          onHide={() => setShowSuccessMessage(false)}
+          art= "Mitarbeiter"
+        />
             <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateMitarbeiter} onClose={closeCreateForm} />
 
             <EditForm isOpen={isEditFormOpen} editedMitarbeiter={editedMitarbeiter} onUpdate={handleUpdateMitarbeiter} onClose={() => setIsEditFormOpen(false)} />

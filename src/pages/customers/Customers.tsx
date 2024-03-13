@@ -10,6 +10,7 @@ import CreateVertragForm from "./CreateVertragForm";
 import EditForm from "./EditKundeForm";
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
+import SuccessMessage from "../Auftraege/SuccessMessage";
 
 const Kunden = () => {
     const [totalKunden, setTotalKunden] = useState(0);
@@ -19,6 +20,7 @@ const Kunden = () => {
     const [isCreateVertragFormOpen, setIsCreateVertragFormOpen] = useState(false);
     const [isEditFormOpen, setIsEditFormOpen] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     const columns = [
         {
@@ -96,6 +98,7 @@ const Kunden = () => {
             
             const response = await axios.post("http://localhost:3001/Kunde/", newKundeData);
             setIsCreateFormOpen(false);
+            setShowSuccessMessage(true)
             await fetchKunden();
           } catch (error) {
             console.error("Fehler beim Erstellen des Kunden:", error);
@@ -206,6 +209,12 @@ const Kunden = () => {
                     </Card>
                 </Col>
             </Row>
+
+            <SuccessMessage // Anzeige der Erfolgsmeldungskomponente
+          show={showSuccessMessage}
+          onHide={() => setShowSuccessMessage(false)}
+          art= "Kunde"
+        />
 
             <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateCustomer} onClose={closeCreateForm} />
             

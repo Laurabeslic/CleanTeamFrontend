@@ -14,6 +14,7 @@ import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
 
 
 import { Link, useLocation } from 'react-router-dom';
+import SuccessMessage from "./SuccessMessage";
 
 
 
@@ -54,6 +55,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
     const [isDelete, setIsDelete] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
 
 
@@ -100,6 +102,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
           },
           
           sort: true,
+          minWidth: 200,
       },
       {
         Header: "Datum",
@@ -253,6 +256,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
           recalculateOrderCounts();
 
           setIsCreateFormOpen(false);
+          setShowSuccessMessage(true)
           await fetchOrders();
         } catch (error) {
           console.error("Fehler beim Erstellen des Auftrags:", error);
@@ -372,11 +376,16 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
                                 pagination={true}
                                 isSearchable={true}
                                 updateMyData={updateMyData} />
-
+                        
                         </Card.Body>
                     </Card>
                 </Col>
             </Row>
+            <SuccessMessage // Anzeige der Erfolgsmeldungskomponente
+          show={showSuccessMessage}
+          onHide={() => setShowSuccessMessage(false)}
+          art= "Auftrag"
+        />
   
         <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateOrder} onClose={closeCreateForm} />
     
