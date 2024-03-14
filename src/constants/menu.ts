@@ -223,14 +223,14 @@ const MENU_ITEMS: MenuItemTypes[] = [
     icon: "lock",
     url: "/schluessel",
   },
-  { key: "components", label: "Components", isTitle: true },
-  {
-    key: "ui-elements",
-    label: "UI Elements",
-    isTitle: false,
-    icon: "package",
-    url: "/components/ui-elements",
-  },
+  // { key: "components", label: "Components", isTitle: true },
+  // {
+  //   key: "ui-elements",
+  //   label: "UI Elements",
+  //   isTitle: false,
+  //   icon: "package",
+  //   url: "/components/ui-elements",
+  // },
   // {
   //   key: "widgets",
   //   label: "Widgets",
