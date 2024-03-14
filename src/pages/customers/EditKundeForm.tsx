@@ -136,17 +136,17 @@ const EditKundeForm: React.FC<EditKundeFormProps> = ({ editedKunde, isOpen, onUp
             <input type="text" value={editedEmail} className={`form-control ${fieldErrors['editedEmail'] ? 'is-invalid' : ''}`} onChange={handleEmailChange} />
           </div>
 
-          <div className=" col-md-6 mb-3">
+          <div className="mb-3">
             <label>Straße:</label>
             <input type="text" value={editedStrasse} className={`form-control ${fieldErrors['editedStrasse'] ? 'is-invalid' : ''}`} onChange={handleStrasseChange} />
           </div>
 
           <div className="row">
-            <div className="col-md-4 mb-3">
+            <div className="col-md-3 mb-3">
               <label>PLZ:</label>
               <input type="text" value={editedPLZ} className={`form-control ${fieldErrors['editedPLZ'] ? 'is-invalid' : ''}`} onChange={handlePLZChange} />
             </div>
-            <div className="col-md-4 mb-3">
+            <div className="col-md-5 mb-3">
               <label>Stadt:</label>
               <input type="text" value={editedStadt} className={`form-control ${fieldErrors['editedStadt'] ? 'is-invalid' : ''}`} onChange={handleStadtChange} />
             </div>

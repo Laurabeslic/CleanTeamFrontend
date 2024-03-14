@@ -23,6 +23,7 @@ const Kunden = () => {
     const [isDelete, setIsDelete] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showDeleteMessage, setShowDeleteMessage] = useState(false);
+    const [showUpdateMessage, setShowUpdateMessage] = useState(false);
 
     const columns = [
         {
@@ -129,6 +130,7 @@ const Kunden = () => {
           
             await fetchKunden();
             setIsEditFormOpen(false);
+            setShowUpdateMessage(true);
           } catch (error) {
             console.error('Fehler beim Aktualisieren des Kunden:', error);
           }
@@ -217,6 +219,11 @@ const Kunden = () => {
           show={showSuccessMessage}
           onHide={() => setShowSuccessMessage(false)}
           nachricht= "Kunde erfolgreich hinzugefügt"
+        />
+         <SuccessMessage // Anzeige der Erfolgsmeldungskomponente
+          show={showUpdateMessage}
+          onHide={() => setShowUpdateMessage(false)}
+          nachricht= "Änderungen gespeichert"
         />
         <DeleteMessage // Anzeige der Erfolgsmeldungskomponente
           show={showDeleteMessage}

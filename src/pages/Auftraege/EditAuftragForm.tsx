@@ -83,13 +83,18 @@ const EditOrderForm: React.FC<EditOrderFormProps> = ({ editedOrder, isOpen, onUp
         <Modal.Body>
         <form onSubmit={handleUpdate} className="p-4 border rounded bg-light">
 
+        <div className='row'>
          <div className="col-md-6 mb-3">
            <label>Auftragsnummer:</label>
-           <input type="text" value={editedOrder?.id} readOnly className="form-control" />         </div>
+           <input type="text" value={editedOrder?.id} readOnly className="form-control" />
+            </div>
          <div className="col-md-6 mb-3">
            <label>Kundennummer:</label>
            <input type="text" value={editedOrder?.kunde} readOnly className="form-control" />
          </div>
+         </div>
+
+         <div className='row'>
          <div className="col-md-6 mb-3">
            <label>Auftragsart:</label>
            <input type="text" value={editedOrder?.auftragsart} readOnly className="form-control" />
@@ -98,6 +103,9 @@ const EditOrderForm: React.FC<EditOrderFormProps> = ({ editedOrder, isOpen, onUp
            <label>Status:</label>
            <StatusDropdown value={editedStatus} onChange={handleStatusChange} />
          </div>
+         </div>
+
+         <div className='row'>
          <div className="col-md-6 mb-3">
            <label>Datum:</label>
            <input type="text" value={editedOrder?.datum} readOnly className="form-control" />
@@ -106,6 +114,8 @@ const EditOrderForm: React.FC<EditOrderFormProps> = ({ editedOrder, isOpen, onUp
            <label>Vertrag:</label>
            <input type="text" value={editedOrder?.vertrag} readOnly className="form-control" />
          </div>
+         </div>
+
          <div className="col-md-6 mb-3">
            <label>Verantwortlicher:</label>
            <input type="text" value={editedOrder?.verantwortlicher} readOnly className="form-control" />
@@ -115,12 +125,13 @@ const EditOrderForm: React.FC<EditOrderFormProps> = ({ editedOrder, isOpen, onUp
            <input type="text" id="editedDetails" value={editedDetails} className="form-control" onChange={handleDetailsChange} />
          </div>
 
-         <div className="row">
-         <div className=" col-md-4 mb-3">
+         <div className=" mb-3">
            <label>Straße:</label>
            <input type="text" value={editedAddress.Strasse} className="form-control" onChange={(e) => setEditedAddress({ ...editedAddress, Strasse: e.target.value })} />
          </div>
-         <div className="col-md-4 mb-3">
+         
+         <div className="row">
+         <div className="col-md-3 mb-3">
            <label>PLZ:</label>
            <input type="text" value={editedAddress.PLZ} className="form-control" onChange={(e) => setEditedAddress({ ...editedAddress, PLZ: e.target.value })} />
          </div>
@@ -128,10 +139,10 @@ const EditOrderForm: React.FC<EditOrderFormProps> = ({ editedOrder, isOpen, onUp
            <label>Stadt:</label>
            <input type="text" value={editedAddress.Stadt} className="form-control" onChange={(e) => setEditedAddress({ ...editedAddress, Stadt: e.target.value })} />
          </div>
-         </div>
-         <div className="col-md-6 mb-3">
+         <div className="col-md-5 mb-3">
            <label>Land:</label>
            <input type="text" value={editedAddress.Land} className="form-control" onChange={(e) => setEditedAddress({ ...editedAddress, Land: e.target.value })} />
+         </div>
          </div>
          
        </form>

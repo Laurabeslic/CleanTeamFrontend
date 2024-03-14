@@ -27,6 +27,7 @@ const Employees = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showDeleteMessage, setShowDeleteMessage] = useState(false);
+    const [showUpdateMessage, setShowUpdateMessage] = useState(false);
 
     useEffect(() => {
     
@@ -140,6 +141,7 @@ const Employees = () => {
           
             await fetchEmployees();
             setIsEditFormOpen(false);
+            setShowUpdateMessage(true);
           } catch (error) {
             console.error('Fehler beim Aktualisieren des Mitarbeiters:', error);
           }
@@ -221,6 +223,11 @@ const Employees = () => {
           show={showSuccessMessage}
           onHide={() => setShowSuccessMessage(false)}
           nachricht= "Mitarbeiter erfolgreich hinzugefügt"
+        />
+        <SuccessMessage // Anzeige der Erfolgsmeldungskomponente
+          show={showUpdateMessage}
+          onHide={() => setShowUpdateMessage(false)}
+          nachricht= "Änderungen gespeichert"
         />
         <DeleteMessage // Anzeige der Erfolgsmeldungskomponente
           show={showDeleteMessage}

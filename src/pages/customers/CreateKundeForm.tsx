@@ -28,6 +28,14 @@ const handleSubmit = async(e: React.FormEvent) => {
       errors[field] = !eval(field);
     });
 
+     // Überprüfen, ob die PLZ eine Zahl ist
+     const isPLZValid = /^\d+$/.test(plz);
+    
+     if (!isPLZValid) {
+       // Zeige eine Fehlermeldung an, wenn die PLZ keine Zahl ist
+       setFieldErrors({ ...fieldErrors, plz: true });
+       return;
+     }
     setFieldErrors(errors);
 
     if (Object.values(errors).some(error => error)) {
@@ -125,9 +133,7 @@ return (
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-
-            <div className="row">
-            <div className="col-md-4 mb-3">
+            <div className="mb-3">
                 <label htmlFor="strasse" className="form-label">
                 Straße:
                 </label>
@@ -139,7 +145,10 @@ return (
                 onChange={(e) => setStrasse(e.target.value)}
                 />
             </div>
-            <div className="col-md-4 mb-3">
+
+            <div className="row">
+            
+            <div className="col-md-3 mb-3">
                 <label htmlFor="plz" className="form-label">
                 PLZ:
                 </label>
@@ -163,9 +172,7 @@ return (
                 onChange={(e) => setStadt(e.target.value)}
                 />
             </div>
-            </div>
-
-            <div className="col-md-6 mb-3">
+            <div className="col-md-5 mb-3">
               <label htmlFor="land" className="form-label">
                 Land:
               </label>
@@ -177,6 +184,9 @@ return (
                 onChange={(e) => setLand(e.target.value)}
               />
             </div>
+            </div>
+
+           
           </form>
           
         </Modal.Body>

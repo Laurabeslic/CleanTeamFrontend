@@ -58,6 +58,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
     const [selectedDate, setSelectedDate] = useState('');
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showDeleteMessage, setShowDeleteMessage] = useState(false);
+    const [showUpdateMessage, setShowUpdateMessage] = useState(false);
 
 
 
@@ -275,6 +276,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
           // Aktualisiere die Auftragsdaten und schließe das Bearbeitungsmodal
           await fetchOrders();
           setIsEditFormOpen(false);
+          setShowUpdateMessage(true);
         } catch (error) {
           console.error('Fehler beim Aktualisieren des Auftrags:', error);
         }
@@ -388,6 +390,11 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
           show={showSuccessMessage}
           onHide={() => setShowSuccessMessage(false)}
           nachricht= "Auftrag erfolgreich hinzugefügt"
+        />
+        <SuccessMessage // Anzeige der Erfolgsmeldungskomponente
+          show={showUpdateMessage}
+          onHide={() => setShowUpdateMessage(false)}
+          nachricht= "Änderungen gespeichert"
         />
          <DeleteMessage // Anzeige der Erfolgsmeldungskomponente
           show={showDeleteMessage}
