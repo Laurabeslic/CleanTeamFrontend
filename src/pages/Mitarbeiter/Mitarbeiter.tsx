@@ -13,6 +13,7 @@ import EditForm from "./EditMitarbeiterForm";
 import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
 import SuccessMessage from "../Messages/SuccessMessage";
+import DeleteMessage from "../Messages/DeleteMessage";
 
 const Employees = () => {
     const loggedInUser = useSelector((state: RootState) => state.Auth.user);
@@ -25,6 +26,7 @@ const Employees = () => {
     const [isDelete, setIsDelete] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showDeleteMessage, setShowDeleteMessage] = useState(false);
 
     useEffect(() => {
     
@@ -150,6 +152,7 @@ const Employees = () => {
             console.log('Mitarbeiter gelöscht:', response.data);
       
             await fetchEmployees();
+            setShowDeleteMessage(true);
           }
         } catch (error) {
           console.error('Fehler beim Löschen des Mitarbeiters:', error);
@@ -218,6 +221,11 @@ const Employees = () => {
           show={showSuccessMessage}
           onHide={() => setShowSuccessMessage(false)}
           nachricht= "Mitarbeiter erfolgreich hinzugefügt"
+        />
+        <DeleteMessage // Anzeige der Erfolgsmeldungskomponente
+          show={showDeleteMessage}
+          onHide={() => setShowDeleteMessage(false)}
+          nachricht= "Mitarbeiter gelöscht"
         />
             <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateMitarbeiter} onClose={closeCreateForm} />
 

@@ -11,6 +11,7 @@ import EditForm from "./EditKundeForm";
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
 import SuccessMessage from "../Messages/SuccessMessage";
+import DeleteMessage from "../Messages/DeleteMessage";
 
 const Kunden = () => {
     const [totalKunden, setTotalKunden] = useState(0);
@@ -21,6 +22,7 @@ const Kunden = () => {
     const [isEditFormOpen, setIsEditFormOpen] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showDeleteMessage, setShowDeleteMessage] = useState(false);
 
     const columns = [
         {
@@ -139,6 +141,7 @@ const Kunden = () => {
             console.log('Kunde gelöscht:', response.data);
       
             await fetchKunden();
+            setShowDeleteMessage(true);
           }
         } catch (error) {
           console.error('Fehler beim Löschen des Kunden:', error);
@@ -214,6 +217,11 @@ const Kunden = () => {
           show={showSuccessMessage}
           onHide={() => setShowSuccessMessage(false)}
           nachricht= "Kunde erfolgreich hinzugefügt"
+        />
+        <DeleteMessage // Anzeige der Erfolgsmeldungskomponente
+          show={showDeleteMessage}
+          onHide={() => setShowDeleteMessage(false)}
+          nachricht= "Kunde gelöscht"
         />
 
             <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateCustomer} onClose={closeCreateForm} />

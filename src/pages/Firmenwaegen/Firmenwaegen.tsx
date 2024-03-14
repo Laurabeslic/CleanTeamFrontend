@@ -14,6 +14,7 @@ import { Row, Col, Card, Dropdown, ButtonGroup} from "react-bootstrap";
 import FeatherIcons from "feather-icons-react";
 import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
 import SuccessMessage from "../Messages/SuccessMessage";
+import DeleteMessage from "../Messages/DeleteMessage";
 
 
 
@@ -45,6 +46,7 @@ function useQuery() {
     const [mitarbeiterData, setMitarbeiterData] = useState<any[]>([]);
     const [isAdmin, setIsAdmin] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showDeleteMessage, setShowDeleteMessage] = useState(false);
 
     useEffect(() => {
     
@@ -259,6 +261,7 @@ function useQuery() {
             const response = await axios.delete(`http://localhost:3001/Firmenwagen/${editedWagen.id}`);
             console.log('Wagen gelöscht:', response.data);
             await fetchWaegen();
+            setShowDeleteMessage(true);
           }
         } catch (error) {
           console.error('Fehler beim Löschen des Wagens:', error);
@@ -341,6 +344,11 @@ function useQuery() {
           show={showSuccessMessage}
           onHide={() => setShowSuccessMessage(false)}
           nachricht= "Firmenwagen erfolgreich hinzugefügt"
+        />
+        <DeleteMessage // Anzeige der Erfolgsmeldungskomponente
+          show={showDeleteMessage}
+          onHide={() => setShowDeleteMessage(false)}
+          nachricht= "Firmenwagen gelöscht"
         />
   
         <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateFirmenwagen} onClose={closeCreateForm} />

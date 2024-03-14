@@ -10,6 +10,7 @@ import EditForm from "./EditSchluesselForm";
 import DeleteConfirmationModal from '../customers/DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
 import SuccessMessage from "../Messages/SuccessMessage";
+import DeleteMessage from "../Messages/DeleteMessage";
 
 
 function useQuery() {
@@ -23,11 +24,11 @@ const Schluessel = () => {
     const [schluesselData, setSchluesselData] = useState<any[]>([]);
     const [editedSchluessel, setEditedSchluessel] = useState<any>(null);
     const [isCreateFormOpen, setIsCreateFormOpen] = useState(false);
-    const [isCreateVertragFormOpen, setIsCreateVertragFormOpen] = useState(false);
     const [isEditFormOpen, setIsEditFormOpen] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const [selectedDate, setSelectedDate] = useState('');
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showDeleteMessage, setShowDeleteMessage] = useState(false);
 
     const columns = [
         {
@@ -147,6 +148,7 @@ const Schluessel = () => {
             const response = await axios.post(`http://localhost:3001/auftrag/schluessel/delete`, dataToSend);
             console.log('Schlüssel gelöscht:', response.data);
             await fetchSchluessel();
+            setShowDeleteMessage(true);
           }
         } catch (error) {
           console.error('Fehler beim Löschen des Schlüssels:', error);
@@ -224,6 +226,12 @@ const Schluessel = () => {
           onHide={() => setShowSuccessMessage(false)}
           nachricht= "Schlüssel erfolgreich hinzugefügt"
         />
+         <DeleteMessage // Anzeige der Erfolgsmeldungskomponente
+          show={showDeleteMessage}
+          onHide={() => setShowDeleteMessage(false)}
+          nachricht= "Schlüssel gelöscht"
+        />
+           
             <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateSchluessel} onClose={closeCreateForm} />
         
 
