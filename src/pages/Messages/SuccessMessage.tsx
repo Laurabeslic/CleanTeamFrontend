@@ -5,11 +5,11 @@ import classNames from "classnames";
 interface SuccessMessageProps {
     show: boolean;
     onHide: () => void;
-    art: string;
+    nachricht: string;
   }
   
 
-  const SuccessMessage: React.FC<SuccessMessageProps> = ({ show, onHide, art }) => {
+  const SuccessMessage: React.FC<SuccessMessageProps> = ({ show, onHide, nachricht }) => {
 
     
   useEffect(() => {
@@ -23,7 +23,7 @@ interface SuccessMessageProps {
   }, [show, onHide]);
 
   
-const LogoutIcon = () => {
+const Icon = () => {
   return (
     <svg
       version="1.1"
@@ -59,11 +59,11 @@ const LogoutIcon = () => {
         {show && (
         <div className="position-fixed bottom-0 start-50 translate-middle-x mb-3">
            <div className="logout-checkmark" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <LogoutIcon/>
+            <Icon/>
           </div>
           <Alert variant="success" onClose={onHide} className="d-flex align-items-center" style={{maxHeight: '60px'}}>
            
-            {art} erfolgreich hinzugefügt
+            {nachricht}
           </Alert>
         </div>
       )}

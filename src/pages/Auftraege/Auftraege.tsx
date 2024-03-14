@@ -14,7 +14,7 @@ import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
 
 
 import { Link, useLocation } from 'react-router-dom';
-import SuccessMessage from "./SuccessMessage";
+import SuccessMessage from "../Messages/SuccessMessage";
 
 
 
@@ -384,7 +384,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
             <SuccessMessage // Anzeige der Erfolgsmeldungskomponente
           show={showSuccessMessage}
           onHide={() => setShowSuccessMessage(false)}
-          art= "Auftrag"
+          nachricht= "Auftrag erfolgreich hinzugefügt"
         />
   
         <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateOrder} onClose={closeCreateForm} />

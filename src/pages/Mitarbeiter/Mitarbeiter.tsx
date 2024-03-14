@@ -12,7 +12,7 @@ import CreateForm from "./CreateMitarbeiterForm";
 import EditForm from "./EditMitarbeiterForm";
 import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
-import SuccessMessage from "../Auftraege/SuccessMessage";
+import SuccessMessage from "../Messages/SuccessMessage";
 
 const Employees = () => {
     const loggedInUser = useSelector((state: RootState) => state.Auth.user);
@@ -217,7 +217,7 @@ const Employees = () => {
             <SuccessMessage // Anzeige der Erfolgsmeldungskomponente
           show={showSuccessMessage}
           onHide={() => setShowSuccessMessage(false)}
-          art= "Mitarbeiter"
+          nachricht= "Mitarbeiter erfolgreich hinzugefügt"
         />
             <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateMitarbeiter} onClose={closeCreateForm} />
 

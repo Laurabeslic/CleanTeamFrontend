@@ -10,7 +10,7 @@ import CreateVertragForm from "./CreateVertragForm";
 import EditForm from "./EditKundeForm";
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
-import SuccessMessage from "../Auftraege/SuccessMessage";
+import SuccessMessage from "../Messages/SuccessMessage";
 
 const Kunden = () => {
     const [totalKunden, setTotalKunden] = useState(0);
@@ -213,7 +213,7 @@ const Kunden = () => {
             <SuccessMessage // Anzeige der Erfolgsmeldungskomponente
           show={showSuccessMessage}
           onHide={() => setShowSuccessMessage(false)}
-          art= "Kunde"
+          nachricht= "Kunde erfolgreich hinzugefügt"
         />
 
             <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateCustomer} onClose={closeCreateForm} />

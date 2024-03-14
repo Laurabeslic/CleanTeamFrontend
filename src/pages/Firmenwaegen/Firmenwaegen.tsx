@@ -13,7 +13,7 @@ import AusleiheForm from "./NeueAusleiheForm";
 import { Row, Col, Card, Dropdown, ButtonGroup} from "react-bootstrap";
 import FeatherIcons from "feather-icons-react";
 import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
-import SuccessMessage from "../Auftraege/SuccessMessage";
+import SuccessMessage from "../Messages/SuccessMessage";
 
 
 
@@ -340,7 +340,7 @@ function useQuery() {
             <SuccessMessage // Anzeige der Erfolgsmeldungskomponente
           show={showSuccessMessage}
           onHide={() => setShowSuccessMessage(false)}
-          art= "Firmenwagen"
+          nachricht= "Firmenwagen erfolgreich hinzugefügt"
         />
   
         <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateFirmenwagen} onClose={closeCreateForm} />

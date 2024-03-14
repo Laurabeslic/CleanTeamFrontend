@@ -9,7 +9,7 @@ import CreateForm from "./CreateSchluesselForm";
 import EditForm from "./EditSchluesselForm";
 import DeleteConfirmationModal from '../customers/DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
-import SuccessMessage from "../Auftraege/SuccessMessage";
+import SuccessMessage from "../Messages/SuccessMessage";
 
 
 function useQuery() {
@@ -222,7 +222,7 @@ const Schluessel = () => {
             <SuccessMessage // Anzeige der Erfolgsmeldungskomponente
           show={showSuccessMessage}
           onHide={() => setShowSuccessMessage(false)}
-          art= "Schlüssel"
+          nachricht= "Schlüssel erfolgreich hinzugefügt"
         />
             <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateSchluessel} onClose={closeCreateForm} />
         
