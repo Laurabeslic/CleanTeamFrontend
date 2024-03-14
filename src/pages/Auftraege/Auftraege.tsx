@@ -15,6 +15,7 @@ import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
 
 import { Link, useLocation } from 'react-router-dom';
 import SuccessMessage from "../Messages/SuccessMessage";
+import DeleteMessage from "../Messages/DeleteMessage";
 
 
 
@@ -56,6 +57,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
     const [selectedStatus, setSelectedStatus] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showDeleteMessage, setShowDeleteMessage] = useState(false);
 
 
 
@@ -287,6 +289,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
             // Hier kannst du weitere Aktualisierungen vornehmen, falls nötig
             // Zum Beispiel: Aktualisiere die Anzeige der Aufträge
             await fetchOrders();
+            setShowDeleteMessage(true);
           }
         } catch (error) {
           console.error('Fehler beim Löschen des Auftrags:', error);
@@ -385,6 +388,11 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
           show={showSuccessMessage}
           onHide={() => setShowSuccessMessage(false)}
           nachricht= "Auftrag erfolgreich hinzugefügt"
+        />
+         <DeleteMessage // Anzeige der Erfolgsmeldungskomponente
+          show={showDeleteMessage}
+          onHide={() => setShowDeleteMessage(false)}
+          nachricht= "Auftrag gelöscht"
         />
   
         <CreateForm isOpen={isCreateFormOpen} onCreate={handleCreateOrder} onClose={closeCreateForm} />
