@@ -47,6 +47,7 @@ function useQuery() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showDeleteMessage, setShowDeleteMessage] = useState(false);
+    const [showUpdateMessage, setShowUpdateMessage] = useState(false);
 
     useEffect(() => {
     
@@ -250,6 +251,7 @@ function useQuery() {
           // Aktualisiere die Auftragsdaten und schließe das Bearbeitungsmodal
           await fetchWaegen();
           setIsEditFormOpen(false);
+          setShowUpdateMessage(true);
         } catch (error) {
           console.error('Fehler beim Aktualisieren des Wagens:', error);
         }
@@ -344,6 +346,11 @@ function useQuery() {
           show={showSuccessMessage}
           onHide={() => setShowSuccessMessage(false)}
           nachricht= "Firmenwagen erfolgreich hinzugefügt"
+        />
+         <SuccessMessage // Anzeige der Erfolgsmeldungskomponente
+          show={showUpdateMessage}
+          onHide={() => setShowUpdateMessage(false)}
+          nachricht= "Änderungen gespeichert"
         />
         <DeleteMessage // Anzeige der Erfolgsmeldungskomponente
           show={showDeleteMessage}

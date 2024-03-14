@@ -90,11 +90,11 @@ const ProfileMenus = [
     icon: "user",
     redirectTo: "/myaccount",
   },
-  {
-    label: "Bildschirm sperren",
-    icon: "lock",
-    redirectTo: "/auth/lock-screen",
-  },
+  // {
+  //   label: "Bildschirm sperren",
+  //   icon: "lock",
+  //   redirectTo: "/auth/lock-screen",
+  // },
   {
     label: "Ausloggen",
     icon: "log-out",

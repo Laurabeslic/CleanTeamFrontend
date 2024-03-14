@@ -34,7 +34,7 @@ interface EditWagenFormProps {
 }
 
 const EditWagenForm: React.FC<EditWagenFormProps> = ({ editedWagen, isOpen, onUpdate, onClose }) => {
-    const [editedKilometerstand, setEditedKilometerstand] = useState<number>(0); // Initialisierung mit 0
+    const [editedKilometerstand, setEditedKilometerstand] = useState(""); // Initialisierung mit 0
 
   const [editedLetzteWartung, setEditedLetzteWartung] = useState(new Date());
   const [ausleiher, setAusleiher] = useState<string | null>(null); // Zustand für den aktuellen Ausleiher
@@ -68,19 +68,39 @@ const EditWagenForm: React.FC<EditWagenFormProps> = ({ editedWagen, isOpen, onUp
   }, [editedWagen?.id]);
 
 
-  const handleKilometerstandChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedKilometerstand(parseInt(e.target.value));
-    console.log(editedKilometerstand);
-  };
+  // const handleKilometerstandChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setEditedKilometerstand(parseInt(e.target.value));
+  //   console.log(editedKilometerstand);
+  // };
 
 
   const handleUpdate = () => {
+
+    const requiredFields = ['editedKilometerstand', 'editedLetzteWartung'];
+    const errors: { [key: string]: boolean } = {};
+
+    requiredFields.forEach(field => {
+      errors[field] = !eval(field);
+    });
+
+     // Überprüfen, ob eine Zahl ist
+     const isValid = /^\d+$/.test(editedKilometerstand);
+    
+     if (!isValid) {
+       // Zeige eine Fehlermeldung an, wenn keine Zahl ist
+       setFieldErrors({ ...fieldErrors, editedKilometerstand: true });
+       return;
+     }
+    setFieldErrors(errors);
+
+
+
     try {
       // Objekt mit den aktualisierten Informationen
       console.log(rueckgabedatum);
       const updatedWagen = {
         LetzteWartung: editedLetzteWartung.toISOString(),
-        Kilometerstand: editedKilometerstand,
+        Kilometerstand: parseInt(editedKilometerstand),
         Ausleihhistorie: editedWagen.ausleihhistorie.map(entry => ({
             ...entry,
             Rückgabedatum: entry.Ausleiher === ausleiher ? (rueckgabedatum ? rueckgabedatum.toISOString() : null) : entry.Rückgabedatum
@@ -165,7 +185,8 @@ const EditWagenForm: React.FC<EditWagenFormProps> = ({ editedWagen, isOpen, onUp
   
         <div className="col-md-6 mb-3">
               <label>Kilometerstand:</label>
-              <input type="text" value={editedKilometerstand} className={`form-control ${fieldErrors['editedKilometerstand'] ? 'is-invalid' : ''}`} onChange={handleKilometerstandChange} />
+              <input type="text" value={editedKilometerstand} className={`form-control ${fieldErrors['editedKilometerstand'] ? 'is-invalid' : ''}`} 
+              onChange={(e) => setEditedKilometerstand(e.target.value)} />
             </div>
 
             <div className="col-md-6 mb-3">

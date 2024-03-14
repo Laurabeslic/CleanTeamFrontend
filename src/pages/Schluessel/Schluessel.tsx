@@ -29,6 +29,7 @@ const Schluessel = () => {
     const [selectedDate, setSelectedDate] = useState('');
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showDeleteMessage, setShowDeleteMessage] = useState(false);
+    const [showUpdateMessage, setShowUpdateMessage] = useState(false);
 
     const columns = [
         {
@@ -135,6 +136,7 @@ const Schluessel = () => {
           
             await fetchSchluessel();
             setIsEditFormOpen(false);
+            setShowUpdateMessage(true);
           } catch (error) {
             console.error('Fehler beim Aktualisieren des Schlüssels:', error);
           }
@@ -225,6 +227,11 @@ const Schluessel = () => {
           show={showSuccessMessage}
           onHide={() => setShowSuccessMessage(false)}
           nachricht= "Schlüssel erfolgreich hinzugefügt"
+        />
+         <SuccessMessage // Anzeige der Erfolgsmeldungskomponente
+          show={showUpdateMessage}
+          onHide={() => setShowUpdateMessage(false)}
+          nachricht= "Änderungen gespeichert"
         />
          <DeleteMessage // Anzeige der Erfolgsmeldungskomponente
           show={showDeleteMessage}

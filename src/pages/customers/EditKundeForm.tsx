@@ -88,6 +88,15 @@ const EditKundeForm: React.FC<EditKundeFormProps> = ({ editedKunde, isOpen, onUp
       errors[field] = !eval(field);
     });
 
+     // Überprüfen, ob die PLZ eine Zahl ist
+     const isPLZValid = /^\d+$/.test(editedPLZ);
+    
+     if (!isPLZValid) {
+       // Zeige eine Fehlermeldung an, wenn die PLZ keine Zahl ist
+       setFieldErrors({ ...fieldErrors, editedPLZ: true });
+       return;
+     }
+
     setFieldErrors(errors);
 
     if (Object.values(errors).some(error => error)) {
