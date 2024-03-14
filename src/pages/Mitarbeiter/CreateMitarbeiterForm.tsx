@@ -28,6 +28,15 @@ const handleSubmit = async(e: React.FormEvent) => {
       errors[field] = !eval(field);
     });
 
+       // Überprüfen, ob die PLZ eine Zahl ist
+       const isPLZValid = /^\d+$/.test(plz);
+    
+       if (!isPLZValid) {
+         // Zeige eine Fehlermeldung an, wenn die PLZ keine Zahl ist
+         setFieldErrors({ ...fieldErrors, plz: true });
+         return;
+       }
+       
     setFieldErrors(errors);
 
     if (Object.values(errors).some(error => error)) {
