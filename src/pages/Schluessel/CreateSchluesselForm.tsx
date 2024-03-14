@@ -18,20 +18,23 @@ const CreateForm: React.FC<CreateSchluesselFormProps> = ({ isOpen, onCreate, onC
   const [zustand, setZustand] = useState("");
   const [auftrag, setAuftrag] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showOrderErrorMessage, setShowOrderErrorMessage] = useState(false);
+  const [showCodeErrorMessage, setShowCodeErrorMessage] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<{ [key: string]: boolean }>({});
 
   const loggedInUser = useSelector((state: RootState) => state.Auth.user);
 
-  //Auftrag prüfen
-  const checkOrderExistence = async (orderID:string) => {
+  const checkKeyExistence = async (schlüsselcode:string) => {
     try {
-      const response = await axios.get(`http://localhost:3001/auftrag/${orderID}`);
-      return response.data; 
-    } catch (error) {
-      return null; // Aufrag existiert nicht
-    }
-  };
+      const response = await axios.get("http://localhost:3001/auftrag/schluessel");
+      let formattedData = response.data.map((key: any) => ({
+          Schlüsselcode: key.Schlüsselcode,
+      }));
+      return formattedData.some((key: any) => key.Schlüsselcode === schlüsselcode);
+  } catch (error) {
+      console.error("Es gab einen Fehler beim Abrufen der Schlüssel:", error);
+  }   return false;
+    };
+
   
   
   const handleSubmit = async(e: React.FormEvent) => {
@@ -50,10 +53,10 @@ const CreateForm: React.FC<CreateSchluesselFormProps> = ({ isOpen, onCreate, onC
       return;
     }
 
-     const orderExists = await checkOrderExistence(auftrag);
+     const keyExists = await checkKeyExistence(schluesselcode);
     
-    if (!orderExists) {
-        setShowOrderErrorMessage(true);
+    if (keyExists) {
+        setShowCodeErrorMessage(true);
          return; 
     }
 
@@ -79,9 +82,7 @@ const CreateForm: React.FC<CreateSchluesselFormProps> = ({ isOpen, onCreate, onC
     setSchlüsseltyp("");
     setZustand("");
     setAuftrag("");
-    setShowOrderErrorMessage(false);
-
-
+    setShowCodeErrorMessage(false);
     onClose();
   };
 
@@ -92,7 +93,7 @@ const CreateForm: React.FC<CreateSchluesselFormProps> = ({ isOpen, onCreate, onC
     setZustand("");
     setAuftrag("");
 
-    setShowOrderErrorMessage(false);
+    setShowCodeErrorMessage(false);
     onClose();
   };
 
@@ -110,18 +111,24 @@ const CreateForm: React.FC<CreateSchluesselFormProps> = ({ isOpen, onCreate, onC
         </Modal.Header>
         <Modal.Body>
         <form className="p-4 border rounded bg-light">
-           <div className="col-md-6 mb-3">
+           <div className="col-md-8 mb-3">
                <label htmlFor="schluesselcode" className="form-label">
                  Schlüsselcode:
                </label>
                <input
                 type="text"
                 id="schluesselcode"
-                className={`form-control ${fieldErrors['schluesselcode'] ? 'is-invalid' : ''} `}
+                className={`form-control ${fieldErrors['schluesselcode'] ? 'is-invalid' : ''} ${showCodeErrorMessage ? 'is-invalid' : ''}`}
                 value={schluesselcode}
                 onChange={(e) => setSchluesselcode(e.target.value)}
               />
+               {showCodeErrorMessage && (
+                  <div className="text-danger">
+                    <p>Dieser Schlüssel existiert bereits!</p>
+                  </div>
+                )}
             </div>
+           
 
             <div className="col-md-6 mb-3">
               <label htmlFor="schluesseltyp" className="form-label">
@@ -172,18 +179,12 @@ const CreateForm: React.FC<CreateSchluesselFormProps> = ({ isOpen, onCreate, onC
                 <input
                 type="text"
                 id="auftragnummer"
-                className={`form-control ${fieldErrors['auftrag'] ? 'is-invalid' : ''} ${showOrderErrorMessage ? 'is-invalid' : ''}`}
+                className={`form-control ${fieldErrors['auftrag'] ? 'is-invalid' : ''} `}
                 value={auftrag}
                 onChange={(e) => setAuftrag(e.target.value)}
                 />
-
-                
             </div>
-             {showOrderErrorMessage && (
-                  <div className="text-danger">
-                    <p>Die Auftragnummer existiert nicht!</p>
-                  </div>
-                )}
+           
         
           </form>
           

@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useSelector} from "react-redux";
 import { RootState} from "../../redux/store";
 import axios from 'axios';
-import {Button, Modal } from "react-bootstrap";
+import {Button, Modal , Alert} from "react-bootstrap";
 
 interface CreateFirmenwagenFormProps {
   isOpen: boolean;
@@ -23,11 +23,24 @@ const CreateForm: React.FC<CreateFirmenwagenFormProps> = ({ isOpen, onCreate, on
   const [kraftstoffart, setKraftstoffart] = useState("");
   const [letzteWartung, setLetzteWartung] = useState(new Date());
   const [fieldErrors, setFieldErrors] = useState<{ [key: string]: boolean }>({});
+  const [showKennzeichenErrorMessage, setShowKennzeichenErrorMessage] = useState(false);
+
 
   const loggedInUser = useSelector((state: RootState) => state.Auth.user);
 
 
-  
+  const checkKennzeichenExistence = async (kennzeichen:string) => {
+    try {
+      const response = await axios.get("http://localhost:3001/firmenwagen/");
+      let formattedData = response.data.map((wagen: any) => ({
+          kennzeichen: wagen.Kennzeichen,
+      }));
+      return formattedData.some((wagen: any) => wagen.kennzeichen === kennzeichen);
+  } catch (error) {
+      console.error("Es gab einen Fehler beim Abrufen der Autos:", error);
+  }   return false;
+    };
+
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
 
@@ -60,8 +73,16 @@ const CreateForm: React.FC<CreateFirmenwagenFormProps> = ({ isOpen, onCreate, on
     if (Object.values(errors).some(error => error)) {
       return;
     }
-    
 
+    const kennzeichenExists = await checkKennzeichenExistence(kennzeichen);
+   
+    
+    if (kennzeichenExists ) {
+        setShowKennzeichenErrorMessage(true);
+      return; 
+    }
+
+    
      // Umwandeln des Datums in ISO-8601-Format
      const isoFormattedDate = letzteWartung.toISOString();
 
@@ -90,7 +111,7 @@ const CreateForm: React.FC<CreateFirmenwagenFormProps> = ({ isOpen, onCreate, on
     setKilometerstand("");
     setTankvolumen("");
     setKraftstoffart("");
-
+    setShowKennzeichenErrorMessage(false);
     onClose();
   };
 
@@ -103,6 +124,7 @@ const CreateForm: React.FC<CreateFirmenwagenFormProps> = ({ isOpen, onCreate, on
     setKilometerstand("");
     setTankvolumen("");
     setKraftstoffart("");
+    setShowKennzeichenErrorMessage(false);
     onClose();
   };
 
@@ -120,6 +142,8 @@ const CreateForm: React.FC<CreateFirmenwagenFormProps> = ({ isOpen, onCreate, on
         </Modal.Header>
         <Modal.Body>
         <form className="p-4 border rounded bg-light">
+
+          <div className="row">
            <div className="col-md-6 mb-3">
                <label htmlFor="kennzeichen" className="form-label">
                  Kennzeichen:
@@ -127,13 +151,15 @@ const CreateForm: React.FC<CreateFirmenwagenFormProps> = ({ isOpen, onCreate, on
                <input
                 type="text"
                 id="kennzeichen"
-                className={`form-control ${fieldErrors['kennzeichen'] ? 'is-invalid' : ''}`}
+                className={`form-control ${fieldErrors['kennzeichen'] ? 'is-invalid' : ''} ${showKennzeichenErrorMessage ? 'is-invalid' : ''}`}
                 value={kennzeichen}
                 onChange={(e) => setKennzeichen(e.target.value)}
               />
-               {fieldErrors['kennzeichen'] && (
-              <div className="invalid-feedback">{fieldErrors['kennzeichen']}</div>
-              )}
+               {showKennzeichenErrorMessage && (
+                  <div className="text-danger">
+                    <p>Das Kennzeichen existiert bereits!</p>
+                  </div>
+                )}
             </div>
 
             <div className="col-md-6 mb-3">
@@ -148,6 +174,9 @@ const CreateForm: React.FC<CreateFirmenwagenFormProps> = ({ isOpen, onCreate, on
                 onChange={(e) => setMarke(e.target.value)}
               />
             </div>
+            </div>
+
+            <div className="row">
 
             <div className="col-md-6 mb-3">
               <label htmlFor="modell" className="form-label">
@@ -174,6 +203,8 @@ const CreateForm: React.FC<CreateFirmenwagenFormProps> = ({ isOpen, onCreate, on
                 onChange={(e) => setBaujahr(e.target.value)}
                 />
             </div>
+            </div>
+            
             <div className="col-md-4 mb-3">
                 <label htmlFor="farbe" className="form-label">
                 Farbe:
