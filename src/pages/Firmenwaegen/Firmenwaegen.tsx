@@ -12,7 +12,7 @@ import EditForm from "./EditFirmenwagenForm";
 import AusleiheForm from "./NeueAusleiheForm";
 import { Row, Col, Card, Dropdown, ButtonGroup} from "react-bootstrap";
 import FeatherIcons from "feather-icons-react";
-import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
+import DeleteConfirmationModal from '../Messages/DeleteConfirmationModal';
 import SuccessMessage from "../Messages/SuccessMessage";
 import DeleteMessage from "../Messages/DeleteMessage";
 

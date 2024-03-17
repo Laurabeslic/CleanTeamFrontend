@@ -7,7 +7,7 @@ import { Link , useLocation } from 'react-router-dom';
 import { FiPlus } from 'react-icons/fi';
 import CreateForm from "./CreateSchluesselForm";
 import EditForm from "./EditSchluesselForm";
-import DeleteConfirmationModal from '../customers/DeleteConfirmationModal';
+import DeleteConfirmationModal from '../Messages/DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
 import SuccessMessage from "../Messages/SuccessMessage";
 import DeleteMessage from "../Messages/DeleteMessage";

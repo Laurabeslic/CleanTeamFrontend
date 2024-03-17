@@ -19,6 +19,7 @@ const CreateForm: React.FC<CreateSchluesselFormProps> = ({ isOpen, onCreate, onC
   const [auftrag, setAuftrag] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showCodeErrorMessage, setShowCodeErrorMessage] = useState(false);
+  const [showOrderErrorMessage, setShowOrderErrorMessage] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<{ [key: string]: boolean }>({});
 
   const loggedInUser = useSelector((state: RootState) => state.Auth.user);
@@ -35,6 +36,15 @@ const CreateForm: React.FC<CreateSchluesselFormProps> = ({ isOpen, onCreate, onC
   }   return false;
     };
 
+    const checkOrderExistence = async (orderid:string) => {
+      try {
+        const response = await axios.get(`http://localhost:3001/auftrag/${orderid}`);
+        return response.data; 
+      } catch (error) {
+        return null; // Auftrag existiert nicht
+      }
+    };
+  
   
   
   const handleSubmit = async(e: React.FormEvent) => {
@@ -54,10 +64,18 @@ const CreateForm: React.FC<CreateSchluesselFormProps> = ({ isOpen, onCreate, onC
     }
 
      const keyExists = await checkKeyExistence(schluesselcode);
+
+     const orderExists = await checkOrderExistence(auftrag);
     
-    if (keyExists) {
-        setShowCodeErrorMessage(true);
-         return; 
+ 
+    if (keyExists || !orderExists) {
+        if (keyExists){
+          setShowCodeErrorMessage(true);
+        }
+        if(!orderExists){
+          setShowOrderErrorMessage(true);
+        } 
+        return; 
     }
 
      // Umwandeln des Datums in ISO-8601-Format
@@ -83,6 +101,7 @@ const CreateForm: React.FC<CreateSchluesselFormProps> = ({ isOpen, onCreate, onC
     setZustand("");
     setAuftrag("");
     setShowCodeErrorMessage(false);
+    setShowOrderErrorMessage(false);
     onClose();
   };
 
@@ -94,6 +113,7 @@ const CreateForm: React.FC<CreateSchluesselFormProps> = ({ isOpen, onCreate, onC
     setAuftrag("");
 
     setShowCodeErrorMessage(false);
+    setShowOrderErrorMessage(false);
     onClose();
   };
 
@@ -172,7 +192,7 @@ const CreateForm: React.FC<CreateSchluesselFormProps> = ({ isOpen, onCreate, onC
                 </div>
             </div>
 
-            <div className="col-md-4">
+            <div className="col-md-6">
                 <label htmlFor="auftragnummer" className="form-label">
                 Auftragnummer:
                 </label>
@@ -183,6 +203,11 @@ const CreateForm: React.FC<CreateSchluesselFormProps> = ({ isOpen, onCreate, onC
                 value={auftrag}
                 onChange={(e) => setAuftrag(e.target.value)}
                 />
+                {showOrderErrorMessage && (
+                  <div className="text-danger">
+                    <p>Diese Auftragsnummer existiert nicht!</p>
+                  </div>
+                )}
             </div>
            
         

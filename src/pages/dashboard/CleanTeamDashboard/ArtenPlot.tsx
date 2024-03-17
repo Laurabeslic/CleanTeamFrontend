@@ -4,11 +4,11 @@ import { Card, Dropdown } from "react-bootstrap";
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 
-interface AuftragsChartProps {
+interface AuftraegeArtChartProps {
   apiUrl: string;
 }
 
-const AuftragsChart: React.FC<AuftragsChartProps> = ({ apiUrl }) => {
+const AuftraegeArtChart: React.FC<AuftraegeArtChartProps> = ({ apiUrl }) => {
   const [auftraege, setAuftraege] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +32,7 @@ const AuftragsChart: React.FC<AuftragsChartProps> = ({ apiUrl }) => {
   const categories = Array.from(new Set(auftraege.map((auftrag) => auftrag.Auftragsart)));
   const data = categories.map((category) => auftraege.filter((auftrag) => auftrag.Auftragsart === category).length);
 
-  const apexDonutChartOpts: ApexOptions = {
+  const apexChartOpts: ApexOptions = {
     plotOptions: {
       pie: {
         donut: {
@@ -79,13 +79,6 @@ const AuftragsChart: React.FC<AuftragsChartProps> = ({ apiUrl }) => {
         },
       },
     ],
-    tooltip: {
-      y: {
-        formatter: (value: number) => {
-          return value.toString();
-        },
-      },
-    },
   };
 
   return (
@@ -95,16 +88,15 @@ const AuftragsChart: React.FC<AuftragsChartProps> = ({ apiUrl }) => {
         <h5 className="card-title mt-0 mb-0 header-title">Aufträge nach Art</h5>
 
         <Chart
-          options={apexDonutChartOpts}
+          options={apexChartOpts}
           series={data}
           type="donut"
           className="apex-charts mb-0 mt-4"
           height={291}
-          dir="ltr"
         />
       </Card.Body>
     </Card>
   );
 };
 
-export default AuftragsChart;
+export default AuftraegeArtChart;

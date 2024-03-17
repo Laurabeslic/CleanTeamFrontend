@@ -9,7 +9,7 @@ import CreateForm from "./CreateAuftragForm"; // Importiere das Auftragsformular
 import EditForm from "./EditAuftragForm";
 import { Row, Col, Card, Dropdown, ButtonGroup} from "react-bootstrap";
 import FeatherIcons from "feather-icons-react";
-import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
+import DeleteConfirmationModal from '../Messages/DeleteConfirmationModal';
 
 
 
@@ -196,8 +196,6 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
                 }
                 return row;
             });
-    
-            // Verwenden Sie updatedData, um die Zähler direkt neu zu berechnen
             setTotalOrders(updatedData.length);
             setInProgressOrders(updatedData.filter(order => order.status === "In Bearbeitung").length);
             setCompletedOrders(updatedData.filter(order => order.status === "Abgeschlossen").length);
@@ -234,7 +232,6 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
           formattedData = formattedData.filter((order: { status: string }) => order.status === selectedStatus);
         }
 
-        // Filterung nach Datum (angenommen, das Datum ist ein String)
         if (selectedDate) {
           formattedData = formattedData.filter((order: { datum: string }) => order.datum === new Date(selectedDate).toLocaleDateString());
         }
@@ -242,7 +239,6 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         setTotalOrders(formattedData.length);
         setInProgressOrders(formattedData.filter((order: { status: string; }) => order.status === "In Bearbeitung").length);
         setCompletedOrders(formattedData.filter((order: { status: string; }) => order.status === "Abgeschlossen").length);
-
         setOrdersData(formattedData);
     } catch (error) {
         console.error("Es gab einen Fehler beim Abrufen der Aufträge:", error);
@@ -255,7 +251,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
           const response = await axios.post("http://localhost:3001/Auftrag/", newOrderData);
           //const createdOrder = response.data;
           
-          // Aktualisiere die Zähler
+          // Aktualisiere Zähler
           recalculateOrderCounts();
 
           setIsCreateFormOpen(false);
@@ -270,10 +266,10 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
         try {
           console.log('orderId:', orderId);
           console.log('updatedData:', updatedData);
-          // Sende die aktualisierten Daten an den Server, um den Auftrag zu aktualisieren
+          // aktualisierten Daten an den Server senden, um den Auftrag zu aktualisieren
           await axios.put(`http://localhost:3001/Auftrag/${orderId}`, updatedData);
       
-          // Aktualisiere die Auftragsdaten und schließe das Bearbeitungsmodal
+          // Auftragsdaten aktualisieren und Bearbeitungsmodal schließen
           await fetchOrders();
           setIsEditFormOpen(false);
           setShowUpdateMessage(true);
@@ -287,9 +283,6 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
           if (editedOrder) {
             const response = await axios.delete(`http://localhost:3001/Auftrag/${editedOrder.id}`);
             console.log('Auftrag gelöscht:', response.data);
-      
-            // Hier kannst du weitere Aktualisierungen vornehmen, falls nötig
-            // Zum Beispiel: Aktualisiere die Anzeige der Aufträge
             await fetchOrders();
             setShowDeleteMessage(true);
           }
@@ -396,7 +389,7 @@ const updateAuftragStatus = async (auftragsID: string, newStatus: string) => {
           onHide={() => setShowUpdateMessage(false)}
           nachricht= "Änderungen gespeichert"
         />
-         <DeleteMessage // Anzeige der Erfolgsmeldungskomponente
+         <DeleteMessage 
           show={showDeleteMessage}
           onHide={() => setShowDeleteMessage(false)}
           nachricht= "Auftrag gelöscht"

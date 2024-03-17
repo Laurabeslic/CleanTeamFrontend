@@ -8,7 +8,7 @@ import { FiPlus } from 'react-icons/fi';
 import CreateForm from "./CreateKundeForm";
 import CreateVertragForm from "./CreateVertragForm";
 import EditForm from "./EditKundeForm";
-import DeleteConfirmationModal from './DeleteConfirmationModal';
+import DeleteConfirmationModal from '../Messages/DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
 import SuccessMessage from "../Messages/SuccessMessage";
 import DeleteMessage from "../Messages/DeleteMessage";

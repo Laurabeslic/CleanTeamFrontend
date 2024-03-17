@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import CreateForm from "./CreateMitarbeiterForm";
 // import CreateVertragForm from "./CreateVertragForm";
 import EditForm from "./EditMitarbeiterForm";
-import DeleteConfirmationModal from './../customers/DeleteConfirmationModal';
+import DeleteConfirmationModal from '../Messages/DeleteConfirmationModal';
 import { FiMoreVertical } from 'react-icons/fi';
 import SuccessMessage from "../Messages/SuccessMessage";
 import DeleteMessage from "../Messages/DeleteMessage";
