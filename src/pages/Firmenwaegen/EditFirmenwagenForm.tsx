@@ -38,7 +38,7 @@ const EditWagenForm: React.FC<EditWagenFormProps> = ({ editedWagen, isOpen, onUp
 
   const [editedLetzteWartung, setEditedLetzteWartung] = useState(new Date());
   const [ausleiher, setAusleiher] = useState<string | null>(null); // Zustand für den aktuellen Ausleiher
-  const [rueckgabedatum, setRueckgabedatum] = useState(new Date()); // Zustand für das Rückgabedatum
+  const [rueckgabedatum, setRueckgabedatum] = useState<Date | null>(null); // Zustand für das Rückgabedatum
   
   const [fieldErrors, setFieldErrors] = useState<{ [key: string]: boolean }>({});
 
